@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>应急信息</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/project.css">
+    <title>Document</title>
+    <style>
+        /* body{
+            width: 100%;
+            height: 47.25rem;
+            background-image: url(./images/project-bg.jpg);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        } */
+    </style>
+</head>
+<body style="overflow: auto !important; height: auto !important;">
+    <!-- 1.顶部标题 -->
+    <header>
+        <div class="container">
+            <div class="title">应急指挥综合数据可视平台</div>
+        </div>
+    </header>
+    <!-- 2. 项目信息 -->
+    <div class="project-container">
+        <div class="project-name">海南中心项目</div>
+        <div class="project-intro">负责项目结构检测鉴定的中冶建筑研究总院有限公司称，海南中心是全球强台风地区唯一超过400米的超高层建筑。此外，该建筑抗震设防烈度达到8度，施工技术达到国内超高层建筑技术难度最高水平。海南中心主楼深基坑最深处达25米，土方量与中国第一高楼上海中心大厦相当，桩数是上海中心大厦的2倍有余。 [1]
+            海口高温高湿的气候也是建设难点。他透露，海南中心建设采用多项关键施工技术，如核心筒结构建设采用自主研发的大国重器——“空中造楼机”(轻量化智能顶升集成平台)，能抵抗17级台风。 [1]
+            海南第一高楼建设经历波折。该项目原称“海口塔”，由海航集团有限公司于2015年6月开工建设，2019年4月停工时塔楼核心筒土建结构施工至12层。 [1]
+            海南省发展控股有限公司(简称“海南控股”)是项目新的业主方。
+        </div>
+        <div class="monitor-list">
+            <img class="item" src="./images/img1.jpg" alt="">
+            <img class="item" src="./images/img2.jpg" alt="">
+            <img class="item" src="./images/img3.jpg" alt="">
+            <img class="item" src="./images/img1.jpg" alt="">
+            <img class="item" src="./images/img2.jpg" alt="">
+            <img class="item" src="./images/img3.jpg" alt="">
+            <img class="item" src="./images/img1.jpg" alt="">
+            <img class="item" src="./images/img2.jpg" alt="">
+            <img class="item" src="./images/img3.jpg" alt="">
+        </div>
+        <div class="shuiwei-chart">
+            <div class="title">监控点位</div>
+            <div id="shuiwei-chart"></div>
+        </div>
+        <div class="yinhuan-charts">
+            <div class="title">隐患台账</div>
+            <div class="yinhuan-chart">
+                <div id="yinhuan-pie"></div>
+                <div id="zhenggai-percent"></div>
+            </div>
+            <div class="yinhuan-form">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>组织层级</th>
+                            <th>隐患情况</th>
+                            <th>隐患类别</th>
+                            <th>隐患级别</th>
+                            <th>隐患因素</th>
+                            <th>整改期限</th>
+                            <th>填报单位</th>
+                            <th>填报人</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>测试</td>
+                            <td subTitle="低">测试</td>
+                            <td>测试</td>
+                            <td>测试</td>
+                            <td>测试</td>
+                            <td>测试</td>
+                            <td>测试</td>
+                            <td>测试</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="fengxian-charts">
+            <div class="title">安全风险</div>
+            <div id="fengxian-pie"></div>
+            <div class="fengxian-form">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>组织层级</th>
+                            <th>隐患情况</th>
+                            <th>隐患类别</th>
+                            <th>隐患级别</th>
+                            <th>隐患因素</th>
+                            <th>整改期限</th>
+                            <th>填报单位</th>
+                            <th>填报人</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>测试</td>
+                            <td subTitle="低">测试</td>
+                            <td>测试</td>
+                            <td>测试</td>
+                            <td>测试</td>
+                            <td>测试</td>
+                            <td>测试</td>
+                            <td>测试</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="./js/jquery-3.1.1.min.js"></script>
+    <script src="./js/flexible.js"></script>
+    <script src="./js/echarts.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            shuiweiChart()
+            // 项目水位折线图
+            function shuiweiChart(){
+                // 模拟数据
+                var DATA = {
+                    processed:[30, 40, 20, 50, 60, 10, 90],
+                    untreated:["50", "30", "50", "60", "10", "50", "30"]
+                }
+                // 1. 实例化对象
+                var myChart = echarts.init(document.querySelector('#shuiwei-chart'))
+                var dataDate = ['2022/12/13', '2023/1/13', '2023/2/13', '2023/3/13', '2023/4/13', '2023/5/13', '2023/6/13']
+                // 2. 指定配置项和数据
+                option = {
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                    lineStyle: {
+                        color: "#dddc6b"
+                    }
+                    }
+                },
+                legend: {
+                    top: "top",
+                    textStyle: {
+                    color: "rgba(255,255,255,.5)",
+                    fontSize: "12"
+                    }
+                },
+                grid: {
+                    left: "10",
+                    top: "30",
+                    right: "40",
+                    bottom: "0",
+                    containLabel: true
+                },
+            
+                xAxis: [
+                    {
+                    type: "category",
+                    boundaryGap: false,
+                    axisLabel: {
+                        textStyle: {
+                        color: "rgba(255,255,255,.6)",
+                        fontSize: 12
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                        color: "rgba(255,255,255,.2)"
+                        }
+                    },
+            
+                    data: dataDate
+                    },
+                    {
+                    axisPointer: { show: false },
+                    axisLine: { show: false },
+                    position: "bottom",
+                    offset: 20
+                    }
+                ],
+            
+                yAxis: [
+                    {
+                    type: "value",
+                    axisTick: { show: false },
+                    axisLine: {
+                        lineStyle: {
+                        color: "rgba(255,255,255,.1)"
+                        }
+                    },
+                    axisLabel: {
+                        textStyle: {
+                        color: "rgba(255,255,255,.6)",
+                        fontSize: 12
+                        }
+                    },
+            
+                    splitLine: {
+                        lineStyle: {
+                        color: "rgba(255,255,255,.1)"
+                        }
+                    }
+                    }
+                ],
+                series: [
+                    {
+                    name: "当前水位",
+                    type: "line",
+                    smooth: true,
+                    symbol: "circle",
+                    symbolSize: 5,
+                    showSymbol: false,
+                    lineStyle: {
+                        normal: {
+                        color: "#0184d5",
+                        width: 2
+                        }
+                    },
+                    areaStyle: {
+                        normal: {
+                        color: new echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            0,
+                            1,
+                            [
+                            {
+                                offset: 0,
+                                color: "rgba(1, 132, 213, 0.4)"
+                            },
+                            {
+                                offset: 0.8,
+                                color: "rgba(1, 132, 213, 0.1)"
+                            }
+                            ],
+                            false
+                        ),
+                        shadowColor: "rgba(0, 0, 0, 0.1)"
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                        color: "#0184d5",
+                        borderColor: "rgba(221, 220, 107, .1)",
+                        borderWidth: 12
+                        }
+                    },
+                    data: []
+                    },
+                ]
+                };
+                for(i = 0; i < DATA.processed.length; i++){
+                    option.series[0].data.push(DATA.processed[i])
+                }
+                // 3. 把配置项给实例对象
+                myChart.setOption(option);
+                // 4.跟随屏幕自适应
+                window.addEventListener("resize", function() {
+                    myChart.resize({animation: {duration:1000}});
+                });
+            }
+
+            yinhuanPie()
+            // 隐患台账饼图
+            function yinhuanPie(){
+                let data = [
+                    { value: 1048, name: '重大隐患' },
+                    { value: 735, name: '一般隐患' }
+                ]
+                // 1. 实例化对象
+                var myChart = echarts.init(document.querySelector('#yinhuan-pie'))
+                // 2. 指定配置项和数据
+                option = {
+                    
+                    legend: {
+                        right: 'center',
+                        top: "5%",
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 20,
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Access From',
+                            type: 'pie',
+                            radius: ['40%', '65%'],
+                            center: ['50%', '50%'],
+                            data: data,
+                            labelLine: {
+                            length: '2%',
+                            length2: 60,
+                            },
+                            label: {
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 20,
+                                },
+                                // alignTo: 'labelLine',    //对其方式
+                                position: 'outside',
+                                formatter: (fp) => {
+                                    return `{name|${fp.data.name}}\n\n{num|${fp.data.value}}条 {zb|${fp.percent}}%`
+                                },
+                                distanceToLabelLine: -40,
+                                rich: {
+                                    num: {
+                                    fontSize: 18,
+                                    },
+                                    zb: {
+                                    fontSize: 20,
+                                    }
+                                }
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            },
+                            z: 2,
+                        },
+                        {
+                            name: 'Access From',
+                            type: 'pie',
+                            radius: '50%',
+                            data: data,
+                            itemStyle: {
+                                opacity: 0,
+                            },
+                            label: {
+                                show: false,
+                            },
+                            emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                                opacity: 1
+                            }
+                            },
+                            z: 3
+                        }
+                    ]
+                };
+            // for(i = 0; i < DATA.length; i++){
+            //     option.series[0].data.push({
+            //         name: DATA[i].NAME,
+            //         value: DATA[i].VALUE
+            //     })
+            //     console.log(DATA[i]);
+            // }
+            // $.each(DATA, function (index, value) { 
+            //     option.series[0].data.push({
+            //         name: DATA[index].NAME,
+            //         value: DATA[index].VALUE
+            //     })
+            // });
+                // 3. 把配置项给实例对象
+                myChart.setOption(option)
+                // 4.跟随屏幕自适应
+                window.addEventListener("resize", function() {
+                    myChart.resize({animation: {duration:1000}});
+                })
+            }
+
+            zhenggaiPercent()
+            // 隐患整改率仪表盘
+            function zhenggaiPercent(){
+                // 1. 实例化对象
+                var myChart = echarts.init(document.querySelector('#zhenggai-percent'))
+                // 2. 指定配置项和数据
+                option = {
+                    title: [{
+                            text: '隐患整改率',
+                            left: 'center',
+                            bottom: '20%',
+                            textStyle: {
+                                color: '#3488db',
+                                fontSize:22,
+                                fontFamily: 'cuhei',
+                                fontWeight: 600,
+                
+                            }
+                    }],
+                    series: [
+                        {
+                        type: 'gauge',
+                        axisLine: {
+                            lineStyle: {
+                                width: 15,
+                                color: [
+                                            [
+                                                0.2, '#f9387f'
+                                            ],
+                                            [
+                                                0.8, '#3488db'
+                                            ],
+                                            [
+                                                1, '#42e4fb'
+                                            ]
+                                        ],
+                            }
+                        },
+                        radius: '80%',
+                        markPoint: {
+                            // 仪表盘指针圆
+                            animation: false,
+                            silent: true,
+                            data: [{
+                                x: '50%',
+                                y: '50%',
+                                symbol: 'circle',
+                                symbolSize: 40,
+                                itemStyle: {
+                                    color: 'auto',
+                                },
+                            }, {
+                                x: '50%',
+                                y: '50%',
+                                symbol: 'circle',
+                                symbolSize: 20,
+                                itemStyle: {
+                                    color: '#fff'
+                                },
+                            }],
+                        },
+                        pointer: {
+                            // 仪表盘指针
+                            //icon:'none',
+                            width: 10,
+                            length: "60%",
+                            itemStyle: {
+                                color: 'auto'
+                            },
+                        },
+                        axisTick: {
+                            distance: 0,
+                            length: 5,
+                            lineStyle: {
+                                color: 'auto',
+                                width: 2
+                            }
+                        },
+                        splitLine: {
+                            distance: 0,
+                            length: 15,
+                            lineStyle: {
+                                color: 'auto',
+                                width: 4
+                            }
+                        },
+                        axisLabel: {
+                            color: '#3488db',
+                            distance: 30,
+                            fontSize: 20
+                        },
+                        detail: {
+                            //valueAnimation: true,
+                            formatter: '{value} %',
+                            color: 'white'
+                        },
+                        data: [{
+                            value: 85
+                        }]
+                    },
+                    ]
+                };
+            // for(i = 0; i < DATA.length; i++){
+            //     option.series[0].data.push({
+            //         name: DATA[i].NAME,
+            //         value: DATA[i].VALUE
+            //     })
+            //     console.log(DATA[i]);
+            // }
+            // $.each(DATA, function (index, value) { 
+            //     option.series[0].data.push({
+            //         name: DATA[index].NAME,
+            //         value: DATA[index].VALUE
+            //     })
+            // });
+                // 3. 把配置项给实例对象
+                myChart.setOption(option)
+                // 4.跟随屏幕自适应
+                window.addEventListener("resize", function() {
+                    myChart.resize({animation: {duration:1000}});
+                })
+            }
+        
+            fengxianPie()
+            // 风险等级饼图
+            function fengxianPie(){
+                // 1. 实例化对象
+                var myChart = echarts.init(document.querySelector('#fengxian-pie'))
+                // 2. 指定配置项和数据
+                const colorList1 = [ 'rgb(255,0,0,1.000)','', 'rgb(255,192,0,1.000)','', 'rgb(255,255,0,1.000)','', 'rgb(0,176,240,1.000)',]
+                const colorList2 =  [ 'rgb(255,0,0, .5)','', 'rgb(255,192,0, .5)','', 'rgb(255,255,0, .5)', '','rgb(0,176,240,.5)',]
+                let total = 0
+                let dataList = []
+                var zd = {'data': 22}
+                const moduleContent = { '重大风险': zd.data, '较大风险': 380, '一般风险': 0 ,'低风险': 70,}
+                let sum = 0
+                const chartdata = []
+                for (const i in moduleContent) {
+                chartdata.push({
+                    name: i,
+                    value: moduleContent[i] || 1
+                })
+                sum += Number(moduleContent[i] || 0)
+                }
+                total = sum
+                dataList = chartdata
+                const data1 = []
+                chartdata.forEach((item) => {
+                const _item = { ...item }
+                if (!_item.value) {
+                    _item.value = sum / 100
+                }
+                data1.push(_item, {
+                    name: '',
+                    value: sum / 100,
+                    label: { show: false },
+                    itemStyle: {
+                        color: 'transparent'
+                    }
+                })
+                })
+
+                let option = {
+                    legend: {
+                        right: '10%',
+                        top: 'center',
+                        width: '5%',
+                        textStyle:{
+                            color: '#fff',
+                            fontSize: 20
+                        }
+                    },
+                title: {
+                    text: total,
+                    left: 'center',
+                    top: 'center',
+                    itemGap: 10,
+                    textStyle: {
+                    color: '#fff',
+                    fontSize: 30,
+                    fontWeight: 500
+                    },
+                    subtext: '共计',
+                    subtextStyle: {
+                        color: 'rgba(255,255,255,0.5)',
+                        fontSize: 20,
+                        fontWeight: 600
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    axisPointer: {
+                    // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                    },
+                    formatter(params) {
+                        console.log(params);
+                        if(params.data.name === ''){
+                            // return `${params.name + ':' + params.data.value}`
+                            return '无'
+                        }else{
+                            return `${params.name + ':' + params.data.value}`
+                        }
+                    },
+                    // formatter: "{b}: {c} "+" | "+"{d}%",
+                    textStyle: {
+                    fontSize: 24,
+                    color: '#222'
+                    },
+                    borderColor: 'rgba(255,255,255,0.9)',
+                    backgroundColor: 'rgba(255,255,255,.8)',
+                    extraCssText: 'box-shadow: 2px 2px 4px 0px rgba(255,255,255,0.5);'
+                },
+                series: [
+                    {
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    center: ['50%', '50%'],
+                    minAngle: 1,
+                    labelLine: {
+                        show: true,
+                        normal: {
+                            show: true,
+                            length: 15,
+                            length2: 30,
+                        },
+                    },
+                    label: {
+                        show: true,
+                        normal: {
+                            formatter: "{b|{b}}\n{d|{c}}",
+                            rich: {
+                            b: {
+                                fontSize: 18,
+                                color: "#fff",
+                                align: "center",
+                                padding: [0, 0, 0, 0],
+                            },
+                            d: {
+                                fontSize: 20,
+                                color: "#68BBC4",
+                                align: "center",
+                                padding: [4, 0, 0, 0],
+                            },
+                            },
+                        },
+                        textStyle: {
+                            color: '#fff',
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                        color: function (params) {
+                            return colorList1[params.dataIndex]
+                        }
+                        }
+                    },
+                    data: data1,
+                    z: 666
+                    },
+                    // {
+                    // type: 'pie',
+                    // radius: ['70%', '80%'],
+                    // center: ['60%', '50%'],
+                    // hoverAnimation: false,
+                    // minAngle: 1,
+                    // emphasis: { scale: false },
+                    // label: {
+                    //     show: false
+                    // },
+                    // itemStyle: {
+                    //     normal: {
+                    //     color: function (params) {
+                    //         return colorList2[params.dataIndex]
+                    //     }
+                    //     }
+                    // },
+                    // data: data1,
+                    // z: 1
+                    // },
+                ]
+                }
+
+                // 3. 把配置项给实例对象
+                myChart.setOption(option);
+                // 4.跟随屏幕自适应
+                window.addEventListener("resize", function() {
+                    myChart.resize({animation: {duration:1000}});
+                });
+        
+            }
+        });
+    </script>
+</body>
+</html>

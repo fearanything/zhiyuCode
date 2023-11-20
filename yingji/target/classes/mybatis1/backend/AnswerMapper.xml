@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AnswerMapper">
+
+	<resultMap type="Answer" id="answerResultMap">
+		<result column="ANSWER_ID" property="ANSWER_ID"/>
+		<result column="TYPHOON_ID" property="TYPHOON_ID"/>
+		<result column="ANSWER_LEVEL" property="ANSWER_LEVEL"/>
+		<result column="ANSWER_COMPANY" property="ANSWER_COMPANY"/>
+		<result column="ANSWER_REMARK" property="ANSWER_REMARK"/>
+		<result column="START_DATETIME" property="START_DATETIME"/>
+		<result column="END_DATETIME" property="END_DATETIME"/>
+		<result column="SORT" property="SORT"/>
+		<result column="ISDEL" property="ISDEL"/>
+		<result column="CREATER" property="CREATER"/>
+		<result column="CREATE_DATE" property="CREATE_DATE"/>
+		<result column="MODIFYER" property="MODIFYER"/>
+		<result column="MODIFY_DATE" property="MODIFY_DATE"/>
+	</resultMap>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		M_ANSWER
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+         ANSWER_ID,
+         TYPHOON_ID,
+         ANSWER_LEVEL,
+         ANSWER_COMPANY,
+         ANSWER_REMARK,
+         START_DATETIME,
+         END_DATETIME,
+         SORT,
+         ISDEL,
+         CREATER,
+         CREATE_DATE,
+         MODIFYER,
+         MODIFY_DATE
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+         #{ANSWER_ID},
+         #{TYPHOON_ID},
+         #{ANSWER_LEVEL},
+         #{ANSWER_COMPANY},
+         #{ANSWER_REMARK},
+         #{START_DATETIME},
+         #{END_DATETIME},
+         #{SORT},
+         #{ISDEL},
+         #{CREATER},
+         #{CREATE_DATE},
+         #{MODIFYER},
+         #{MODIFY_DATE}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+		 ISDEL = 1,
+		 MODIFYER = #{MODIFYER},
+		 MODIFY_DATE = #{MODIFY_DATE}
+		where 
+			ANSWER_ID = #{ANSWER_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+         ANSWER_ID = #{ANSWER_ID},
+         TYPHOON_ID = #{TYPHOON_ID},
+         ANSWER_LEVEL = #{ANSWER_LEVEL},
+         ANSWER_COMPANY = #{ANSWER_COMPANY},
+         ANSWER_REMARK = #{ANSWER_REMARK},
+         START_DATETIME = #{START_DATETIME},
+         END_DATETIME = #{END_DATETIME},
+	     MODIFYER = #{MODIFYER},
+		 MODIFY_DATE = #{MODIFY_DATE}
+	        where 
+				ANSWER_ID = #{ANSWER_ID}
+	</update>
+	<!-- 修改 -->
+	<update id="edit2" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+         END_DATETIME = #{END_DATETIME}
+	        where 
+				ANSWER_ID = #{ANSWER_ID}
+	</update>
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where ISDEL =0 and
+			ANSWER_ID = #{ANSWER_ID}
+	</select>
+	<!-- 通过单位名称取数据-->
+	<select id="findByName" parameterType="pd" resultType="pd"> 
+		select
+		 ta.ANSWER_ID,
+         ta.TYPHOON_ID,
+         ta.ANSWER_LEVEL,
+         ta.ANSWER_COMPANY,
+         ta.ANSWER_REMARK,
+         ta.START_DATETIME,
+         ta.END_DATETIME,
+         ta.SORT,
+         ta.ISDEL,
+         ta.CREATER,
+         ta.CREATE_DATE,
+         ta.MODIFYER,
+         ta.MODIFY_DATE
+		from 
+		<include refid="tableName"></include> ta
+		where ta.ISDEL =0 
+			<if test="ANSWER_COMPANY != null and ANSWER_COMPANY != ''">
+			   and ta.ANSWER_COMPANY = #{ANSWER_COMPANY}
+		    </if>
+			<if test="TYPHOON_ID != null and TYPHOON_ID != ''">
+			  and ta.TYPHOON_ID = #{TYPHOON_ID}
+		    </if>
+			<if test="lastStart != null and lastStart != ''">
+			  and  ta.START_DATETIME &lt;= #{lastStart}  
+		    </if>
+		    
+			and ta.start_datetime = ( SELECT MAX( tb.start_datetime ) FROM m_answer AS tb WHERE ta.answer_company = tb.answer_company )
+		
+	</select>
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		 a.ANSWER_ID,
+         a.TYPHOON_ID,
+         a.ANSWER_LEVEL,
+         a.ANSWER_COMPANY,
+         a.ANSWER_REMARK,
+         a.START_DATETIME,
+         a.END_DATETIME,
+         a.SORT,
+         a.ISDEL,
+         a.CREATER,
+         a.CREATE_DATE,
+         a.MODIFYER,
+         a.MODIFY_DATE,
+         b.TYPHOON_NAME
+		from 
+		<include refid="tableName"></include> a 
+		left join M_TYPHOON b on b.TYPHOON_ID=a.TYPHOON_ID
+		where a.ISDEL =0  
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+				<!--	根据需求自己加检索条件-->
+					a.ANSWER_COMPANY LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					a.ANSWER_REMARK LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				
+				)
+		</if>
+		<if test="pd.TYPHOON_ID != null and pd.TYPHOON_ID != ''">
+			and a.TYPHOON_ID = #{pd.TYPHOON_ID}
+		</if>
+		<if test="pd.lastStart != null and pd.lastStart != ''">
+			and a.CREATE_DATE &gt;= #{pd.lastStart}
+		</if>
+		<if test="pd.lastEnd != null and pd.lastEnd != ''">
+			and a.CREATE_DATE &lt;= #{pd.lastEnd}
+		</if>
+		order by a.CREATE_DATE ASC
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		 ta.ANSWER_ID,
+         ta.TYPHOON_ID,
+         ta.ANSWER_LEVEL,
+         ta.ANSWER_COMPANY,
+         ta.ANSWER_REMARK,
+         ta.START_DATETIME,
+         ta.END_DATETIME,
+         ta.SORT,
+         ta.ISDEL,
+         ta.CREATER,
+         ta.CREATE_DATE,
+         ta.MODIFYER,
+         ta.MODIFY_DATE
+		from 
+		<include refid="tableName"></include> ta
+		where ta.ISDEL =0 
+		<if test="TYPHOON_ID != null and TYPHOON_ID != ''">
+			and ta.TYPHOON_ID = #{TYPHOON_ID}
+		</if>
+		<if test="ANSWER_LEVEL != null and ANSWER_LEVEL != ''">
+			and ta.ANSWER_LEVEL = #{ANSWER_LEVEL}
+		</if>
+		<if test="lastStart != null and lastStart != ''">
+			and  ta.START_DATETIME &lt;= #{lastStart}  
+		</if>
+		
+		and ta.start_datetime = ( SELECT MAX( tb.start_datetime ) FROM m_answer AS tb WHERE ta.answer_company = tb.answer_company )
+		order by ta.START_DATETIME ASC
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		update
+		<include refid="tableName"></include>
+		set 
+		 ISDEL = 1
+		where 
+			ANSWER_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- 查询明细总数 -->
+	<select id="findCount" parameterType="pd" resultType="pd">
+		select
+			count(*) zs
+		from 
+			<include refid="tableName"></include>
+		where ISDEL =0 
+	</select>
+
+</mapper>

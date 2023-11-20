@@ -1,0 +1,273 @@
+/*清除元素默认的内外边距  */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  /*让所有斜体 不倾斜*/
+  em,
+  i {
+    font-style: normal;
+  }
+  /*去掉列表前面的小点*/
+  li {
+    list-style: none;
+  }
+  /*图片没有边框   去掉图片底侧的空白缝隙*/
+  img {
+    border: 0; /*ie6*/
+    vertical-align: middle;
+  }
+  /*让button 按钮 变成小手*/
+  button {
+    cursor: pointer;
+  }
+  /*取消链接的下划线*/
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: #e33333;
+  }
+
+  p{
+    font-size: .15rem;
+  }
+
+  h1,h2,h3,h4,p{
+    color: #fff;
+  }
+  h3{
+    font-size: .2rem;
+  }
+  h4 {
+    font-size: .175rem;
+    font-weight: 400;
+  }
+  body {
+    background: url(../images/background.png) no-repeat;
+    background-size: 100% 100%;
+  }
+  /* // 实现rem适配 */
+  /* @media screen and (max-width: 1024px) {
+    html {
+        font-size: 42.66px !important;
+        }
+    }
+
+    @media screen and (min-height:1000px){
+        .column{
+            margin-top: .75rem;
+        }
+    }
+
+    @media screen and (min-width: 3000px) {
+        html {
+            overflow-y: hidden;
+            font-size: 80px !important;
+        }
+        .column{
+            scale: .85;
+            margin: 0 auto;
+            margin-top: -0.625rem !important;
+        }
+    } */
+
+    @media screen and (max-width: 1024px) {
+        html {
+          font-size: 42.66px !important;
+        }
+      }
+      
+      @media screen and (min-width: 1920px) {
+        html {
+          font-size: 80px !important;
+        }
+        
+      }
+
+      @media screen and (min-width: 2560px) {
+        html {
+          font-size: 80px !important;
+        }
+        .column{
+            margin-top: 150px !important;
+            scale: 1.2;
+        }
+      }
+
+      @media screen and (min-width: 3000px) {
+        html {
+            overflow-y: hidden;
+          font-size: 80px !important;
+        }
+        .column{
+            margin: auto;
+            scale: .8;
+            margin-top: -0.875rem !important;
+        }
+      }
+
+  html{
+    overflow-y: hidden;
+    width: 100%;
+    height: 100%;
+    padding-bottom: .125rem;
+  }
+
+  /* 1.父容器大盒子 */
+  .viewpoint{
+    min-width: 1024px;
+    max-width: 3066px;
+    margin: 0 auto;
+    padding-bottom: .125rem;
+    background-size: cover;
+    /* padding: 3.125rem .5rem 0 .5rem;
+    background: url(../images/topheadNew.png) no-repeat;
+    background-size: contain; */
+    min-height: 780px;
+  }
+
+  /* 顶部Tab开始 */
+  .head{
+    height: 1.12rem;
+    margin-bottom: .1875rem;
+    background-image: url(../images/topheadNew.png);
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    }
+
+    .head h1{
+        margin-top: .15rem;
+        margin-bottom: .075rem;
+        display: flex;
+        justify-content: center;
+        color: #fff;
+        font-size: .375rem;
+    }
+
+    .head ul{
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        
+    }
+
+    .head ul a{
+        float: left;
+        width: 1.625rem;
+        text-align: center;
+        font-size: .2rem;
+        color: #fff;
+    }
+
+    .head ul a:hover{
+        color: #20bcfc;
+    }
+  /* 顶部Tab结束 */
+
+  /* 中心盒子开始 */
+  .column{
+    margin: 0 auto;
+    width: 22.125rem;
+    height: 10.25rem;
+    background-image: url(../images/changtaiMsgBox.png);
+    background-size: cover;
+  }
+
+  .yingjiMsgTitle h3{
+    padding-left: .25rem;
+    width: 184px;
+    height: .4625rem;
+    line-height: .4625rem;
+    font-size: 18px;
+    background-image: url(../images/yingjiRedBox.png);
+  }
+
+  .yingjiMsgTitle h4 a{
+    margin-left: .25rem;
+    display: inline-block;
+    width: 2.25rem;
+    height: .4625rem;
+    line-height: .4625rem;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .jiankongMsg .left{
+    display: flex;
+    flex-direction: column;
+    width: 8.5rem;
+    height: 8.9375rem;
+    background-color: rgba(24, 31, 167, 0.8);
+    border: 1px solid #20bcfc;
+    border-radius: 17px;
+}
+
+.jiankongMsg .left .top h3{
+    padding-left: .25rem;
+    height: .6625rem;
+    line-height: .6625rem;
+    font-size: 24px;
+}
+
+.jiankongMsg .left .mid{
+    padding: .25rem;
+    border-bottom: 1px solid #20bcfc;
+}
+.jiankongMsg .left .mid a{
+    display: inline-block;
+    margin-bottom: .0125rem;
+    margin-right: .0125rem;
+    width: 2.5rem;
+    height: .625rem;
+    line-height: .625rem;
+    font-size: .2rem;
+    text-align: center;
+    background-color: #023197;
+}
+
+.jiankongMsg .left .bottom{
+    display: flex;
+    justify-content: space-between;
+    padding: .25rem;
+}
+
+.jiankongMsg .right{
+    display: flex;
+    flex-direction: column;
+    width: 10.75rem;
+    height: 8.9375rem;
+}
+
+.jiankongMsg .right .top{
+    height: .5rem;
+    background-image: url(../images/data.png);
+    background-size: cover;
+}
+
+.jiankongMsg .right .top h3{
+    height: .5rem;
+    line-height: .5rem;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.jiankongMsg .right .mid{
+    padding: .075rem;
+    margin-bottom: .25rem;
+    width: 10.75rem;
+    height: 4.55rem;
+    background-image: url(../images/videoBG.png);
+    background-size: cover;
+}
+
+.jiankongMsg .right .mid img{
+    width: 3.4375rem;
+    height: 2.125rem;
+}
+
+  /* 中心盒子结束 */

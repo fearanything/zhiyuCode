@@ -1,0 +1,1550 @@
+package com.fh.controller.backend;
+
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fh.entity.system.Dictionaries;
+import com.fh.entity.system.User;
+import com.fh.service.system.user.UserManager;
+import com.fh.util.*;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.fh.common.WebConstant;
+import com.fh.controller.base.BaseController;
+import com.fh.entity.Page;
+import com.fh.service.backend.morg.MOrgManager;
+import com.fh.service.backend.rectifyinfo.RectifyInfoManager;
+import com.fh.service.system.dictionaries.DictionariesManager;
+import com.fh.service.system.fhlog.FHlogManager;
+
+import net.sf.json.JSONArray;
+
+/** 
+ * 说明：整改信息
+ * 创建人：FH Q313596790
+ * 创建时间：2023-06-21
+ */
+@Controller
+@RequestMapping(value="/rectifyinfo")
+public class RectifyInfoController extends BaseController {
+	
+	String menuUrl = "rectifyinfo/list.do"; //菜单地址(权限用)
+	@Resource(name="rectifyinfoService")
+	private RectifyInfoManager rectifyinfoService;
+	@Resource(name="dictionariesService")
+	private DictionariesManager dictionariesService;
+	@Resource(name="morgService")
+	private MOrgManager morgService;
+	@Resource(name="fhlogService")
+	private FHlogManager FHLOG;
+	@Resource(name="userService")
+	private UserManager userService;
+	
+	/**保存
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/save")
+	public ModelAndView save() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"新增RectifyInfo");
+//		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		
+		String now = Tools.date2Str(new Date());
+		String nowDay = Tools.date2Str(new Date(), "yyyy-MM-dd");
+		
+		pd.put("RECTIFY_ID", this.get32UUID());	//主键
+		pd.put("SORT", "0");	//顺序
+		pd.put("ISDEL", "0");	//删除
+		pd.put("CREATER", Jurisdiction.getUserId());	//创建人
+		pd.put("CREATE_DATE", now);	//创建时间
+		
+		// 默认未提交
+		pd.put("IS_SUBMITE", WebConstant.IS_NO);
+		
+		if (WebConstant.IS_YES.equals(pd.getString("IS_COMPLETE"))) {
+			pd.put("COMPLETE_TIME", nowDay);
+		}
+		
+		// 默认未提交
+		pd.put("IS_SUBMITE", WebConstant.IS_NO);
+		
+		rectifyinfoService.save(pd);
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+	
+	/**
+	 * 用ajax提交数据保存
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/saveByAjax")
+	@ResponseBody
+	public PageData saveByAjax() throws Exception {
+		logBefore(logger, Jurisdiction.getUsername()+"saveByAjax新增RectifyInfo");
+		
+		PageData result = new PageData();
+		
+		String sign = "no";
+		
+		try {
+			PageData pd = this.getPageData();
+			
+			String now = Tools.date2Str(new Date());
+			String nowDay = Tools.date2Str(new Date(), "yyyy-MM-dd");
+			
+			pd.put("RECTIFY_ID", this.get32UUID());	//主键
+			pd.put("SORT", "0");	//顺序
+			pd.put("ISDEL", "0");	//删除
+			pd.put("CREATER", Jurisdiction.getUserId());	//创建人
+			pd.put("CREATE_DATE", now);	//创建时间
+			
+			String COMMIT_TIME = nowDay;
+			int month = Integer.parseInt(COMMIT_TIME.substring(5, 7));
+			pd.put("COMMIT_TIME", COMMIT_TIME);
+			pd.put("YEAR", COMMIT_TIME.substring(0, 4));
+			pd.put("MONTH", COMMIT_TIME.substring(5, 7));
+			pd.put("DAY", COMMIT_TIME.substring(8, 10));
+			pd.put("QUARTER", (month + 2) / 3);
+			
+			if (WebConstant.IS_YES.equals(pd.getString("IS_COMPLETE"))) {
+				pd.put("COMPLETE_TIME", nowDay);
+			}
+			
+			// 默认未提交
+			pd.put("IS_SUBMITE", WebConstant.IS_NO);
+			
+			rectifyinfoService.save(pd);
+			
+			sign = "yes";
+		} catch (Exception e) {
+			// TODO: handle exception
+			sign = "no";
+			logger.error("saveByAjax新增RectifyInfo出错", e);
+		}
+		result.put("sign", sign);
+		return result;
+	}
+	
+	/**提交(提交后状态搞成rectify_stage = 2)
+	 * @param out
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/submit")
+	public void submit(PrintWriter out) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"提交RectifyInfo");
+//		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return;} //校验权限
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		
+		PageData data = rectifyinfoService.findById(pd);
+
+		String nowDay = Tools.date2Str(new Date(), "yyyy-MM-dd");
+		String COMMIT_TIME = nowDay;
+		int month = Integer.parseInt(COMMIT_TIME.substring(5, 7));
+		data.put("COMMIT_TIME", COMMIT_TIME);
+		data.put("YEAR", COMMIT_TIME.substring(0, 4));
+		data.put("MONTH", COMMIT_TIME.substring(5, 7));
+		data.put("DAY", COMMIT_TIME.substring(8, 10));
+		data.put("QUARTER", (month + 2) / 3);
+
+		//未提交->待整改
+		data.put("RECTIFY_STAGE", 2);
+		
+		data.put("MODIFYER", Jurisdiction.getUserId());	//修改人
+		data.put("MODIFY_DATE", Tools.date2Str(new Date()));	//修改时间
+		rectifyinfoService.edit(data);
+		
+		out.write("success");
+		out.close();
+	}
+	
+	/**删除
+	 * @param out
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/delete")
+	public void delete(PrintWriter out) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"删除RectifyInfo");
+		/*if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限*/
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd.put("MODIFYER", Jurisdiction.getUserId());	//修改人
+		pd.put("MODIFY_DATE", Tools.date2Str(new Date()));	//修改时间
+		rectifyinfoService.delete(pd);
+		out.write("success");
+		out.close();
+	}
+	
+	/**修改
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/edit")
+	public ModelAndView edit() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"修改RectifyInfo");
+//		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd.put("MODIFYER", Jurisdiction.getUserId());	//修改人
+		pd.put("MODIFY_DATE", Tools.date2Str(new Date()));	//修改时间
+		
+		String nowDay = Tools.date2Str(new Date(), "yyyy-MM-dd");
+		String IS_COMPLETE_OLD = pd.getString("IS_COMPLETE_OLD");
+		String IS_COMPLETE = pd.getString("IS_COMPLETE");
+		if (WebConstant.IS_NO.equals(IS_COMPLETE_OLD) && WebConstant.IS_YES.equals(IS_COMPLETE)) {
+			pd.put("COMPLETE_TIME", nowDay);
+		}
+		
+		rectifyinfoService.edit(pd);
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+	
+	/**列表
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/list")
+	public ModelAndView list(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		mv.addObject("msg", "list");
+		
+		getListData(page, pd, mv);
+		
+		return mv;
+	}
+
+	/**列表
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/listSecondUnit")
+	public ModelAndView listSecondUnit(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		//控制对应公司在所有隐患中看不到属于自己的但是没有提交的隐患
+		String userId = Jurisdiction.getUserId();
+		//获取roleName
+		User userRole = userService.getUserAndRoleById(userId);
+		//如果是admin就跳转一级页面
+		if(!userId.equals("1") && !userRole.getRole().getROLE_NAME().equals("应急部")){
+			pd.put("ALL_SUBMIT_FLAG",1);
+		}
+
+		mv.addObject("msg", "list");
+
+		getListData(page, pd, mv);
+
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_list_secondUnit");
+
+		return mv;
+	}
+
+
+	/**
+	 * 获取列表的数据
+	 * @throws Exception
+	 */
+	public void getListData(Page page, PageData pd, ModelAndView mv) throws Exception{
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			pd.put("keywords", keywords.trim());
+		}
+		
+		String start = pd.getString("start");
+		if (StringUtils.isNotEmpty(start)) {
+			pd.put("lastStart", start);
+		}
+		
+		String end = pd.getString("end");
+		if (StringUtils.isNotEmpty(end)) {
+			pd.put("lastEnd", end);
+		}
+
+		//如果要查找逾期的
+		String overTime = pd.getString("OVER_TIME");
+		String NOW = null;
+		if (StringUtils.isNotEmpty(overTime)) {
+			pd.put("OVER_TIME", Tools.date2Str(new Date(), "yyyy-MM-dd"));
+		}
+		else if(StringUtils.isNotEmpty(NOW)){
+			NOW = Tools.date2Str(new Date(), "yyyy-MM-dd");
+			pd.put("NOW", NOW);
+		}
+
+
+		//不同阶段的状态
+		String RECTIFY_STAGE = pd.getString("RECTIFY_STAGE");
+		if (StringUtils.isNotEmpty(RECTIFY_STAGE)) {
+			pd.put("RECTIFY_STAGE", RECTIFY_STAGE);
+		}
+		
+		String USER_ID = Jurisdiction.getUserId();
+		if (!USER_ID.equals("1")) {
+			// 除了admin，其他的根据权限过滤
+			pd.put("USER_ID_QX", USER_ID);
+		}
+		
+		// 默认显示已提交的数据
+//		if (StringUtils.isEmpty(pd.getString("IS_SUBMITE"))) {
+//			pd.put("IS_SUBMITE", WebConstant.IS_YES);
+//		}
+		PageData param = new PageData();
+		param.put("ISORG",1);
+		
+		page.setPd(pd);
+		List<PageData>	varList = rectifyinfoService.list(page);	//列出RectifyInfo列表
+
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_list");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getDefaultMap());
+		mv.addObject("orgList", morgService.listAll(param));
+		param.put("ISORG",0);
+		mv.addObject("projectList", morgService.listAll(param));
+	}
+	
+	/**列表，未提交
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/list-notSubmite")
+	public ModelAndView listNotSubmite(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo，未提交");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		pd.put("RECTIFY_STAGE", "1"); // 未提交
+		mv.addObject("msg", "list-notSubmite");
+
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			pd.put("keywords", keywords.trim());
+		}
+
+		String start = pd.getString("start");
+		if (StringUtils.isNotEmpty(start)) {
+			pd.put("lastStart", start);
+		}
+
+		String end = pd.getString("end");
+		if (StringUtils.isNotEmpty(end)) {
+			pd.put("lastEnd", end);
+		}
+
+		//如果要查找逾期的
+		String overTime = pd.getString("OVER_TIME");
+		if (StringUtils.isNotEmpty(overTime)) {
+			String NOW = Tools.date2Str(new Date(), "yyyy-MM-dd");
+			pd.put("NOW", NOW);
+			pd.put("OVER_TIME", overTime);
+		}
+
+
+		//不同阶段的状态
+		String RECTIFY_STAGE = pd.getString("RECTIFY_STAGE");
+		if (StringUtils.isNotEmpty(RECTIFY_STAGE)) {
+			pd.put("RECTIFY_STAGE", RECTIFY_STAGE);
+		}
+
+		String USER_ID = Jurisdiction.getUserId();
+		if (!USER_ID.equals("1")) {
+			// 除了admin，其他的根据权限过滤
+			pd.put("USER_ID_QX", USER_ID);
+			pd.put("SUBMIT_FLAG",1);
+		}
+
+		// 默认显示已提交的数据
+//		if (StringUtils.isEmpty(pd.getString("IS_SUBMITE"))) {
+//			pd.put("IS_SUBMITE", WebConstant.IS_YES);
+//		}
+		PageData param = new PageData();
+		param.put("ISORG",1);
+
+
+		page.setPd(pd);
+		List<PageData>	varList = rectifyinfoService.list(page);	//列出RectifyInfo列表
+
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_noSubmit");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getDefaultMap());
+		mv.addObject("orgList", morgService.listAll(param));
+		param.put("ISORG",0);
+		mv.addObject("projectList", morgService.listAll(param));
+
+		return mv;
+	}
+	
+	/**列表，已逾期
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/list-overtime")
+	public ModelAndView listOvertime(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo，已逾期");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		pd.put("OVER_TIME", "1"); // 已逾期
+		pd.put("RECTIFY_STAGE", "2"); // 已逾期
+		mv.addObject("msg", "list-overtime");
+		
+		getListData(page, pd, mv);
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_overtime");
+		return mv;
+	}
+	
+	/**列表，已完成
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/list-isComplete")
+	public ModelAndView listIsComplete(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo，已完成");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		pd.put("IS_COMPLETE", "1"); // 已完成
+		mv.addObject("msg", "list-isComplete");
+		
+		getListData(page, pd, mv);
+		return mv;
+	}
+
+	/**列表，已完成
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/list-overtimeIsComplete")
+	public ModelAndView overtimeIsComplete(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo，已完成");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		pd.put("OVER_TIME", "1"); // 已逾期
+		pd.put("RECTIFY_STAGE", "4");
+		mv.addObject("msg", "list-isComplete");
+
+		getListData(page, pd, mv);
+		return mv;
+	}
+
+	/**列表，已完成
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/list-notComplete")
+	public ModelAndView listNotComplete(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo，未完成");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		pd.put("IS_COMPLETE", "0"); // 未完成
+		mv.addObject("msg", "list-notComplete");
+
+		getListData(page, pd, mv);
+		return mv;
+	}
+	
+	/**列表，已完成
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/list-overtimeNotComplete")
+	public ModelAndView listOvertimeNotComplete(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo，未完成");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		pd.put("OVER_TIME", "1"); // 已逾期
+		pd.put("RECTIFY_STAGE", "3");
+		mv.addObject("msg", "list-notComplete");
+		
+		getListData(page, pd, mv);
+		mv.setViewName("backend/rectifyinfo/rectify_overtimeNoComplete");
+		return mv;
+	}
+	
+	/**去新增页面
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goAddPage")
+	public ModelAndView goAddPage()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		
+		// 获取部门树
+		PageData param = new PageData();
+		param.put("PARENT_ID", "0");
+		param.put("ISORG", "1");
+		String USER_ID = Jurisdiction.getUserId();
+		if (!"1".equals(USER_ID)) {
+			param.put("USER_ID", USER_ID);
+		}
+		JSONArray arr = JSONArray.fromObject(morgService.listSelectTree(param));
+		mv.addObject("zTreeNodes", (null == arr? "":arr.toString()));
+
+		//项目列表
+		PageData projectParam = new PageData();
+		projectParam.put("ISORG",0);
+		List<PageData> projectList = morgService.listAll(projectParam);
+
+		//获取海南地区
+		String hainanParam = "2ba8e6d0fd944983aa19b781c6b53477";
+		List<Dictionaries> areaList = dictionariesService.listSubDictByParentId(hainanParam);
+		//填充子list
+		for(Dictionaries dictionaries : areaList){
+			String parentId = dictionaries.getDICTIONARIES_ID();
+			List<Dictionaries> subList = dictionariesService.listSubDictByParentId(parentId);
+			dictionaries.setSubDict(subList);
+		}
+		
+//		String json = arr.toString();
+//		json = json.replaceAll("ORG_ID", "id").replaceAll("PARENT_ID", "pId").replaceAll("ORG_NAME", "name").replaceAll("subMOrg", "nodes");
+//		mv.addObject("zTreeNodes", json);
+		
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_add");
+		mv.addObject("msg", "save");
+		mv.addObject("pd", pd);
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getNoYesMap());
+		mv.addObject("orgList", morgService.listAll(param));
+		mv.addObject("projectList", projectList);
+		mv.addObject("areaList", areaList);
+		return mv;
+	}	
+	
+	/**去新增页面
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goAdd")
+	public ModelAndView goAdd()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		
+		// 获取部门树
+		PageData param = new PageData();
+		param.put("PARENT_ID", "0");
+		String USER_ID = Jurisdiction.getUserId();
+		if (!"1".equals(USER_ID)) {
+			param.put("USER_ID", USER_ID);
+		}
+		JSONArray arr = JSONArray.fromObject(morgService.listSelectTree(param));
+		mv.addObject("zTreeNodes", (null == arr? "":arr.toString()));
+
+		if(pd.getString("RECTIFY_STAGE").equals("1")){
+			mv.setViewName("backend/rectifyinfo/rectifyInfo_edit_snc");
+		}
+		else if(pd.getString("RECTIFY_STAGE").equals("2")){
+			mv.setViewName("backend/rectifyinfo/rectifyInfo_edit_sc");
+		}
+		else{
+			mv.setViewName("backend/rectifyinfo/rectifyinfo_edit");
+		}
+
+		PageData tempParam = new PageData();
+		param.put("ISORG",0);
+		mv.addObject("projectList", morgService.listAll(tempParam));
+
+		mv.addObject("msg", "save");
+		mv.addObject("pd", pd);
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getNoYesMap());
+		mv.addObject("orgList", morgService.listAll(param));		//组织机构列表
+		return mv;
+	}	
+	
+	 /**去修改页面
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goEdit")
+	public ModelAndView goEdit()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData httpPd = new PageData();
+		httpPd = this.getPageData();
+		PageData pd = rectifyinfoService.findById(httpPd);	//根据ID读取
+		
+		// 获取部门树
+		PageData param = new PageData();
+		param.put("PARENT_ID", "0");
+		String USER_ID = Jurisdiction.getUserId();
+		if (!"1".equals(USER_ID)) {
+			param.put("USER_ID", USER_ID);
+		}
+		JSONArray arr = JSONArray.fromObject(morgService.listSelectTree(param));
+		mv.addObject("zTreeNodes", (null == arr? "":arr.toString()));
+
+		if(httpPd.getString("RECTIFY_STAGE") != null){
+			if(httpPd.getString("RECTIFY_STAGE").equals("2")){
+				mv.setViewName("backend/rectifyinfo/rectifyInfo_edit_snc");
+			}
+			else if(httpPd.getString("RECTIFY_STAGE").equals("3")){
+				mv.setViewName("backend/rectifyinfo/rectifyInfo_edit_sc");
+			}
+			else{
+				mv.setViewName("backend/rectifyinfo/rectifyinfo_edit");
+			}
+		}
+		else{
+			mv.setViewName("backend/rectifyinfo/rectifyinfo_edit");
+		}
+
+		//获取海南地区
+		String hainanParam = "2ba8e6d0fd944983aa19b781c6b53477";
+		List<Dictionaries> areaList = dictionariesService.listSubDictByParentId(hainanParam);
+		//填充子list
+		for(Dictionaries dictionaries : areaList){
+			String parentId = dictionaries.getDICTIONARIES_ID();
+			List<Dictionaries> subList = dictionariesService.listSubDictByParentId(parentId);
+			dictionaries.setSubDict(subList);
+		}
+
+		mv.addObject("msg", "edit");
+		mv.addObject("pd", pd);
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		PageData tempParam = new PageData();
+		param.put("ISORG",0);
+		mv.addObject("projectList", morgService.listAll(tempParam));
+		mv.addObject("YesNoMap", WebConstant.getNoYesMap());
+		param.put("ISORG",1);
+		mv.addObject("orgList", morgService.listAll(param));		//组织机构列表
+		mv.addObject("areaList", areaList);
+		return mv;
+	}
+
+	/**去修改页面
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goEditSecondUnit")
+	public ModelAndView goEditSecondUnit()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData httpPd = new PageData();
+		httpPd = this.getPageData();
+		PageData pd = rectifyinfoService.findById(httpPd);	//根据ID读取
+
+		// 获取部门树
+		PageData param = new PageData();
+		param.put("PARENT_ID", "0");
+		String USER_ID = Jurisdiction.getUserId();
+		if (!"1".equals(USER_ID)) {
+			param.put("USER_ID", USER_ID);
+		}
+		JSONArray arr = JSONArray.fromObject(morgService.listSelectTree(param));
+		mv.addObject("zTreeNodes", (null == arr? "":arr.toString()));
+
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_edit_secondUnit");
+
+		//获取海南地区
+		String hainanParam = "2ba8e6d0fd944983aa19b781c6b53477";
+		List<Dictionaries> areaList = dictionariesService.listSubDictByParentId(hainanParam);
+		//填充子list
+		for(Dictionaries dictionaries : areaList){
+			String parentId = dictionaries.getDICTIONARIES_ID();
+			List<Dictionaries> subList = dictionariesService.listSubDictByParentId(parentId);
+			dictionaries.setSubDict(subList);
+		}
+
+		mv.addObject("msg", "edit");
+		mv.addObject("pd", pd);
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		PageData tempParam = new PageData();
+		param.put("ISORG",0);
+		mv.addObject("projectList", morgService.listAll(tempParam));
+		mv.addObject("YesNoMap", WebConstant.getNoYesMap());
+		param.put("ISORG",1);
+		mv.addObject("orgList", morgService.listAll(param));		//组织机构列表
+		mv.addObject("areaList", areaList);
+		return mv;
+	}
+
+	/**待提交，去隐患排查的修改页面
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goEditNoSubmit")
+	public ModelAndView goEditNoSubmit()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		// 获取部门树
+		PageData param = new PageData();
+		param.put("PARENT_ID", "0");
+		param.put("ISORG", "1");
+		String USER_ID = Jurisdiction.getUserId();
+		if (!"1".equals(USER_ID)) {
+			param.put("USER_ID", USER_ID);
+		}
+		JSONArray arr = JSONArray.fromObject(morgService.listSelectTree(param));
+		mv.addObject("zTreeNodes", (null == arr? "":arr.toString()));
+
+		//项目列表
+		PageData projectParam = new PageData();
+		projectParam.put("ISORG",0);
+		List<PageData> projectList = morgService.listAll(projectParam);
+
+		//获取海南地区
+		String hainanParam = "2ba8e6d0fd944983aa19b781c6b53477";
+		List<Dictionaries> areaList = dictionariesService.listSubDictByParentId(hainanParam);
+		//填充子list
+		for(Dictionaries dictionaries : areaList){
+			String parentId = dictionaries.getDICTIONARIES_ID();
+			List<Dictionaries> subList = dictionariesService.listSubDictByParentId(parentId);
+			dictionaries.setSubDict(subList);
+		}
+
+//		String json = arr.toString();
+//		json = json.replaceAll("ORG_ID", "id").replaceAll("PARENT_ID", "pId").replaceAll("ORG_NAME", "name").replaceAll("subMOrg", "nodes");
+//		mv.addObject("zTreeNodes", json);
+
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_noSubmit_edit");
+		mv.addObject("msg", "edit");
+		pd = rectifyinfoService.findById(pd);
+		mv.addObject("pd", pd);
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getNoYesMap());
+		mv.addObject("orgList", morgService.listAll(param));
+		mv.addObject("projectList", projectList);
+		mv.addObject("areaList", areaList);
+		return mv;
+	}
+
+	/**逾期未整改
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goEditOvertime")
+	public ModelAndView goEditOvertime()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		// 获取部门树
+		PageData param = new PageData();
+		param.put("PARENT_ID", "0");
+		param.put("ISORG", "1");
+		String USER_ID = Jurisdiction.getUserId();
+		if (!"1".equals(USER_ID)) {
+			param.put("USER_ID", USER_ID);
+		}
+		JSONArray arr = JSONArray.fromObject(morgService.listSelectTree(param));
+		mv.addObject("zTreeNodes", (null == arr? "":arr.toString()));
+
+		//项目列表
+		PageData projectParam = new PageData();
+		projectParam.put("ISORG",0);
+		List<PageData> projectList = morgService.listAll(projectParam);
+
+		//获取海南地区
+		String hainanParam = "2ba8e6d0fd944983aa19b781c6b53477";
+		List<Dictionaries> areaList = dictionariesService.listSubDictByParentId(hainanParam);
+		//填充子list
+		for(Dictionaries dictionaries : areaList){
+			String parentId = dictionaries.getDICTIONARIES_ID();
+			List<Dictionaries> subList = dictionariesService.listSubDictByParentId(parentId);
+			dictionaries.setSubDict(subList);
+		}
+
+//		String json = arr.toString();
+//		json = json.replaceAll("ORG_ID", "id").replaceAll("PARENT_ID", "pId").replaceAll("ORG_NAME", "name").replaceAll("subMOrg", "nodes");
+//		mv.addObject("zTreeNodes", json);
+
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_overtime_edit");
+		mv.addObject("msg", "edit");
+		pd = rectifyinfoService.findById(pd);
+		mv.addObject("pd", pd);
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getNoYesMap());
+		mv.addObject("orgList", morgService.listAll(param));
+		mv.addObject("projectList", projectList);
+		mv.addObject("areaList", areaList);
+		return mv;
+	}
+
+	/**逾期未完成
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goEditOvertimeNoComplete")
+	public ModelAndView goEditOvertimeNoComplete()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		// 获取部门树
+		PageData param = new PageData();
+		param.put("PARENT_ID", "0");
+		param.put("ISORG", "1");
+		String USER_ID = Jurisdiction.getUserId();
+		if (!"1".equals(USER_ID)) {
+			param.put("USER_ID", USER_ID);
+		}
+		JSONArray arr = JSONArray.fromObject(morgService.listSelectTree(param));
+		mv.addObject("zTreeNodes", (null == arr? "":arr.toString()));
+
+		//项目列表
+		PageData projectParam = new PageData();
+		projectParam.put("ISORG",0);
+		List<PageData> projectList = morgService.listAll(projectParam);
+
+		//获取海南地区
+		String hainanParam = "2ba8e6d0fd944983aa19b781c6b53477";
+		List<Dictionaries> areaList = dictionariesService.listSubDictByParentId(hainanParam);
+		//填充子list
+		for(Dictionaries dictionaries : areaList){
+			String parentId = dictionaries.getDICTIONARIES_ID();
+			List<Dictionaries> subList = dictionariesService.listSubDictByParentId(parentId);
+			dictionaries.setSubDict(subList);
+		}
+
+//		String json = arr.toString();
+//		json = json.replaceAll("ORG_ID", "id").replaceAll("PARENT_ID", "pId").replaceAll("ORG_NAME", "name").replaceAll("subMOrg", "nodes");
+//		mv.addObject("zTreeNodes", json);
+
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_overtimeNoComplete_edit");
+		mv.addObject("msg", "edit");
+		pd = rectifyinfoService.findById(pd);
+		mv.addObject("pd", pd);
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getNoYesMap());
+		mv.addObject("orgList", morgService.listAll(param));
+		mv.addObject("projectList", projectList);
+		mv.addObject("areaList", areaList);
+		return mv;
+	}
+	
+	/**去完成页面
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goComplete")
+	public ModelAndView goComplete()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = rectifyinfoService.findById(pd);	//根据ID读取
+		
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_complete");
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getNoYesMap());
+		mv.addObject("msg", "complete");
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+	/**完成
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/complete")
+	public ModelAndView complete() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"complete完成RectifyInfo");
+//		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = this.getPageData();
+		
+		PageData data = rectifyinfoService.findById(pd);
+		
+		pd.put("MODIFYER", Jurisdiction.getUserId());	//修改人
+		pd.put("MODIFY_DATE", Tools.date2Str(new Date()));	//修改时间
+		
+		String nowDay = Tools.date2Str(new Date(), "yyyy-MM-dd");
+		String IS_COMPLETE = WebConstant.IS_YES;
+		pd.put("IS_COMPLETE", IS_COMPLETE);
+		pd.put("COMPLETE_TIME", nowDay);
+		
+		data.putAll(pd);
+		
+		rectifyinfoService.edit(data);
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+
+	
+	 /**批量删除
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/deleteAll")
+	@ResponseBody
+	public Object deleteAll() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除RectifyInfo");
+//		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
+		PageData pd = new PageData();		
+		Map<String,Object> map = new HashMap<String,Object>();
+		pd = this.getPageData();
+		List<PageData> pdList = new ArrayList<PageData>();
+		String DATA_IDS = pd.getString("DATA_IDS");
+		if(null != DATA_IDS && !"".equals(DATA_IDS)){
+			String ArrayDATA_IDS[] = DATA_IDS.split(",");
+			pd.put("array", ArrayDATA_IDS);
+			pd.put("MODIFYER", Jurisdiction.getUserId());	//修改人
+			pd.put("MODIFY_DATE", Tools.date2Str(new Date()));	//修改时间
+			rectifyinfoService.deleteAll(pd);
+			pd.put("msg", "ok");
+		}else{
+			pd.put("msg", "no");
+		}
+		pdList.add(pd);
+		map.put("list", pdList);
+		return AppUtil.returnObject(pd, map);
+	}
+	
+	/**
+	 * 上传文件
+	 */
+	@RequestMapping(value="/uploadFile")
+	@ResponseBody
+	public PageData uploadFile(
+			@RequestParam(value="id-input-file-3",required=false) MultipartFile fileArr[],
+			@RequestParam(value="IMG_URL",required=false) String IMG_URL
+		) throws Exception{
+		logger.info("开始上传文件。。。");
+		PageData pd = new PageData();
+		
+		String sign = "no";
+		String ffile = DateUtil.getDays(), fileName = "";
+		for (MultipartFile file : fileArr) {
+			if (null != file && !file.isEmpty()) {
+				String filePath = PathUtil.getClasspath() + Const.FILEPATHIMG + ffile;	//文件上传路径
+				fileName = FileUpload.fileUp(file, filePath, this.get32UUID());			//执行上传
+				if (StringUtils.isEmpty(IMG_URL)) {
+					IMG_URL = Const.FILEPATHIMG + ffile + "/" + fileName;
+				} else {
+					IMG_URL += "," + Const.FILEPATHIMG + ffile + "/" + fileName;
+				}
+				sign = "yes";
+			}
+		}
+		
+		pd.put("FILE_PATH",IMG_URL);	//路径
+		pd.put("sign", sign);
+		return pd;
+	}
+	
+	 /**导出到excel
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/excel")
+	public ModelAndView exportExcel() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"导出RectifyInfo到excel");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		List<String> titles = new ArrayList<String>();
+		titles.add("组织结构");	//2
+		titles.add("文件编号");	//9
+		titles.add("隐患情况");	//10
+		titles.add("整改措施");	//11
+		titles.add("隐患类别");	//12
+		titles.add("隐患级别");	//13
+		titles.add("隐患因素");	//14
+		titles.add("是否完成");	//15
+		titles.add("完成时间");	//16
+		titles.add("责任人");	//17
+		titles.add("整改投入（元）");	//18
+		titles.add("发现时间");	//19
+		dataMap.put("titles", titles);
+		
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			pd.put("keywords", keywords.trim());
+		}
+		
+		String start = pd.getString("start");
+		if (StringUtils.isNotEmpty(start)) {
+			pd.put("lastStart", start);
+		}
+		
+		String end = pd.getString("end");
+		if (StringUtils.isNotEmpty(end)) {
+			pd.put("lastEnd", end);
+		}
+		
+		String USER_ID = Jurisdiction.getUserId();
+		if (!USER_ID.equals("1")) {
+			// 除了admin，其他的根据权限过滤
+			pd.put("USER_ID_QX", USER_ID);
+		}
+
+		//TODO 隐患权限控制
+		
+		List<PageData> varOList = rectifyinfoService.listAll(pd);
+		List<PageData> varList = new ArrayList<PageData>();
+		
+		Map<String, String> classifyMap = dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true);
+		Map<String, String> levelMap = dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true);
+		Map<String, String> factorMap = dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true);
+		Map<String, String> YesNoMap = WebConstant.getDefaultMap();
+		
+		for(int i=0;i<varOList.size();i++){
+			PageData vpd = new PageData();
+			vpd.put("var1", varOList.get(i).getString("ORG_NAME"));	    //2
+			vpd.put("var2", varOList.get(i).getString("FILE_CODE"));	    //9
+			vpd.put("var3", varOList.get(i).getString("HIDDEN_DANGER_INFO"));	    //10
+			vpd.put("var4", varOList.get(i).getString("RECTIFY_MEASURES"));	    //11
+			
+			String var5 = varOList.get(i).getString("HIDDEN_DANGER_CLASSIFY");
+			vpd.put("var5", classifyMap.get(var5));	    //12
+			String var6 = varOList.get(i).getString("HIDDEN_DANGER_LEVEL");
+			vpd.put("var6", levelMap.get(var6));	    //13
+			String var7 = varOList.get(i).getString("HIDDEN_DANGER_FACTOR");
+			vpd.put("var7", factorMap.get(var7));	    //14
+			String var8 = varOList.get(i).getString("IS_COMPLETE");
+			vpd.put("var8", YesNoMap.get(var8));	    //15
+			
+			vpd.put("var9", varOList.get(i).getString("COMPLETE_TIME"));	    //16
+			vpd.put("var10", varOList.get(i).getString("PERSON_RESPONSIBLE"));	    //17
+			vpd.put("var11", varOList.get(i).getString("RECTIFY_INVESTMENT"));	    //18
+			vpd.put("var12", varOList.get(i).getString("COMMIT_TIME"));	    //19
+			varList.add(vpd);
+		}
+		dataMap.put("varList", varList);
+		ObjectExcelView erv = new ObjectExcelView();
+		mv = new ModelAndView(erv,dataMap);
+		return mv;
+	}
+	
+	/**打开上传EXCEL页面
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goUploadExcel")
+	public ModelAndView goUploadExcel()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		mv.setViewName("backend/rectifyinfo/uploadexcel");
+		return mv;
+	}
+	
+	/**下载模版
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/downExcel")
+	public void downExcel(HttpServletResponse response)throws Exception{
+		FileDownload.fileDownload(response, PathUtil.getClasspath() + Const.FILEPATHFILE + "Rectifyinfo.xls", "Rectifyinfo.xls");
+	}
+
+	/**下载模版(提供下拉框)
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/downExcelTest")
+	public ModelAndView downExcelTest(HttpServletResponse response)throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"导出RectifyInfo到excel");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		List<String> titles = new ArrayList<String>();
+		titles.add("组织结构");	//2
+		titles.add("文件编号");	//9
+		titles.add("项目名称");	//2
+		titles.add("隐患情况");	//10
+		titles.add("隐患类别");	//12
+		titles.add("隐患级别");	//13
+		titles.add("隐患因素");	//14
+		titles.add("整改期限");	//16
+		titles.add("所属区域");	//17
+		titles.add("填报人");	//17
+		titles.add("填报单位");	//18
+		dataMap.put("titles", titles);
+
+		//放入对应的二级单位和三级机构或项目
+		PageData param = new PageData();
+		param.put("ISORG",1);
+		List<PageData> allUnitList = morgService.listAll(param);
+		param.put("ORG_LEVEL",2);
+		List<PageData> secondUnitList = morgService.listAll(param);
+
+		param.put("ORG_LEVEL",3);
+		List<PageData> thirdUnitList = morgService.listAll(param);
+
+		param.put("ISORG",0);
+		param.put("ORG_LEVEL","");
+		List<PageData> projectList = morgService.listAll(param);
+
+		dataMap.put("secondUnitList", secondUnitList);
+		dataMap.put("thirdUnitList", thirdUnitList);
+		dataMap.put("projectList", projectList);
+
+
+		String USER_ID = Jurisdiction.getUserId();
+		if (!USER_ID.equals("1")) {
+			// 除了admin，其他的根据权限过滤
+			pd.put("USER_ID_QX", USER_ID);
+		}
+
+		//获取海南地区
+		String hainanParam = "2ba8e6d0fd944983aa19b781c6b53477";
+		List<Dictionaries> areaList = dictionariesService.listSubDictByParentId(hainanParam);
+		//填充子list
+		for(Dictionaries dictionaries : areaList){
+			String parentId = dictionaries.getDICTIONARIES_ID();
+			List<Dictionaries> subList = dictionariesService.listSubDictByParentId(parentId);
+			dictionaries.setSubDict(subList);
+		}
+
+		dataMap.put("areaList", areaList);
+
+		Map<String, String> classifyMap = dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true);
+		Map<String, String> levelMap = dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true);
+		Map<String, String> factorMap = dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true);
+
+		dataMap.put("classifyMap", classifyMap);
+		dataMap.put("levelMap", levelMap);
+		dataMap.put("factorMap", factorMap);
+		dataMap.put("allUnitList", allUnitList);
+
+		ObjectExcelView2 erv = new ObjectExcelView2();
+		mv = new ModelAndView(erv,dataMap);
+		return mv;
+	}
+	
+	/**从EXCEL导入到数据库
+	 * @param file
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/readExcel")
+	public ModelAndView readExcel(
+			@RequestParam(value="excel",required=false) MultipartFile file
+			) throws Exception{
+		FHLOG.save(Jurisdiction.getUsername(), "从EXCEL导入整改信息到数据库");
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+//		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;}
+		if (null != file && !file.isEmpty()) {
+			String filePath = PathUtil.getClasspath() + Const.FILEPATHFILE;								//文件上传路径
+			String fileName =  FileUpload.fileUp(file, filePath, "rectifyinfoexcel"+ Tools.date2Str(new Date(),"yyyyMMddHHmmss"));							//执行上传
+			List<PageData> listPd = (List)objectExcelReadPic.readExcel(filePath, fileName, 0, 0, 0);		//执行读EXCEL操作,读出的数据导入List 2:从第3行开始；0:从第A列开始；0:第0个sheet
+			/*存入数据库操作======================================*/
+			/**
+			 * var0 :编号
+			 * var1 :姓名
+			 * var2 :手机
+			 * var3 :邮箱
+			 * var4 :备注
+			 */
+			// 准备用到的Map
+			Map<String, String> classifyMap = dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, false);
+			Map<String, String> levelMap = dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, false);
+			Map<String, String> factorMap = dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, false);
+			
+			List<PageData> orgList = morgService.listAll(null);
+			PageData orgMap = new PageData();
+			for (PageData org : orgList) {
+				orgMap.put(org.getString("ORG_NAME"), org.getString("ORG_ID"));
+			}
+
+			PageData param = new PageData();
+			param.put("ISORG",0);
+			PageData projectMap = new PageData();
+			List<PageData> projectList = morgService.listAll(param);
+			for (PageData project : projectList) {
+				projectMap.put(project.getString("ORG_NAME"), project.getString("ORG_ID"));
+			}
+
+			//获取海南地区
+			String hainanParam = "2ba8e6d0fd944983aa19b781c6b53477";
+			List<Dictionaries> areaList = dictionariesService.listSubDictByParentId(hainanParam);
+			//填充子list
+			for(Dictionaries dictionaries : areaList){
+				String parentId = dictionaries.getDICTIONARIES_ID();
+				List<Dictionaries> subList = dictionariesService.listSubDictByParentId(parentId);
+				dictionaries.setSubDict(subList);
+			}
+			PageData areaMap = new PageData();
+			for (Dictionaries area : areaList) {
+				if(area.getSubDict() != null){
+					for(Dictionaries subArea : area.getSubDict()){
+						areaMap.put(subArea.getNAME(), subArea.getDICTIONARIES_ID());
+					}
+				}
+				areaMap.put(area.getNAME(), area.getDICTIONARIES_ID());
+			}
+			
+			List<PageData> addList = new ArrayList<PageData>();
+			for(int i=0;i<listPd.size();i++){
+				// 默认的字段
+				String now = Tools.date2Str(new Date());
+				String nowDay = Tools.date2Str(new Date(), "yyyy-MM-dd");
+				
+				PageData data = new PageData();
+				
+				data.put("RECTIFY_ID", this.get32UUID());	//主键
+				data.put("SORT", "0");	//顺序
+				data.put("ISDEL", "0");	//删除
+				data.put("CREATER", Jurisdiction.getUserId());	//创建人
+				data.put("CREATE_DATE", now);	//创建时间
+				
+				if (WebConstant.IS_YES.equals(data.getString("IS_COMPLETE"))) {
+					data.put("COMPLETE_TIME", nowDay);
+				}
+				
+				// 导入的字段
+				// 文件编号
+				String var1 = listPd.get(i).getString("var1");
+				data.put("FILE_CODE", var1);
+				// 组织机构
+				String var0 = listPd.get(i).getString("var0");
+				data.put("ORG_ID", orgMap.get(var0));
+				// 项目名称
+				String var2 = listPd.get(i).getString("var2");
+				data.put("PROJECT_NAME", projectMap.get(var2));
+				// 隐患情况
+				data.put("HIDDEN_DANGER_INFO", listPd.get(i).getString("var3"));
+				// 隐患类别
+				data.put("HIDDEN_DANGER_CLASSIFY", classifyMap.get(listPd.get(i).getString("var4")));
+				// 隐患级别
+				data.put("HIDDEN_DANGER_LEVEL", levelMap.get(listPd.get(i).getString("var5")));
+				// 隐患因素
+				data.put("HIDDEN_DANGER_FACTOR", factorMap.get(listPd.get(i).getString("var6")));
+				//整改期限
+				String var7 = listPd.get(i).getString("var7");
+				if (StringUtils.isNotEmpty(var7)) {
+					String PLAN_COMPLETE_TIME = ""; // 默认为空
+					PLAN_COMPLETE_TIME = makeTimeForm(var7);
+					data.put("PLAN_COMPLETE_TIME", PLAN_COMPLETE_TIME);
+				}
+				// 所属区域
+				data.put("RECTIFYINFO_AREA", areaMap.get(listPd.get(i).getString("var8")));
+//				if(StringUtils.isNotEmpty(listPd.get(i).getString("var12"))){
+//					data.put("IMG_URL",listPd.get(i).getString("var12"));
+//				}
+				// 填报单位
+				data.put("REPORTING_PERSON_FIRST", listPd.get(i).getString("var9"));
+				// 填报人
+				data.put("REPORTING_UNIT_FIRST",orgMap.get(listPd.get(i).getString("var10")));
+				// 计划完成时间
+
+				// 上报时间
+//				String var10 = listPd.get(i).getString("var10");
+//				String COMMIT_TIME = ""; // 默认为空
+//				if (StringUtils.isNotEmpty(var10)) {
+//					// 如果导入有数值，就按导入的数值来，导入时统一格式
+//					COMMIT_TIME = makeTimeForm(var10);
+//					int month = Integer.parseInt(COMMIT_TIME.substring(5, 7));
+//					data.put("COMMIT_TIME", COMMIT_TIME);
+//					data.put("YEAR", COMMIT_TIME.substring(0, 4));
+//					data.put("MONTH", COMMIT_TIME.substring(5, 7));
+//					data.put("DAY", COMMIT_TIME.substring(8, 10));
+//					data.put("QUARTER", (month + 2) / 3);
+//				}
+				
+				// 默认未提交
+				data.put("RECTIFY_STAGE", "1");
+				addList.add(data);
+			}
+			
+			rectifyinfoService.save(addList);
+			
+			/*存入数据库操作======================================*/
+			mv.addObject("msg","success");
+		}
+		mv.setViewName("save_result");
+		return mv;
+	}
+	
+	/**
+	 * 处理时间
+	 * @return
+	 */
+	@RequestMapping(value="/doTime")
+	@ResponseBody
+	public PageData doTime() throws Exception{
+		List<PageData> list = rectifyinfoService.listAll(null);
+		
+		for (PageData data : list) {
+			String COMPLETE_TIME = data.getString("COMPLETE_TIME");// 完成时间
+			String COMMIT_TIME = data.getString("COMMIT_TIME"); // 提交时间
+			if (StringUtils.isNotEmpty(COMPLETE_TIME) && StringUtils.isEmpty(COMMIT_TIME)) {
+				COMPLETE_TIME = makeTimeForm(makeTimeForm(COMPLETE_TIME));
+				
+				int month = Integer.parseInt(COMPLETE_TIME.substring(5, 7));
+				data.put("COMPLETE_TIME", COMPLETE_TIME);
+				data.put("COMMIT_TIME", COMPLETE_TIME);
+				data.put("YEAR", COMPLETE_TIME.substring(0, 4));
+				data.put("MONTH", COMPLETE_TIME.substring(5, 7));
+				data.put("DAY", COMPLETE_TIME.substring(8, 10));
+				data.put("QUARTER", (month + 2) / 3);
+				rectifyinfoService.edit(data);
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * 日期时间格式化
+	 * @param time
+	 * @return
+	 */
+	public String makeTimeForm(String time) {
+		time = time.replace("/", "-").replace(".", "-").replace("年", "-").replace("月", "-").replace("日", "-");
+		try {
+			String timeArray[] = time.split("-");
+			if (timeArray[1].length() < 2) {
+				timeArray[1] = "0" + timeArray[1];
+			}
+			if (timeArray[2].length() < 2) {
+				timeArray[2] = "0" + timeArray[2];
+			}
+			time = timeArray[0] + "-" + timeArray[1] + "-" + timeArray[2];
+		} catch (Exception e) {
+			// TODO: handle exception
+			
+		}
+		
+		return time;
+	}
+
+	/*应急部人员填写页面
+	*TODO
+	* */
+	@RequestMapping(value = "goAddRectifyInfo")
+	public ModelAndView goAddRectifyInfo(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		mv.addObject("msg", "list");
+
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			pd.put("keywords", keywords.trim());
+		}
+
+		String start = pd.getString("start");
+		if (StringUtils.isNotEmpty(start)) {
+			pd.put("lastStart", start);
+		}
+
+		String end = pd.getString("end");
+		if (StringUtils.isNotEmpty(end)) {
+			pd.put("lastEnd", end);
+		}
+
+		String overTime = pd.getString("OVER_TIME");
+		if (StringUtils.isNotEmpty(overTime)) {
+			String NOW = Tools.date2Str(new Date(), "yyyy-MM-dd");
+			pd.put("NOW", NOW);
+			pd.put("OVER_TIME", overTime);
+		}
+
+		String USER_ID = Jurisdiction.getUserId();
+		if (!USER_ID.equals("1")) {
+			// 除了admin，其他的根据权限过滤
+			pd.put("USER_ID_QX", USER_ID);
+		}
+
+		// 默认显示已提交的数据
+		if (StringUtils.isEmpty(pd.getString("IS_SUBMITE"))) {
+			pd.put("IS_SUBMITE", WebConstant.IS_YES);
+		}
+
+
+		page.setPd(pd);
+		List<PageData>	varList = rectifyinfoService.list(page);	//列出RectifyInfo列表
+
+		mv.setViewName("backend/rectifyinfo/rectifyinfo_list");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getDefaultMap());
+		mv.addObject("orgList", morgService.listAll(null));
+
+		return mv;
+	}
+
+	/*二级机构填写整改时的对应信息
+	 *
+	 * */
+	@RequestMapping(value = "goRectifyInfoSNC")
+	public ModelAndView goRectifyInfoSNC(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		mv.addObject("msg", "list");
+
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			pd.put("keywords", keywords.trim());
+		}
+
+		String USER_ID = Jurisdiction.getUserId();
+		if (!USER_ID.equals("1")) {
+			// 除了admin，其他的根据权限过滤
+			pd.put("USER_ID_QX", USER_ID);
+		}
+
+		//按照现在时间查询
+		pd.put("NOW",Tools.date2Str(new Date(), "yyyy-MM-dd"));
+		pd.put("RECTIFY_STAGE",2);
+		page.setPd(pd);
+		List<PageData>	varList = rectifyinfoService.list(page);	//列出RectifyInfo列表
+
+		PageData param = new PageData();
+		param.put("ISORG",1);
+
+		mv.setViewName("backend/rectifyinfo/rectifyInfo_SecondNoComplete");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getDefaultMap());
+		mv.addObject("orgList", morgService.listAll(param));
+		param.put("ISORG",0);
+		mv.addObject("projectList", morgService.listAll(param));
+
+		return mv;
+	}
+
+	/*二级机构填写整改后的信息
+	 *
+	 * */
+	@RequestMapping(value = "goRectifyInfoSC")
+	public ModelAndView goRectifyInfoSC(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表RectifyInfo");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		mv.addObject("msg", "list");
+
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			pd.put("keywords", keywords.trim());
+		}
+
+		String USER_ID = Jurisdiction.getUserId();
+		if (!USER_ID.equals("1")) {
+			// 除了admin，其他的根据权限过滤
+			pd.put("USER_ID_QX", USER_ID);
+		}
+
+		//按照现在时间查询
+		pd.put("NOW",Tools.date2Str(new Date(), "yyyy-MM-dd"));
+		pd.put("RECTIFY_STAGE",3);
+		page.setPd(pd);
+		List<PageData>	varList = rectifyinfoService.list(page);	//列出RectifyInfo列表
+
+		PageData param = new PageData();
+		param.put("ISORG",1);
+
+
+		mv.setViewName("backend/rectifyinfo/rectifyInfo_SecondCompleted");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		mv.addObject("classifyMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_CLASSIFY, true));
+		mv.addObject("levelMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_LEVEL, true));
+		mv.addObject("factorMap", dictionariesService.listChildrenByEN(WebConstant.HIDDEN_DANGER_FACTOR, true));
+		mv.addObject("YesNoMap", WebConstant.getDefaultMap());
+		mv.addObject("orgList", morgService.listAll(param));
+		param.put("ISORG",0);
+		mv.addObject("projectList", morgService.listAll(param));
+
+		return mv;
+	}
+
+
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder){
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(format,true));
+	}
+}

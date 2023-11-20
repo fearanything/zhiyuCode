@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CarTypeInfoMapper">
+	<resultMap type="CarTypeInfo" id="CarTypeInfoData">
+		<id column="ID" property="ID" />
+		<result column="CARTYPENO" property="CARTYPENO" />
+		<result column="CARTYPENAME" property="CARTYPENAME" />
+	</resultMap>
+	<!--表名 -->
+	<sql id="tableName">
+		HX_CARTYPE
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		 ID,
+		CARTYPENO,
+		CARTYPENAME
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		 #{ID},
+		 #{CARTYPENO},
+		 #{CARTYPENAME}
+	</sql>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findByCarTypeno" resultMap="CarTypeInfoData">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			DELETED=0 and CARTYPENO = #{CarTypeno}
+	</select>
+	
+	
+
+</mapper>

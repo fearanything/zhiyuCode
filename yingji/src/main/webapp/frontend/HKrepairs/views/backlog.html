@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海南控股安全隐患管理信息化平台系统-待办</title>
+    <link rel="stylesheet" href="../css/jquery-confirm.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/backlog.css">
+</head>
+<body>
+    <!-- 1. 头部 -->
+    <header>
+        <div class="container">
+            <span>安全隐患整改系统</span>
+        </div>
+    </header>
+
+    <!-- 2. 内容 -->
+    <div class="main-content">
+        <div class="program-tab">
+            <div id="uncommit-tab" class="active">
+                <img src="../img/uncommittedBox.png" alt="">
+                <p id="num1">89</p>
+                <span id="text1">未提交</span>
+            </div>
+            <div id="unfinish-tab">
+                <img src="../img/unfinishBox.png" alt="">
+                <p id="num1">89</p>
+                <span id="text1">未完成</span>
+            </div>
+            <div id="overdue-tab">
+                <img src="../img/overdueBox.png" alt="">
+                <p id="num1">89</p>
+                <span id="text1">已逾期</span>
+            </div>
+        </div>
+        <div class="program-menu">
+            <div id="uncommit-list" class="program-list active">
+                
+            </div>
+            <div id="unfinish-list" class="program-list">
+                
+            </div>
+            <div id="overdue-list" class="program-list">
+                ccc
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- 3. 底部 -->
+    <footer>
+        <div class="container">
+            <a href="" id="icon1">
+                <img src="../img/backlog-icon.png" alt="">
+                <span>待办</span>
+            </a>
+            <a href="form.html" id="icon2">
+                <img src="../img/new-icon.png" alt="">
+                <span>新建</span>
+            </a>
+            <a href="myself.html" id="icon3">
+                <img src="../img/myself-icon.png" alt="">
+                <span>我的</span>
+            </a>
+        </div>
+    </footer>
+    
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="../js/jquery-confirm.js"></script>
+    <script src="../js/wow.min.js"></script>
+    <script src="../js/public.js"></script>
+    <script src="../js/select.js"></script>
+    <script>
+        $(function(){
+            $.ajax({
+                url: "../json/list.json",
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function(res){
+                    console.log(res);
+                    var uncommitList = res.uncommit
+                    var unfinishList = res.unfinish
+                    var overdueList = res.overdue
+                    for(var i = 0; i < uncommitList.length; i++){
+                        console.log(uncommitList[i]);
+                        $("#uncommit-list").append(`
+                        <div class="item">
+                            <div class="content">
+                                <img src="${uncommitList[i].img}" alt="">
+                                <p>${uncommitList[i].text}</p>
+                            </div>
+                            <div class="bottom">
+                                <div class="time">
+                                    <img src="../img/time-icon.png" alt="">
+                                    <span>2023-06-07</span>
+                                </div>
+                                <div class="edit-btn">
+                                    <a href="form.html" id="edit">
+                                        <img src="../img/bianji-icon.png" alt="">
+                                        <span>编辑</span>
+                                    </a>
+                                    <a href="#" id="delet">
+                                        <img src="../img/shanchu-icon.png" alt="">
+                                        <span>删除</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        `)
+                    }
+                    for(var i = 0; i < unfinishList.length; i++){
+                        console.log(unfinishList[i]);
+                        $("#unfinish-list").append(`
+                        <div class="item">
+                            <div class="content">
+                                <img src="${unfinishList[i].img}" alt="">
+                                <p>${unfinishList[i].text}</p>
+                            </div>
+                            <div class="bottom">
+                                <div class="edit-btn">
+                                    <a href="form.html" id="edit">
+                                        <img src="../img/bianji-icon.png" alt="">
+                                        <span>编辑</span>
+                                    </a>
+                                    <a href="#" id="finish">
+                                        <img src="../img/wancheng-icon.png" alt="">
+                                        <span>完成</span>
+                                    </a>
+                                </div>
+                                
+                                <div class="time">
+                                    <img src="../img/time-icon.png" alt="">
+                                    <span>2023-06-07</span>
+                                </div>
+                            </div>
+                        </div>
+                        `)
+                    }
+                    for(var i = 0; i < unfinishList.length; i++){
+                        console.log(unfinishList[i]);
+                        $("#unfinish-list").append(`
+                        <div class="item">
+                            <div class="content">
+                                <img src="${unfinishList[i].img}" alt="">
+                                <p>${unfinishList[i].text}</p>
+                            </div>
+                            <div class="bottom">
+                                <div class="time">
+                                    <img src="../img/time-icon.png" alt="">
+                                    <span>2023-06-07</span>
+                                </div>
+                                <div class="edit-btn">
+                                    <a href="form.html" id="edit">
+                                        <img src="../img/bianji-icon.png" alt="">
+                                        <span>编辑</span>
+                                    </a>
+                                    <a href="#" id="finish">
+                                        <img src="../img/wancheng-icon.png" alt="">
+                                        <span>完成</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        `)
+                    }
+                }
+            })
+        })
+            
+    </script>
+</body>
+</html>

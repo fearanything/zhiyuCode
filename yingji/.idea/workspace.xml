@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="yingji:war exploded" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fde58c7c-3f45-4258-9014-258ac7b2c27a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/hkSafeMonitor_war_exploded/WEB-INF/jsp/backend/morg/morg_project_list.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/hkSafeMonitor_war_exploded/WEB-INF/jsp/backend/morg/morg_project_list.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/controller/backend/RectifyInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/controller/backend/RectifyInfoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/controller/backend/morg/MOrgController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/controller/backend/morg/MOrgController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/controller/frontend/FrontendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/controller/frontend/FrontendController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/m_fengxian/M_fengxianManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/m_fengxian/M_fengxianManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/m_fengxian/impl/M_fengxianService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/m_fengxian/impl/M_fengxianService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/morg/MOrgManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/morg/MOrgManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/morg/impl/MOrgService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/morg/impl/MOrgService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/rectifyinfo/RectifyInfoManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/rectifyinfo/RectifyInfoManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/rectifyinfo/impl/RectifyInfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/service/backend/rectifyinfo/impl/RectifyInfoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/util/ObjectExcelRead2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/util/ObjectExcelRead2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fh/util/objectExcelReadPic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fh/util/objectExcelReadPic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mybatis1/backend/MOrgMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mybatis1/backend/MOrgMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mybatis1/backend/RectifyInfoMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mybatis1/backend/RectifyInfoMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/morg/morg_project_list.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/morg/morg_project_list.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyInfo_SecondCompleted.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyInfo_SecondCompleted.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyInfo_SecondNoComplete.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyInfo_SecondNoComplete.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyinfo_list.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyinfo_list.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyinfo_list_secondUnit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyinfo_list_secondUnit.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyinfo_noSubmit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyinfo_noSubmit.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyinfo_overtime.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/backend/rectifyinfo/rectifyinfo_overtime.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontend/backendIndex.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontend/backendIndex.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontend/fengXianDetail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontend/fengXianDetail.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontend/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontend/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontend/pc/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/frontend/pc/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/frontend/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/frontend/css/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/frontend/images/background.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/frontend/images/background.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/controller/backend/FengxianController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/controller/backend/FengxianController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/controller/backend/RectifyInfoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/controller/backend/RectifyInfoController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/controller/backend/morg/MOrgController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/controller/backend/morg/MOrgController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/controller/frontend/FrontendController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/controller/frontend/FrontendController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/controller/frontend/fengXianFrontend.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/controller/frontend/fengXianFrontend.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/controller/frontend/hkSafeFrontend.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/controller/frontend/hkSafeFrontend.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/controller/frontend/yjfhmFrontend.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/controller/frontend/yjfhmFrontend.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/controller/system/login/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/controller/system/login/LoginController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/controller/system/secCode/SecCodeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/controller/system/secCode/SecCodeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/controller/system/user/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/controller/system/user/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/entity/backend/MOrg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/entity/backend/MOrg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/entity/backend/M_fengxian.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/entity/backend/M_fengxian.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/entity/backend/RectifyInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/entity/backend/RectifyInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/service/backend/m_fengxian/M_fengxianManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/service/backend/m_fengxian/M_fengxianManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/service/backend/m_fengxian/impl/M_fengxianService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/service/backend/m_fengxian/impl/M_fengxianService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/service/backend/monitor/impl/MonitorService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/service/backend/monitor/impl/MonitorService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/service/backend/morg/MOrgManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/service/backend/morg/MOrgManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/service/backend/morg/impl/MOrgService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/service/backend/morg/impl/MOrgService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/service/backend/rectifyinfo/RectifyInfoManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/service/backend/rectifyinfo/RectifyInfoManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/service/backend/rectifyinfo/impl/RectifyInfoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/service/backend/rectifyinfo/impl/RectifyInfoService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/service/system/dictionaries/DictionariesManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/service/system/dictionaries/DictionariesManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/service/system/dictionaries/impl/DictionariesService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/service/system/dictionaries/impl/DictionariesService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/util/Const.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/util/Const.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/util/DateUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/util/DateUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/util/FileUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/util/FileUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/util/ObjectExcelRead.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/util/ObjectExcelRead.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/util/ObjectExcelRead2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/util/ObjectExcelRead2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/util/ObjectExcelView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/util/ObjectExcelView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/util/Tools.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/util/Tools.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fh/util/fengXianJudge.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fh/util/fengXianJudge.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/dbconfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dbconfig.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mybatis1/backend/MOrgMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mybatis1/backend/MOrgMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mybatis1/backend/M_fengxianMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mybatis1/backend/M_fengxianMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mybatis1/backend/RectifyInfoMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mybatis1/backend/RectifyInfoMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mybatis1/backend/UserOrgMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mybatis1/backend/UserOrgMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mybatis1/backend/WaterMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mybatis1/backend/WaterMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mybatis1/system/DictionariesMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mybatis1/system/DictionariesMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/redis.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/redis.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spring/ApplicationContext-main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spring/ApplicationContext-main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spring/ApplicationContext-mvc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spring/ApplicationContext-mvc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/spring/ApplicationContext-shiro.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/spring/ApplicationContext-shiro.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Jsp File" />
+      </list>
+    </option>
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2VbUUPjHadMLn1bNI7eOPmlHeMu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/SvnRpositories/hkSafeMonitor&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;6b19163b5cd4ae474189d882049cd83d&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\SvnRpositories\yingji\src\main\webapp\WEB-INF\jsp\backend\rectifyinfo" />
+      <recent name="D:\SvnRpositories\test\src\main\webapp\frontend\js" />
+      <recent name="D:\SvnRpositories\test\src\main\webapp\WEB-INF\jsp\backend\m_fengxian" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\SvnRpositories\yingji\src\main\webapp\WEB-INF\jsp" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.fh.util" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="tomcat-8.5.90" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="tomcat-8.5.90" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="COMMON_VM_ARGUMENTS" value="-Dfile.encoding=UTF-8" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="yingji:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/yingji_war_exploded" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="8cdea9e8-a8ef-4f93-afcb-cb95c28f8f0b" />
+        <option name="HTTP_PORT" value="8231" />
+        <option name="JNDI_PORT" value="1112" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="6004" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="yingji:war exploded" />
+        </option>
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\67623\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\SvnRpositories\yingji" />
+          <option name="myCopyRoot" value="D:\SvnRpositories\yingji" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\SvnRpositories\yingji" />
+          <option name="myCopyRoot" value="D:\SvnRpositories\yingji" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fde58c7c-3f45-4258-9014-258ac7b2c27a" name="Changes" comment="" />
+      <created>1695104290478</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1695104290478</updated>
+      <workItem from="1695104291496" duration="523000" />
+      <workItem from="1695371458125" duration="4844000" />
+      <workItem from="1695602129836" duration="1128000" />
+      <workItem from="1695603833809" duration="14757000" />
+      <workItem from="1695688531927" duration="25430000" />
+      <workItem from="1695774744182" duration="1547000" />
+      <workItem from="1695783565999" duration="16452000" />
+      <workItem from="1695860313117" duration="25045000" />
+      <workItem from="1696552519304" duration="26588000" />
+      <workItem from="1696638491607" duration="26018000" />
+      <workItem from="1696724674077" duration="26646000" />
+      <workItem from="1696897476753" duration="23217000" />
+      <workItem from="1696984715260" duration="12872000" />
+      <workItem from="1697070709192" duration="19806000" />
+      <workItem from="1697157093259" duration="20015000" />
+      <workItem from="1697415953329" duration="17292000" />
+      <workItem from="1697440059262" duration="5000" />
+      <workItem from="1697440081782" duration="779000" />
+      <workItem from="1698974538499" duration="17028000" />
+      <workItem from="1698995599105" duration="10892000" />
+      <workItem from="1699202902470" duration="3882000" />
+      <workItem from="1699230356624" duration="25716000" />
+      <workItem from="1699317846808" duration="24747000" />
+      <workItem from="1699372925344" duration="623000" />
+      <workItem from="1699403032224" duration="21795000" />
+      <workItem from="1699461864731" duration="756000" />
+      <workItem from="1699489519103" duration="26248000" />
+      <workItem from="1699545258029" duration="2403000" />
+      <workItem from="1699549528653" duration="1154000" />
+      <workItem from="1699576237141" duration="23037000" />
+      <workItem from="1699835412937" duration="12949000" />
+      <workItem from="1699887139289" duration="4727000" />
+      <workItem from="1699921515899" duration="33055000" />
+      <workItem from="1700008262663" duration="28873000" />
+      <workItem from="1700094575294" duration="39609000" />
+      <workItem from="1700141209636" duration="3120000" />
+      <workItem from="1700181022932" duration="31639000" />
+      <workItem from="1700275920586" duration="211000" />
+      <workItem from="1700367665037" duration="1671000" />
+      <workItem from="1700440396663" duration="19025000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/frontend/yjfhmFrontend.java</url>
+          <line>1166</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/frontend/FrontendController.java</url>
+          <line>1141</line>
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/service/system/dictionaries/impl/DictionariesService.java</url>
+          <line>197</line>
+          <option name="timeStamp" value="362" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/system/user/UserController.java</url>
+          <line>407</line>
+          <option name="timeStamp" value="427" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/backend/RectifyInfoController.java</url>
+          <line>160</line>
+          <option name="timeStamp" value="485" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/backend/RectifyInfoController.java</url>
+          <line>1426</line>
+          <option name="timeStamp" value="504" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/backend/RectifyInfoController.java</url>
+          <line>799</line>
+          <option name="timeStamp" value="507" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/backend/FengxianController.java</url>
+          <line>1025</line>
+          <option name="timeStamp" value="522" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/backend/RectifyInfoController.java</url>
+          <line>4160</line>
+          <option name="timeStamp" value="535" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/frontend/FrontendController.java</url>
+          <line>1487</line>
+          <option name="timeStamp" value="541" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/backend/RectifyInfoController.java</url>
+          <line>2009</line>
+          <option name="timeStamp" value="542" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/backend/RectifyInfoController.java</url>
+          <line>1920</line>
+          <option name="timeStamp" value="543" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fh/controller/backend/RectifyInfoController.java</url>
+          <line>1165</line>
+          <option name="timeStamp" value="563" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

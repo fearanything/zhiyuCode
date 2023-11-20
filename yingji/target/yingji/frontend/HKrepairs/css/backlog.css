@@ -1,0 +1,156 @@
+.main-content {
+  padding-bottom: 25vw;
+  width: 100%;
+  box-sizing: border-box;
+}
+.main-content .program-tab {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 32vw;
+  background-image: url(../img/backlog-banner.png);
+  background-size: 100% 100%;
+}
+.main-content .program-tab div {
+  position: relative;
+  padding: 5.3333vw 0 0 0;
+  width: 26.6667vw;
+  height: 24vw;
+  text-align: center;
+  vertical-align: middle;
+  background-size: 100% 100%;
+  box-sizing: border-box;
+}
+.main-content .program-tab div img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.main-content .program-tab div p {
+  position: relative;
+  margin-bottom: 1.6vw;
+  font-size: 8vw;
+  font-family: electronicFont;
+  color: #fff;
+  z-index: 1;
+}
+.main-content .program-tab div span {
+  position: relative;
+  font-size: 3.2vw;
+  z-index: 1;
+}
+.main-content .program-tab div.active {
+  background-image: url(../img/active-box.png);
+}
+.main-content .program-menu {
+  margin: 0 auto;
+  margin-top: 5.3333vw;
+  width: 96vw;
+}
+.main-content .program-menu .program-list {
+  width: 100%;
+  display: none;
+}
+.main-content .program-menu .program-list .item {
+  margin-bottom: 4vw;
+  padding: 1.8667vw;
+  width: 100%;
+  height: 37.3333vw;
+  background-color: #d0dbec;
+  box-sizing: border-box;
+}
+.main-content .program-menu .program-list .item .content {
+  padding: 2.6667vw 5.3333vw 2.6667vw 1.8667vw;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90.6667vw;
+  height: 25.3333vw;
+  background-image: url(../img/item-box.png);
+  background-size: 100% 100%;
+  box-sizing: border-box;
+}
+.main-content .program-menu .program-list .item .content img {
+  width: 32vw;
+  height: 20vw;
+}
+.main-content .program-menu .program-list .item .content p {
+  width: 48vw;
+  line-height: 8vw;
+  font-size: 3.7333vw;
+  color: #494949;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.main-content .program-menu .program-list .item .bottom {
+  margin: 0 auto;
+  margin-top: 1.3333vw;
+  width: 90.6667vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.main-content .program-menu .program-list .item .bottom .edit-btn {
+  display: flex;
+  align-items: center;
+  padding-left: 2.6667vw;
+  background-size: 100% 100%;
+  box-sizing: border-box;
+  color: #fff;
+}
+.main-content .program-menu .program-list .item .bottom .edit-btn #edit{
+  margin-right: 4vw;
+  padding: 1.6vw 3.2vw;
+  display: flex;
+  align-items: center;
+  background-color: #3f4edd;
+  box-sizing: border-box;
+  border-radius: 22px;
+}
+.main-content .program-menu .program-list .item .bottom .edit-btn #delet{
+  padding: 1.6vw 3.2vw;
+  display: flex;
+  align-items: center;
+  background-color: #dd3f3f;
+  box-sizing: border-box;
+  border-radius: 22px;
+}
+.main-content .program-menu .program-list .item .bottom .edit-btn #finish{
+  padding: 1.6vw 3.2vw;
+  display: flex;
+  align-items: center;
+  background-color: #006cff;
+  box-sizing: border-box;
+  border-radius: 22px;
+}
+.main-content .program-menu .program-list .item .bottom .edit-btn #edit img, #delet img, #finish img{
+  width: 4vw;
+}
+.main-content .program-menu .program-list .item .bottom .edit-btn a {
+  color: #fff;
+  font-size: 3.7333vw;
+}
+.main-content .program-menu .program-list .item .bottom .edit-btn span{
+  padding: 0 2.6667vw;
+  box-sizing: border-box;
+}
+.main-content .program-menu .program-list .item .bottom .time {
+  line-height: 7.4667vw;
+  display: flex;
+  align-items: center;
+  font-size: 3.2vw;
+  color: #9b9b9b;
+}
+.main-content .program-menu .program-list .item .bottom .time img {
+  margin-right: 1.8667vw;
+  width: 3.2vw;
+}
+.main-content .program-menu .program-list.active {
+  display: block;
+}

@@ -1,0 +1,1118 @@
+package com.fh.controller.backend;
+
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import com.alibaba.fastjson.JSONObject;
+import com.fh.common.WebConstant;
+import com.fh.controller.frontend.FrontendController;
+import com.fh.controller.frontend.FrontendMobileCotroller;
+import com.fh.entity.Picker;
+import com.fh.entity.system.Dictionaries;
+import com.fh.entity.system.User;
+import com.fh.service.backend.m_sys_user_org.M_sys_user_orgManager;
+import com.fh.service.backend.morg.MOrgManager;
+import com.fh.service.backend.userorg.UserOrgManager;
+import com.fh.service.system.dictionaries.DictionariesManager;
+import com.fh.service.system.user.UserManager;
+import com.fh.util.*;
+import net.sf.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import com.fh.controller.base.BaseController;
+import com.fh.entity.Page;
+import com.fh.service.backend.m_fengxian.M_fengxianManager;
+
+import static jdk.nashorn.internal.objects.NativeString.substring;
+
+/** 
+ * 说明：风险
+ * 创建人：FH Q313596790
+ * 创建时间：2023-09-28
+ */
+@Controller
+@RequestMapping(value="/fengxian")
+public class FengxianController extends BaseController {
+
+	@Autowired
+	private StringRedisTemplate redisTemplate;
+
+	String[] enString = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+
+	@Resource(name="userService")
+	private UserManager userService;
+	String menuUrl = "fengxian/list.do"; //菜单地址(权限用)
+	@Resource(name="m_fengxianService")
+	private M_fengxianManager m_fengxianService;
+	@Resource(name="morgService")
+	private MOrgManager morgService;
+	@Resource(name="dictionariesService")
+	private DictionariesManager dictionariesService;
+	@Resource(name="m_sys_user_orgService")
+	private M_sys_user_orgManager m_sys_user_orgService;
+	@Resource(name="userorgService")
+	private UserOrgManager userorgService;
+	
+	/**保存
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/save")
+	public ModelAndView save() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"新增M_fengxian");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		pd.put("FENGXIAN_ID", this.get32UUID());	//主键
+		pd.put("ISDEL",WebConstant.IS_NO);
+		pd.put("CREATER",Jurisdiction.getUsername());
+		pd.put("CREATE_DATE",Tools.date2Str(new Date()));
+
+		//流水号
+		PageData tempParam = new PageData();
+		tempParam.put("ORG_ID",pd.getString("SECOND_UNIT"));
+		tempParam = morgService.findById(tempParam);
+		String fengXianNumber = getFengXianNumber(tempParam.getString("ORG_NAME_SHORT"));
+		pd.put("FENGXIAN_NUMBER", fengXianNumber);
+
+		m_fengxianService.save(pd);
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+	
+	/**删除
+	 * @param out
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/delete")
+	public void delete(PrintWriter out) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"删除M_fengxian");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		m_fengxianService.delete(pd);
+		out.write("success");
+		out.close();
+	}
+	
+	/**修改
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/edit")
+	public ModelAndView edit() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"修改M_fengxian");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		pd.put("MODIFYER",Jurisdiction.getUsername());
+		pd.put("MODIFY_DATE",Tools.date2Str(new Date()));
+
+		m_fengxianService.edit(pd);
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+	
+	/**列表
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/list")
+	public ModelAndView list(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表M_fengxian");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			pd.put("keywords", keywords.trim());
+		}
+
+//		String USER_ID = Jurisdiction.getUserId();
+//		if (!USER_ID.equals("1")) {
+//			// 除了admin，其他的根据权限过滤
+//			PageData temp = new PageData();
+//			temp.put("USER_ID",USER_ID);
+//			temp = m_sys_user_orgService.findByUserId(temp);
+//			pd.put("SECOND_UNIT", temp.getString("ORG_ID"));
+//		}
+
+		String USER_ID = Jurisdiction.getUserId();
+		if (!USER_ID.equals("1")) {
+			// 除了admin，其他的根据权限过滤
+			pd.put("USER_ID_QX", USER_ID);
+		}
+
+		page.setPd(pd);
+		List<PageData>	varList = m_fengxianService.list(page);	//列出M_fengxian列表
+
+		PageData param = new PageData();
+		param.put("ORG_LEVEL",2);
+		List<PageData> secondUnit = morgService.listAll(param);
+
+		param.put("ORG_LEVEL",3);
+		List<PageData> thirdUnit = morgService.listAll(param);
+
+		//查找项目
+		param = new PageData();
+		param.put("ISORG",0);
+		List<PageData> xiangMuList = morgService.listAll(param);
+		thirdUnit.addAll(xiangMuList);
+
+//		//parentId为1的都是地区
+//		String areaParam = "1";
+//		List<Dictionaries> areaList = dictionariesService.listAllDict(areaParam);
+
+		//获取海南地区
+		String hainanParam = "1";
+		List<Dictionaries> areaList = dictionariesService.listAllDict(hainanParam);
+
+		Map<String, String> accidentTypeMap = dictionariesService.listChildrenByEN(WebConstant.ACCIDENT_TYPE, true);
+		List<Object> accidentTypeJsonList =mapToJson(accidentTypeMap);
+		for(PageData temp : varList){
+			String[] accident = temp.getString("FENGXIAN_ACCIDENT_TYPE").split(",");
+			temp.put("FENGXIAN_ACCIDENT_TYPE",accident);
+		}
+
+		Map<String, String> riskLevelMap = dictionariesService.listChildrenByEN(WebConstant.RISK_LEVEL, true);
+		List<Object> riskLevelJsonList =mapToJson(riskLevelMap);
+
+		PageData responsibilityParam = new PageData();
+		responsibilityParam.put("ISORG",1);
+		List<PageData> responsibilityList = morgService.listAll(responsibilityParam);
+
+		mv.addObject("secondUnit", secondUnit);
+		mv.addObject("thirdUnit", thirdUnit);
+		mv.addObject("areaList", areaList);
+		mv.addObject("accidentTypeMap", accidentTypeJsonList);
+		mv.addObject("riskLevelMap", riskLevelJsonList);
+		mv.addObject("responsibilityList", responsibilityList);
+		mv.setViewName("backend/m_fengxian/m_fengxian_list");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		return mv;
+	}
+
+	/**列表
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/viewList")
+	public ModelAndView viewList(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表M_fengxian");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String keywords = pd.getString("keywords");				//关键词检索条件
+		if(null != keywords && !"".equals(keywords)){
+			pd.put("keywords", keywords.trim());
+		}
+
+//		String USER_ID = Jurisdiction.getUserId();
+//		if (!USER_ID.equals("1")) {
+//			// 除了admin，其他的根据权限过滤
+//			PageData temp = new PageData();
+//			temp.put("USER_ID",USER_ID);
+//			temp = m_sys_user_orgService.findByUserId(temp);
+//			pd.put("SECOND_UNIT", temp.getString("ORG_ID"));
+//		}
+
+		String USER_ID = Jurisdiction.getUserId();
+		if (!USER_ID.equals("1")) {
+			// 除了admin，其他的根据权限过滤
+			pd.put("USER_ID_QX", USER_ID);
+		}
+
+		page.setPd(pd);
+		List<PageData>	varList = m_fengxianService.list(page);	//列出M_fengxian列表
+
+		//二级机构
+		PageData param = new PageData();
+		param.put("ORG_LEVEL",2);
+		List<PageData> secondUnit = morgService.listAll(param);
+
+		//三级机构
+		param.put("ORG_LEVEL",3);
+		List<PageData> thirdUnit = morgService.listAll(param);
+
+		//查找项目
+		param = new PageData();
+		param.put("ISORG",0);
+		List<PageData> xiangMuList = morgService.listAll(param);
+		thirdUnit.addAll(xiangMuList);
+
+//		//parentId为1的都是地区
+//		String areaParam = "1";
+//		List<Dictionaries> areaList = dictionariesService.listAllDict(areaParam);
+
+		//获取海南地区
+		String hainanParam = "1";
+		List<Dictionaries> areaList = dictionariesService.listAllDict(hainanParam);
+
+
+		//事故类型
+		Map<String, String> accidentTypeMap = dictionariesService.listChildrenByEN(WebConstant.ACCIDENT_TYPE, true);
+		List<Object> accidentTypeJsonList =mapToJson(accidentTypeMap);
+		for(PageData temp : varList){
+			String[] accident = temp.getString("FENGXIAN_ACCIDENT_TYPE").split(",");
+			temp.put("FENGXIAN_ACCIDENT_TYPE",accident);
+		}
+
+		//风险等级
+		Map<String, String> riskLevelMap = dictionariesService.listChildrenByEN(WebConstant.RISK_LEVEL, true);
+		List<Object> riskLevelJsonList =mapToJson(riskLevelMap);
+
+		//责任单位
+		PageData responsibilityParam = new PageData();
+		responsibilityParam.put("ISORG",1);
+		List<PageData> responsibilityList = morgService.listAll(responsibilityParam);
+
+		mv.addObject("secondUnit", secondUnit);
+		mv.addObject("thirdUnit", thirdUnit);
+		mv.addObject("areaList", areaList);
+		mv.addObject("accidentTypeMap", accidentTypeJsonList);
+		mv.addObject("riskLevelMap", riskLevelJsonList);
+		mv.addObject("responsibilityList", responsibilityList);
+		mv.setViewName("backend/m_fengxian/m_fengxian_viewlist");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		return mv;
+	}
+	
+	/**去新增页面
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goAdd")
+	public ModelAndView goAdd()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+
+		PageData param = new PageData();
+		param.put("ORG_LEVEL",2);
+		List<PageData> secondUnit = morgService.listAll(param);
+
+		param.put("ORG_LEVEL",3);
+		List<PageData> thirdUnit = morgService.listAll(param);
+
+		//查找项目
+		param = new PageData();
+		param.put("ISORG",0);
+		List<PageData> xiangMuList = morgService.listAll(param);
+		thirdUnit.addAll(xiangMuList);
+
+//		//parentId为1的都是地区
+//		String areaParam = "1";
+//		List<Dictionaries> areaList = dictionariesService.listAllDict(areaParam);
+
+		//获取海南地区
+		String hainanParam = "1";
+		List<Dictionaries> areaList = dictionariesService.listAllForIdSelectTree(hainanParam);
+		JSONArray arr = JSONArray.fromObject(areaList);
+		String zTreeNodes = (null == arr? "":arr.toString());
+		zTreeNodes = zTreeNodes.replaceAll("NAME","name").replaceAll("DICTIONARIES_ID","id").replaceAll("PARENT_ID","parentId").replaceAll("subDict","nodes");
+		mv.addObject("zTreeNodes", zTreeNodes);
+
+		//分别group by危险源和危险源持续时间，筛选掉重复的数据
+		PageData hazardParam = new PageData();
+		hazardParam.put("FENGXIAN_HAZARD_GROUP",1);
+		List<PageData> hazardList = m_fengxianService.listAll(hazardParam);
+
+		PageData hazardDurationParam = new PageData();
+		hazardDurationParam.put("HAZARD_DURATION_GROUP",1);
+		List<PageData> hazardDurationList = m_fengxianService.listAll(hazardParam);
+
+		Map<String, String> accidentTypeMap = dictionariesService.listChildrenByEN(WebConstant.ACCIDENT_TYPE, true);
+		List<Object> accidentTypeJsonList =mapToJson(accidentTypeMap);
+
+		Map<String, String> riskLevelMap = dictionariesService.listChildrenByEN(WebConstant.RISK_LEVEL, true);
+		List<Object> riskLevelJsonList =mapToJson(riskLevelMap);
+
+		PageData responsibilityParam = new PageData();
+		responsibilityParam.put("ISORG",1);
+		List<PageData> responsibilityList = morgService.listAll(responsibilityParam);
+
+
+		mv.setViewName("backend/m_fengxian/m_fengxian_edit");
+		mv.addObject("secondUnit", secondUnit);
+		mv.addObject("thirdUnit", thirdUnit);
+		mv.addObject("areaList", areaList);
+		mv.addObject("accidentTypeMap", accidentTypeJsonList);
+		mv.addObject("riskLevelMap", riskLevelJsonList);
+		mv.addObject("responsibilityList", responsibilityList);
+		mv.addObject("hazardList", hazardList);
+		mv.addObject("hazardDurationList", hazardDurationList);
+		mv.addObject("msg", "save");
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+
+	
+	 /**去修改页面
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goEdit")
+	public ModelAndView goEdit()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = m_fengxianService.findById(pd);	//根据ID读取
+
+		PageData param = new PageData();
+		param.put("ORG_LEVEL",2);
+		List<PageData> secondUnit = morgService.listAll(param);
+
+		param.put("ORG_LEVEL",3);
+		List<PageData> thirdUnit = morgService.listAll(param);
+
+		//查找项目
+		param = new PageData();
+		param.put("ISORG",0);
+		List<PageData> xiangMuList = morgService.listAll(param);
+		thirdUnit.addAll(xiangMuList);
+
+//		//parentId为1的都是地区
+//		String areaParam = "1";
+//		List<Dictionaries> areaList = dictionariesService.listAllDict(areaParam);
+
+		//获取海南地区
+		String hainanParam = "1";
+		List<Dictionaries> areaList = dictionariesService.listAllForIdSelectTree(hainanParam);
+		JSONArray arr = JSONArray.fromObject(areaList);
+		String zTreeNodes = (null == arr? "":arr.toString());
+		zTreeNodes = zTreeNodes.replaceAll("NAME","name").replaceAll("DICTIONARIES_ID","id").replaceAll("PARENT_ID","parentId").replaceAll("subDict","nodes");
+		mv.addObject("zTreeNodes", zTreeNodes);
+
+		//分别group by危险源和危险源持续时间，筛选掉重复的数据
+		PageData hazardParam = new PageData();
+		hazardParam.put("FENGXIAN_HAZARD_GROUP",1);
+		List<PageData> hazardList = m_fengxianService.listAll(hazardParam);
+
+		PageData hazardDurationParam = new PageData();
+		hazardDurationParam.put("HAZARD_DURATION_GROUP",1);
+		List<PageData> hazardDurationList = m_fengxianService.listAll(hazardParam);
+
+		Map<String, String> accidentTypeMap = dictionariesService.listChildrenByEN(WebConstant.ACCIDENT_TYPE, true);
+		List<Object> accidentTypeJsonList =mapToJson(accidentTypeMap);
+
+		Map<String, String> riskLevelMap = dictionariesService.listChildrenByEN(WebConstant.RISK_LEVEL, true);
+		List<Object> riskLevelJsonList =mapToJson(riskLevelMap);
+
+		PageData responsibilityParam = new PageData();
+		responsibilityParam.put("ISORG",1);
+		List<PageData> responsibilityList = morgService.listAll(responsibilityParam);
+
+		//获取风险类型名字
+		String[] accidentTypeString = pd.getString("FENGXIAN_ACCIDENT_TYPE").split(",");
+		String accidentTypeName = "";
+		for(String accidentType : accidentTypeString){
+			PageData temp = new PageData();
+			temp.put("BIANMA",accidentType);
+			temp = dictionariesService.findByBianma(temp);
+			if(accidentTypeName.equals("")){
+				accidentTypeName += temp.getString("NAME");
+			}
+			else{
+				accidentTypeName += "," + temp.getString("NAME");
+			}
+		}
+
+		mv.setViewName("backend/m_fengxian/m_fengxian_edit");
+		mv.addObject("secondUnit", secondUnit);
+		mv.addObject("thirdUnit", thirdUnit);
+		mv.addObject("areaList", areaList);
+		mv.addObject("accidentTypeMap", accidentTypeJsonList);
+		mv.addObject("riskLevelMap", riskLevelJsonList);
+		mv.addObject("responsibilityList", responsibilityList);
+		mv.addObject("hazardList", hazardList);
+		mv.addObject("hazardDurationList", hazardDurationList);
+		mv.addObject("msg", "edit");
+		mv.addObject("accidentTypeName", accidentTypeName);
+		mv.addObject("pd", pd);
+		return mv;
+	}	
+	
+	 /**批量删除
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/deleteAll")
+	@ResponseBody
+	public Object deleteAll() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除M_fengxian");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
+		PageData pd = new PageData();		
+		Map<String,Object> map = new HashMap<String,Object>();
+		pd = this.getPageData();
+		List<PageData> pdList = new ArrayList<PageData>();
+		String DATA_IDS = pd.getString("DATA_IDS");
+		if(null != DATA_IDS && !"".equals(DATA_IDS)){
+			String ArrayDATA_IDS[] = DATA_IDS.split(",");
+			m_fengxianService.deleteAll(ArrayDATA_IDS);
+			pd.put("msg", "ok");
+		}else{
+			pd.put("msg", "no");
+		}
+		pdList.add(pd);
+		map.put("list", pdList);
+		return AppUtil.returnObject(pd, map);
+	}
+	
+	 /**导出到excel
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/excel")
+	public ModelAndView exportExcel() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"导出M_fengxian到excel");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		List<String> titles = new ArrayList<String>();
+		titles.add("二级公司");	//8
+		titles.add("三级机构");	//9
+		titles.add("地址");	//10
+		titles.add("区域");	//11
+		titles.add("危险源");	//12
+		titles.add("可能导致的事故类型");	//13
+		titles.add("风险等级");	//14
+		titles.add("控制措施");	//15
+		titles.add("应急措施");	//16
+		titles.add("危险源持续时间");	//17
+		titles.add("管理层级");	//18
+		titles.add("责任单位(组织机构)");	//19
+		titles.add("责任人");	//20
+		titles.add("责任人联系方式");	//21
+		titles.add("识别时间");	//22
+		titles.add("持续周期");	//23
+		dataMap.put("titles", titles);
+		List<PageData> varOList = m_fengxianService.listAll(pd);
+		List<PageData> varList = new ArrayList<PageData>();
+
+		PageData param = new PageData();
+		param.put("ORG_LEVEL",2);
+		List<PageData> secondUnit = morgService.listAll(param);
+
+		param.put("ORG_LEVEL","");
+		List<PageData> thirdUnit = morgService.listAll(param);
+
+		//获取海南地区
+		String hainanParam = "2ba8e6d0fd944983aa19b781c6b53477";
+		List<Dictionaries> areaList = dictionariesService.listSubDictByParentId(hainanParam);
+		//填充子list
+		for(Dictionaries dictionaries : areaList){
+			String parentId = dictionaries.getDICTIONARIES_ID();
+			List<Dictionaries> subList = dictionariesService.listSubDictByParentId(parentId);
+			dictionaries.setSubDict(subList);
+		}
+
+		Map<String, String> accidentTypeMap = dictionariesService.listChildrenByEN(WebConstant.ACCIDENT_TYPE, true);
+
+		Map<String, String> riskLevelMap = dictionariesService.listChildrenByEN(WebConstant.RISK_LEVEL, true);
+
+		PageData responsibilityParam = new PageData();
+		responsibilityParam.put("ISORG",1);
+		List<PageData> responsibilityList = morgService.listAll(responsibilityParam);
+
+
+		for(int i=0;i<varOList.size();i++){
+			PageData vpd = new PageData();
+
+			for(PageData pageData : secondUnit){
+				if(pageData.getString("ORG_ID").equals(varOList.get(i).getString("SECOND_UNIT"))){
+					vpd.put("var1", pageData.getString("ORG_NAME"));	    //8
+				}
+			}
+			for(PageData pageData : thirdUnit){
+				if(pageData.getString("ORG_ID").equals(varOList.get(i).getString("THIRD_UNIT"))){
+					vpd.put("var2", pageData.getString("ORG_NAME"));	    //8
+				}
+			}
+			for(Dictionaries pageData : areaList){
+				if(pageData.getDICTIONARIES_ID().equals(varOList.get(i).getString("FENGXIAN_AREA"))){
+					vpd.put("var4", pageData.getNAME());	    //8
+				}
+				for(Dictionaries sub : pageData.getSubDict()){
+					if(sub.getDICTIONARIES_ID().equals(varOList.get(i).getString("FENGXIAN_AREA"))){
+						vpd.put("var4", pageData.getNAME());	    //8
+					}
+				}
+			}
+			for(Map.Entry<String,String> entry : accidentTypeMap.entrySet()){
+				if(entry.getKey().equals(varOList.get(i).getString("FENGXIAN_ACCIDENT_TYPE"))){
+					vpd.put("var6", entry.getValue());	    //8
+				}
+			}
+			for(Map.Entry<String,String> entry : riskLevelMap.entrySet()){
+				if(entry.getKey().equals(varOList.get(i).getString("FENGXIAN_LEVEL"))){
+					vpd.put("var7", entry.getValue());	    //8
+				}
+			}
+			for(PageData pageData : responsibilityList){
+				if(pageData.getString("ORG_ID").equals(varOList.get(i).getString("RESPONSIBILITY_UNIT"))){
+					vpd.put("var12", pageData.getString("ORG_NAME"));	    //8
+				}
+			}
+
+			vpd.put("var3", varOList.get(i).getString("FENGXIAN_ADDRESS"));	    //10
+			vpd.put("var5", varOList.get(i).getString("FENGXIAN_HAZARD"));	    //12
+			vpd.put("var8", varOList.get(i).getString("CONTROL_MEASURE"));	    //15
+			vpd.put("var9", varOList.get(i).getString("EMERGENCY_MEASURE"));	    //16
+			vpd.put("var10", varOList.get(i).getString("HAZARD_DURATION"));	    //17
+			vpd.put("var11", varOList.get(i).getString("MANAGEMENT_LEVEL"));	    //18
+			vpd.put("var13", varOList.get(i).getString("RESPONSIBILITY_PEOPLE"));	    //20
+			vpd.put("var14", varOList.get(i).getString("RESPONSIBILITY_PHONE"));	    //21
+			vpd.put("var15", varOList.get(i).getString("RECOGNITION_TIME"));	    //22
+			vpd.put("var16", varOList.get(i).getString("START_TIME"));	    //23
+			vpd.put("var17", varOList.get(i).getString("END_TIME"));	    //24
+			varList.add(vpd);
+		}
+		dataMap.put("varList", varList);
+		ObjectExcelViewFengXian erv = new ObjectExcelViewFengXian();
+		mv = new ModelAndView(erv,dataMap);
+		return mv;
+	}
+
+
+	/**从EXCEL导入到数据库
+	 * @param file
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/readExcel")
+	public ModelAndView readExcel(
+			@RequestParam(value="excel",required=false) MultipartFile file
+	) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		//分辨是历史数据还是新的数据
+		PageData type = this.getPageData();
+//		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;}
+		if (null != file && !file.isEmpty()) {
+			String filePath = PathUtil.getClasspath() + Const.FILEPATHFILE;								//文件上传路径
+			String fileName =  FileUpload.fileUp(file, filePath, "fengxianExcel"+Tools.date2Str(new Date(),"yyyyMMddHHmmss"));							//执行上传
+			List<PageData> listPd = (List)ObjectExcelRead2.readExcel(filePath, fileName, 0, 0, 0);		//执行读EXCEL操作,读出的数据导入List 2:从第3行开始；0:从第A列开始；0:第0个sheet
+			/*存入数据库操作======================================*/
+			/*List<Role> roleList = roleService.listAllRolesByPId(pd);//列出所有系统用户角色
+			pd.put("ROLE_ID", roleList.get(0).getROLE_ID());		//设置角色ID为随便第一个*/
+			/**
+			 * var0 :组织id
+			 * var1 :机构名称
+			 */
+
+			logger.info("导入风险长度"+listPd.size());
+			logger.info("导入风险"+listPd);
+
+			//新增提示警告，每次查询的结果如果是null就写入字符串，最后alert出来
+			String allAlertText = "";
+			int successNum = 0;
+			int fallNum = 0;
+			for(int i=0;i<listPd.size();i++){
+				String alertText = "";
+				int accidentTag = 0;
+				try{
+
+					PageData param = listPd.get(i);
+					param.put("FENGXIAN_ID",this.get32UUID());
+					param.put("ISDEL", 0);
+					param.put("CREATER",Jurisdiction.getUsername());										//创建者
+					param.put("CREATE_DATE",Tools.date2Str(new Date()));								//创建时间
+
+					pd.put("ORG_NAME",param.getString("SECOND_UNIT"));								//二级机构
+					PageData secondParam = morgService.findByName(pd);
+					if(secondParam == null){
+						if(alertText.equals("")){
+							alertText += "第A列第" + (i+3) + "行数据不匹配，请修改";
+						}
+						else{
+							alertText += "\n第A列第" + (i+3) + "行数据不匹配，请修改";
+						}
+					}
+					param.put("SECOND_UNIT",secondParam.getString("ORG_ID"));
+
+					pd.put("ORG_NAME",param.getString("THIRD_UNIT"));								//三级单位(项目)
+					PageData thirdParam = morgService.findByName(pd);
+					if(thirdParam == null){
+						if(alertText.equals("")){
+							alertText += "第B列第" +(i+3) + "行数据不匹配，请修改";
+						}
+						else{
+							alertText += "\n第B列第" + (i+3) + "行数据不匹配，请修改";
+						}
+
+					}
+					param.put("THIRD_UNIT",thirdParam.getString("ORG_ID"));
+
+					pd.put("NAME",param.getString("FENGXIAN_AREA"));
+					PageData areaParam = dictionariesService.findByName(pd);
+					if(areaParam == null){
+						if(alertText.equals("")){
+							alertText += "第D列第" + (i+3) + "行数据不匹配，请修改";
+						}
+						else{
+							alertText += "\n第D列第" + (i+3) + "行数据不匹配，请修改";
+						}
+					}
+					param.put("FENGXIAN_AREA",areaParam.getString("DICTIONARIES_ID"));
+
+					//事故类型可能包含多种，需要用分隔符判断
+					String[] sperators = {",",".","/","-","，","。"};
+					int accidentFlag = 0;
+					for(String sperator : sperators){
+						//如果识别到对应的分隔符就用该分隔符分割字符串
+						if(param.getString("FENGXIAN_ACCIDENT_TYPE").indexOf(sperator) >= 0){
+							accidentFlag = 1;
+							String[] accidentTypeString = param.getString("FENGXIAN_ACCIDENT_TYPE").trim().split(sperator);
+							param.remove("FENGXIAN_ACCIDENT_TYPE");
+							for(String accidentType : accidentTypeString){
+								pd.put("NAME",accidentType);
+								System.out.println("===" + accidentType + "===");
+								PageData accidentParam = dictionariesService.findByName(pd);
+								if(accidentParam != null){
+									if(param.getString("FENGXIAN_ACCIDENT_TYPE")!= null && !param.getString("FENGXIAN_ACCIDENT_TYPE").equals("")){
+										String bianma = accidentParam.getString("BIANMA");
+										//如果有结果就相加存入，没有就继续存入之前有的
+										param.put("FENGXIAN_ACCIDENT_TYPE",bianma != null ? param.getString("FENGXIAN_ACCIDENT_TYPE")+","+bianma:param.getString("FENGXIAN_ACCIDENT_TYPE"));
+									}
+									else{
+										param.put("FENGXIAN_ACCIDENT_TYPE",accidentParam.getString("BIANMA"));
+									}
+								}
+								else{
+									alertText += "第F列第" + (i+3) + "行数据不匹配，请修改";
+									//添加变量判断事故类型是不是选错了
+									accidentTag = 1;
+								}
+
+							}
+						}
+					}
+					//如果只有一个事故类型
+					if(accidentFlag == 0){
+						PageData temp = new PageData();
+						temp.put("NAME",param.getString("FENGXIAN_ACCIDENT_TYPE"));
+						PageData accidentParam = dictionariesService.findByName(temp);
+						if(accidentParam == null){
+							accidentTag = 1;
+							if(alertText.equals("")){
+								alertText += "第F列第" + (i+3) + "行数据不匹配，请修改";
+							}
+							else{
+								alertText += "\n第F列第" + (i+3) + "行数据不匹配，请修改";
+							}
+						}
+						else{
+							param.put("FENGXIAN_ACCIDENT_TYPE",accidentParam.getString("BIANMA"));
+						}
+
+					}
+
+					pd.put("NAME",param.getString("FENGXIAN_LEVEL"));
+					PageData fengXianLevelParam = dictionariesService.findByName(pd);
+					if(fengXianLevelParam == null){
+						if(alertText.equals("")){
+							alertText += "第G列第" + (i+3) + "行数据不匹配，请修改";
+						}
+						else{
+							alertText += "\n第G列第" + (i+3) + "行数据不匹配，请修改";
+						}
+					}
+					param.put("FENGXIAN_LEVEL",fengXianLevelParam.getString("BIANMA"));
+
+					pd.put("ORG_NAME",param.getString("RESPONSIBILITY_UNIT"));								//负责单位
+					PageData responsibilityParam = morgService.findByName(pd);
+					if(responsibilityParam == null){
+						if(alertText.equals("")){
+							alertText += "第L列第" + (i+3) + "行数据不匹配，请修改";
+						}
+						else{
+							alertText += "\n第L列第" + (i+3) + "行数据不匹配，请修改";
+						}
+					}
+
+					if(param.getString("RECOGNITION_TIME") == null){
+						if(alertText.equals("")){
+							alertText += "第O列第" + (i+3) + "行数据为空，请补全";
+						}
+						else{
+							alertText += "\n第O列第" +(i+3) + "行数据为空，请补全";
+						}
+					}
+
+					param.put("RESPONSIBILITY_UNIT",responsibilityParam.getString("ORG_ID"));
+					param.put("SORT",i);
+
+					//计算成功插入和不成功插入的部分
+					if(alertText.equals("") && accidentTag == 0){
+						//根据机构名称找到对应简称
+						PageData tempParam = new PageData();
+						tempParam.put("ORG_ID",param.getString("SECOND_UNIT"));
+						tempParam = morgService.findById(tempParam);
+						String fengXianNumber = "";
+						if(type.getString("type").equals("new")){
+							fengXianNumber = getFengXianNumber(tempParam.getString("ORG_NAME_SHORT"));
+						}
+						else{
+							fengXianNumber = getHistoryFengXianNumber(tempParam.getString("ORG_NAME_SHORT"));
+						}
+						param.put("FENGXIAN_NUMBER", fengXianNumber);
+						successNum++;
+						m_fengxianService.save(param);
+					}
+					else{
+						fallNum++;
+					}
+
+				}catch (Exception e){
+				}
+				allAlertText += alertText;
+			}
+			/*存入数据库操作======================================*/
+			mv.addObject("msg","success");
+			mv.addObject("alertText",allAlertText);
+			mv.addObject("successNum",successNum);
+			mv.addObject("fallNum",fallNum);
+		}
+		mv.setViewName("save_result_fengxian");
+		return mv;
+	}
+
+	/**下载模版
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/downExcel")
+	public void downExcel(HttpServletResponse response)throws Exception{
+		FileDownload.fileDownload(response, PathUtil.getClasspath() + Const.FILEPATHFILE + "fengxian.xls", "fengxian.xls");
+	}
+
+	/**下载模版
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/downExcelTest")
+	public ModelAndView downExcelTest(HttpServletResponse response)throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"导出RectifyInfo到excel");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
+		ModelAndView mv = new ModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		List<String> titles = new ArrayList<String>();
+		titles.add("二级公司");	//2
+		titles.add("三级机构(项目)");	//9
+		titles.add("地址");	//10
+		titles.add("区域");	//11
+		titles.add("危险源");	//12
+		titles.add("可能导致的事故类型");	//13
+		titles.add("风险等级");	//14
+		titles.add("控制措施");	//15
+		titles.add("应急措施");	//16
+		titles.add("危险源持续时间");	//17
+		titles.add("管理层级");	//18
+		titles.add("责任单位");	//19
+		titles.add("责任人");	//19
+		titles.add("责任人联系方式");	//19
+		titles.add("识别时间");	//19
+		titles.add("开始时间");	//19
+		titles.add("结束时间");	//19
+		dataMap.put("titles", titles);
+
+		//放入对应的二级单位和三级机构或项目
+		PageData param = new PageData();
+
+		param.put("ISORG",1);
+		List<PageData> allUnitList = morgService.listAll(param);
+		param.put("ORG_LEVEL",2);
+		List<PageData> secondUnitList = morgService.listAll(param);
+
+		param.put("ORG_LEVEL",3);
+		List<PageData> thirdUnitList = morgService.listAll(param);
+
+		param.put("ISORG",0);
+		param.put("ORG_LEVEL","");
+		List<PageData> projectList = morgService.listAll(param);
+
+		//三级机构和项目合在一块
+		thirdUnitList.addAll(projectList);
+
+		//获取海南地区
+		String hainanParam = "2ba8e6d0fd944983aa19b781c6b53477";
+		List<Dictionaries> areaList = dictionariesService.listSubDictByParentId(hainanParam);
+		//填充子list
+		for(Dictionaries dictionaries : areaList){
+			String parentId = dictionaries.getDICTIONARIES_ID();
+			List<Dictionaries> subList = dictionariesService.listSubDictByParentId(parentId);
+			dictionaries.setSubDict(subList);
+		}
+
+		Map<String, String> accidentTypeMap = dictionariesService.listChildrenByEN(WebConstant.ACCIDENT_TYPE, true);
+		List<Object> accidentTypeJsonList =mapToJson(accidentTypeMap);
+
+		Map<String, String> riskLevelMap = dictionariesService.listChildrenByEN(WebConstant.RISK_LEVEL, true);
+		List<Object> riskLevelJsonList =mapToJson(riskLevelMap);
+
+		dataMap.put("secondUnitList", secondUnitList);
+		dataMap.put("thirdUnitList", thirdUnitList);
+		dataMap.put("areaList", areaList);
+		dataMap.put("accidentTypeMap", accidentTypeMap);
+		dataMap.put("riskLevelMap", riskLevelMap);
+		dataMap.put("allUnitList", allUnitList);
+
+		ObjectExcelView3 erv = new ObjectExcelView3();
+		mv = new ModelAndView(erv,dataMap);
+		return mv;
+	}
+
+	/**打开上传EXCEL页面
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goUploadExcel")
+	public ModelAndView goUploadExcel()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		mv.setViewName("backend/m_fengxian/uploadexcel");
+		return mv;
+	}
+
+	/**打开上传EXCEL页面
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goUploadExcelHis")
+	public ModelAndView goUploadExcelHis()throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		mv.setViewName("backend/m_fengxian/uploadexcelHis");
+		return mv;
+	}
+
+	/**封装隐患整改map转json对象的函数
+	 * @param
+	 * @throws Exception
+	 */
+	public List<Object> mapToJson(Map<String, String> rectifyMap){
+		List<Picker> rectify =new ArrayList<>();
+		List<Object> PickerJsonList =new ArrayList<>();
+		for(Map.Entry<String,String> entry:rectifyMap.entrySet()){
+			Picker picker = new Picker();			//自定义的类，只有编码和名字两个属性
+			picker.setBIANMA(entry.getKey());		//分别拿到编码和名字
+			picker.setNAME(entry.getValue());
+			Object PickerJson = JSONObject.toJSON(picker);//转化为json对象存入
+			rectify.add(picker);
+			PickerJsonList.add(PickerJson);
+		};
+		return PickerJsonList;
+	}
+
+	@RequestMapping(value = "backendIndex")
+	public ModelAndView backendIndex(HttpRequest httpRequest,Page page){
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = this.getPageData();
+
+		mv.addObject("pd",pd);
+		mv.setViewName("frontend/backendIndex");
+		return mv;
+	}
+
+	/*传入org_name
+	* */
+	@RequestMapping(value = "secondUnitIndex")
+	public ModelAndView secondUnitIndex(HttpRequest httpRequest,Page page) throws Exception {
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = this.getPageData();
+
+		String userId = Jurisdiction.getUserId();
+
+		pd.put("USER_ID",userId);
+		pd = m_sys_user_orgService.findByUserId(pd);
+		pd = morgService.findById(pd);
+
+		mv.addObject("pd",pd);
+		mv.setViewName("frontend/fengxianSecondIframe");
+		return mv;
+	}
+
+	/*传入org_name
+	 * */
+	@RequestMapping(value = "fengxianSecond")
+	public ModelAndView fengxianSecond(HttpRequest httpRequest,Page page) throws Exception {
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = this.getPageData();
+
+		String userId = Jurisdiction.getUserId();
+		//获取roleName
+		User userRole = userService.getUserAndRoleById(userId);
+		//如果是admin就跳转一级页面
+		if(userId.equals("1") || userRole.getRole().getROLE_NAME().equals("应急部")){
+			mv.setViewName("frontend/fengxianIndex");
+		}
+		else{
+			pd.put("USER_ID",userId);
+			pd = m_sys_user_orgService.findByUserId(pd);
+			pd = morgService.findById(pd);
+			mv.setViewName("frontend/fengxianSecond");
+		}
+
+		mv.addObject("pd",pd);
+
+		return mv;
+	}
+
+	@RequestMapping(value="/goSelect")
+	public ModelAndView goSelect(Page page)throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String parentId = "20557e8cc3384b73ae95584333492455";
+		pd.put("parentId",parentId);
+		List<Dictionaries> varList = dictionariesService.listSubDictByParentId(parentId);	//根据ID读取
+
+		PageData fengxian = m_fengxianService.findById(pd);
+
+		//分割事故类型
+		if(fengxian != null && fengxian.getString("FENGXIAN_ACCIDENT_TYPE") != null && !fengxian.getString("FENGXIAN_ACCIDENT_TYPE").equals("")){
+			String[] accidentTypeString = fengxian.getString("FENGXIAN_ACCIDENT_TYPE").split(",");
+			mv.addObject("accidentTypeString", accidentTypeString);
+		}
+
+
+		mv.setViewName("backend/m_fengxian/selectAccidentType");
+		mv.addObject("varList", JSONArray.fromObject(varList));
+		mv.addObject("pd", pd);
+
+		return mv;
+	}
+
+	//获取流水号
+	public String getFengXianNumber(String orgName){
+		ValueOperations valueOperations = redisTemplate.opsForValue();
+		String number = "";
+		//流水号开头的日期
+		String date = Tools.date2Str(new Date(),"yyyyMMdd");
+
+		//公司简称和安全隐患简称部分
+		String Name = judgeOrgName.OrgNameShort(orgName) + "FX";
+
+		//每日流水号
+		String numberString = (String) valueOperations.get("fengxian_number");
+		if(numberString == null){
+			redisTemplate.opsForValue().set("fengxian_number1",0+"");
+		}
+
+
+		long fengxian_number = redisTemplate.opsForValue().increment("fengxian_number1", 1);
+
+		//超过9999设为0
+		if(fengxian_number >= 9999){
+			fengxian_number = 1;
+			redisTemplate.opsForValue().set("fengxian_number1",0+"");
+		}
+
+		numberString = String.valueOf(fengxian_number);
+
+		//补零
+		int zeroLength = 3;
+		while(numberString.length() <= zeroLength){
+			numberString = "0" + numberString;
+		}
+
+		number = date + Name + numberString;
+
+		return number;
+	}
+
+	Date historyDate = new Date("2023/01/01 00:00:00");
+	public String getHistoryFengXianNumber(String orgName){
+		ValueOperations valueOperations = redisTemplate.opsForValue();
+		String number = "";
+
+		//公司简称和安全隐患简称部分
+		String Name = judgeOrgName.OrgNameShort(orgName) + "FX";
+
+		//每日流水号
+		String numberString = (String) valueOperations.get("fengxian_number_his1");
+		if(numberString == null){
+			redisTemplate.opsForValue().set("fengxian_number_his1",0+"");
+		}
+
+
+		long fengxian_number = redisTemplate.opsForValue().increment("fengxian_number_his1", 1);
+
+		//超过9999设为0,然后时间向后一天
+		if(fengxian_number >= 9999){
+			fengxian_number = 1;
+			redisTemplate.opsForValue().set("fengxian_number_his11",0+"");
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(historyDate);
+			calendar.add(Calendar.DAY_OF_YEAR, 1);
+			historyDate = calendar.getTime();
+		}
+
+		numberString = String.valueOf(fengxian_number);
+
+
+		//补零
+		int zeroLength = 3;
+		while(numberString.length() <= zeroLength){
+			numberString = "0" + numberString;
+		}
+
+		number = Tools.date2Str(historyDate,"yyyyMMdd") + Name + numberString;
+
+		return number;
+	}
+
+	@RequestMapping(value = "insertHisFengXian")
+	public void insertHisFengXian() throws Exception {
+		PageData pd = this.getPageData();
+//		pd.put("org_name_short","海控贸易");
+		List<PageData> list = m_fengxianService.findByShort(pd);
+
+		for(PageData temp : list){
+			String fengxian_number = getHistoryFengXianNumber(temp.getString("org_name_short"));
+			if(temp.getString("FENGXIAN_NUMBER") == null || temp.getString("FENGXIAN_NUMBER").equals("")){
+				temp.put("FENGXIAN_NUMBER",fengxian_number);
+			}
+			m_fengxianService.edit(temp);
+
+
+		}
+
+	}
+
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder){
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(format,true));
+	}
+}

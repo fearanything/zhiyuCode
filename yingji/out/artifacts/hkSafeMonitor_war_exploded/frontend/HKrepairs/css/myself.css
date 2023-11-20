@@ -1,0 +1,109 @@
+body {
+  background-color: #f7f7f7;
+}
+header .container {
+  position: relative;
+}
+header .container a {
+  position: absolute;
+  left: -2.6667vw;
+  display: block;
+  width: 2.6667vw;
+  height: 5.3333vw;
+}
+header .container a img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.finish {
+  margin-top: 2.6667vw;
+  width: 100%;
+  box-sizing: border-box;
+}
+.finish .banner {
+  width: 100%;
+}
+.finish .banner img {
+  width: 100%;
+}
+.finish .finish-list {
+  margin: 0 auto;
+  width: 100%;
+  background-color: #fff;
+}
+.finish .finish-list .list-item {
+  display: flex;
+  align-items: center;
+  padding: 4vw;
+  box-sizing: border-box;
+  color: #222;
+  border-bottom: 1px solid #49494916;
+}
+.finish .finish-list .list-item img {
+  margin-right: 1.6vw;
+  width: 5.3333vw;
+}
+.list-box {
+  padding-bottom: 25vw;
+  width: 100%;
+  box-sizing: border-box;
+}
+.list-box .item {
+  display: block;
+  margin-bottom: 2.6667vw;
+  padding: 1.8667vw;
+  width: 100%;
+  height: 32vw;
+  background-color: #d0dbec;
+  box-sizing: border-box;
+}
+.list-box .item .content {
+  padding: 2.6667vw 5.3333vw 2.6667vw 1.8667vw;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  width: 90.6667vw;
+  height: 25.3333vw;
+  background-image: url(../img/item-box.png);
+  background-size: 100% 100%;
+  box-sizing: border-box;
+}
+.list-box .item .content img {
+  width: 32vw;
+  height: 20vw;
+}
+.list-box .item .content .text {
+  width: 48vw;
+}
+.list-box .item .content .text p {
+  width: 100%;
+  line-height: 5.3333vw;
+  font-size: 3.7333vw;
+  color: #494949;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.list-box .item .content .text .time {
+  margin-top: 5.3333vw;
+  display: flex;
+  align-items: center;
+  font-size: 3.7333vw;
+  color: #9b9b9b;
+}
+.list-box .item .content .text .time img {
+  margin-right: 2.6667vw;
+  width: 3.2vw;
+  height: 3.2vw;
+}
+
+.log-out a{
+  margin: 0 auto;
+  margin-top: 16vw;
+  padding: 2.1333vw 0;
+  color: #fff;
+  background-image: linear-gradient(90deg, #0d4bbf 23%, #074ddf 62%, #004eff 100%), linear-gradient(#003d92, #003d92);
+}

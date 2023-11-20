@@ -1,0 +1,590 @@
+/*清除元素默认的内外边距  */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  /*让所有斜体 不倾斜*/
+  em,
+  i {
+    font-style: normal;
+  }
+  /*去掉列表前面的小点*/
+  li {
+    list-style: none;
+  }
+  /*图片没有边框   去掉图片底侧的空白缝隙*/
+  img {
+    border: 0; /*ie6*/
+    vertical-align: middle;
+  }
+  /*让button 按钮 变成小手*/
+  button {
+    cursor: pointer;
+  }
+  /*取消链接的下划线*/
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: #e33333;
+  }
+
+  p{
+    font-size: .15rem;
+  }
+
+  h1,h2,h3,h4,p{
+    color: #fff;
+  }
+  h3{
+    font-size: .2rem;
+  }
+  h4 {
+    font-size: .175rem;
+    font-weight: 400;
+  }
+  button{
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    cursor: pointer;
+  }
+  body {
+    background: url(../images/background.png) no-repeat;
+    background-size: 100% 100%;
+  }
+  /* // 实现rem适配 */
+
+    @media screen and (max-width: 3100px) {
+        html {
+          font-size: 65px !important;
+        }
+      }
+      @media screen and (max-width: 2580px) {
+        html {
+          font-size: 80px !important;
+        }
+      }
+
+      @media screen and (max-width: 1920px) {
+        html {
+          font-size: 70px !important;
+        }
+      }
+
+      @media screen and (max-width: 1560px) {
+        html {
+          font-size: 50px !important;
+        }
+      }
+
+      @media screen and (max-width: 1440px) {
+        html {
+          font-size: 56px !important;
+        }
+      }
+
+      @media screen and (max-width: 1360px) {
+        html {
+          font-size: 50px !important;
+        }
+      }
+      @media screen and (max-width: 1280px) {
+        html {
+          font-size: 48px !important;
+        }
+      }
+      
+      /* @media screen and (min-width: 1920px) {
+        html {
+          font-size: 80px !important;
+        }
+        
+      }
+
+      @media screen and (min-width: 2560px) {
+        html {
+          font-size: 80px !important;
+        }
+        .column{
+            margin-top: 60px !important;
+            zoom: 1.2;
+        }
+      } */
+
+  html{
+    overflow-y: hidden;
+    width: 100%;
+    height: 100%;
+    padding-bottom: .125rem;
+  }
+
+  /* 1.父容器大盒子 */
+  .viewpoint{
+    min-width: 1024px;
+    max-width: 3066px;
+    margin: 0 auto;
+    padding-bottom: .125rem;
+    background-size: cover;
+    /* padding: 3.125rem .5rem 0 .5rem;
+    background: url(../images/topheadNew.png) no-repeat;
+    background-size: contain; */
+    min-height: 780px;
+  }
+
+  /* 顶部Tab开始 */
+  .head{
+    height: 1.12rem;
+    margin-bottom: .1875rem;
+    background-image: url(../images/topheadNew.png);
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    }
+
+    .head h1{
+        margin-top: .15rem;
+        margin-bottom: .075rem;
+        display: flex;
+        justify-content: center;
+        color: #fff;
+        font-size: .375rem;
+    }
+
+    .head ul{
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        
+    }
+
+    .head ul a{
+        float: left;
+        width: 1.625rem;
+        text-align: center;
+        font-size: .2rem;
+        color: #fff;
+    }
+
+    .head ul a:hover{
+        color: #20bcfc;
+    }
+  /* 顶部Tab结束 */
+
+
+  /* 中心盒子开始 */
+  .column{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: .5rem;
+    width: 22.125rem;
+    height: 10.25rem;
+    background-image: url(../images/yingjigongchengBox.png);
+    background-size: cover;
+  }
+
+  .yingjiMsg{
+    overflow-y: auto;
+    padding: .25rem;
+  }
+
+  .yingjiMsg::-webkit-scrollbar{
+    -webkit-appearance: none;
+}
+
+.yingjiMsg::-webkit-scrollbar-thumb{
+    background-color: #006cff;
+}
+
+.yingjiMsg::-webkit-scrollbar-track{
+    border: 1px solid #006cff;
+    background-color: #062d82;
+}
+
+.yingjiMsgTitle h3{
+  padding-left: .25rem;
+  background-image: url(../images/yingjiRedBox.png);
+  background-size: cover;
+  width: 2.3rem;
+  height: 0.4625rem;
+  line-height: 0.4625rem;
+  font-size: .25rem;
+}
+
+.selectDate{
+  display: flex;
+  justify-content: space-between;
+  width: 22.125rem;
+  height: .75rem;
+  /* line-height: .75rem; */
+  background-image: url(../images/yingjiDateTab.png);
+  background-size: cover;
+}
+
+.selectDate .left{
+  display: flex;
+}
+
+.selectDate form{
+  display: flex;
+  justify-content: space-around;
+  margin-top: .1875rem;
+  margin-left: .375rem;
+  width: 5rem;
+  height: .5rem;
+  line-height: .375rem;
+  background-color: #002796;
+  border: solid 1px #20bcfc;
+  border-radius: .2375rem;
+}
+
+.selectDate form select{
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  font-size: .225rem;
+  color: #fff;
+}
+
+.search .searchBox{
+  line-height: .3rem;
+  border: none;
+  outline: none;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.search .searchBox::placeholder{
+  color: #fff;
+}
+
+.searchBtn{
+  margin-top: .1125rem;
+  width: .25rem;
+  height: .25rem;
+  background-image: url(../images/searchicon.png);
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  cursor: pointer;
+}
+
+.selectDate .right #add{
+  margin-top: .1875rem;
+  margin-right: .625rem;
+  width: 1.1875rem;
+  height: .4125rem;
+  border: none;
+  color: #fff;
+  background-image: url(../images/xiangqing.png);
+  background-size: cover;
+  background-color:rgba(255, 255, 255, 0);
+  outline: none;
+}
+
+.yingjiMsg .msgBox{
+  display: flex;
+  padding: .25rem .125rem;
+  width: 20.9375rem;
+  height: 2.675rem;
+  background-image: url(../images/msgBox.png);
+  background-size: cover;
+}
+
+.addMsg{
+  display: none;
+  /* position: absolute;
+  top: 3.125rem;
+  right: 1.25rem; */
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  width: 11.425rem;
+  height: 8.7125rem;
+  z-index: 999;
+  background-color: #fff;
+  border-radius: .1375rem;
+}
+
+.addMsg .top h3{
+  font-weight: 400;
+  font-size: .25rem;
+  color: #222;
+}
+
+.addMsg form{
+  margin-bottom: .125rem;
+}
+
+.addMsg #addName{
+  width: 5.9375rem;
+  height: .4125rem;
+  border-radius: .075rem;
+  background-color: #e8e8e8;
+  border: none;
+}
+
+.addMsg #addDate,#addYushui,#addShuiwei,#addKurong{
+  width: 2.75rem;
+  height: .4125rem;
+  border-radius: .075rem;
+  background-color: #e8e8e8;
+  border: none;
+}
+
+.addMsg #addDetail{
+  display: flex;
+  flex-direction: column;
+  width: 10.9125rem;
+  height: 2.5625rem;
+  margin-bottom: .1875rem;
+}
+
+#addDetail h4{
+  padding-left: .125rem;
+  height: .4375rem;
+  line-height: .4375rem;
+  font-size: .225rem;
+  font-weight: 400;
+  color: #222;
+  background-color: #e8e8e8;
+  border-radius: .075rem .075rem 0 0;
+}
+
+#addDetail textarea{
+  padding: .15rem;
+  border: 1px solid #e8e8e8;
+  font-size: .2rem;
+}
+
+#addHKsign h4{
+  margin-right: .25rem;
+  color: #222;
+  font-size: .225rem;
+  font-weight: 400;
+}
+
+#addHKsign input{
+  margin-right: .5rem;
+  margin-top: .05rem;
+  width: .225rem;
+  height: .225rem;
+}
+#level1{
+  width: .85rem;
+  height: .3rem;
+  color: #fff;
+  text-align: center;
+  background-color: red;
+  font-size: .2rem;
+  border-radius: .25rem;
+}
+
+#level2{
+  width: .85rem;
+  height: .3rem;
+  color: #fff;
+  text-align: center;
+  background-color: orange;
+  font-size: .2rem;
+  border-radius: .25rem;
+}
+
+#level3{
+  width: .85rem;
+  height: .3rem;
+  color: #fff;
+  text-align: center;
+  background-color: yellow;
+  font-size: .2rem;
+  border-radius: .25rem;
+}
+
+#level4{
+  width: .85rem;
+  height: .3rem;
+  color: #fff;
+  text-align: center;
+  background-color: skyblue;
+  font-size: .2rem;
+  border-radius: .25rem;
+}
+
+.addMsg .bottom h4{
+  margin-bottom: .125rem;
+  font-size: .225rem;
+  font-weight: 400;
+  color: #222;
+}
+
+.addMsg .bottom input{
+  margin-bottom: .125rem;
+  width: 8.75rem;
+  height: .4375rem;
+  border: none;
+  border-radius: .1125rem;
+  background-color: #f8f8f8;
+}
+
+.addMsg .bottom select{
+  width: .95rem;
+  height: .3rem;
+  text-align: center;
+  border-radius: .15rem;
+}
+
+.msgName{
+  margin-right: .625rem;
+  width: 3.75rem;
+}
+
+.msgName h4{
+  width: 3.5625rem;
+  height: .375rem;
+  font-size: .2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.msgName ul{
+  width: 3.75rem;
+  height: 1.625rem;
+}
+
+.msgName ul li{
+  width: 3.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.msgName ul i{
+  font-size: .15rem;
+  color: #fff;
+}
+
+.msgBox{
+  margin-bottom: .1875rem;
+}
+
+.msgBox .detail{
+  margin-right: .5rem;
+  width: 2.875rem;
+  height: 1.75rem;
+}
+
+.msgBox .detail h4{
+  margin-bottom: .375rem;
+  font-size: .2rem;
+}
+
+.msgBox .detail p{
+  width: 2.875rem;
+  height: 1.375rem;
+  font-size: .175rem;
+  overflow: auto;
+}
+
+.detail p::-webkit-scrollbar{
+  -webkit-appearance: none;
+}
+
+.detail p::-webkit-scrollbar-thumb{
+  background-color: #006cff;
+}
+
+.detail p::-webkit-scrollbar-track{
+  border: 1px solid #006cff;
+  background-color: #062d82;
+}
+
+.msgBox .xiangyingLevel{
+  display: flex;
+  text-align: center;
+  margin-right: .625rem;
+  width: 3.25rem;
+  height: 1.875rem;
+}   
+
+.msgBox .xiangyingLevel img{
+  width: 1rem;
+  height: .25rem;
+}
+
+.xiangyingLevel .company{
+  width: 1.5rem;
+}
+
+.xiangyingLevel .company h3{
+  font-size: .5rem;
+  line-height: .625rem;
+}
+
+.xiangyingLevel .level p{
+  font-size: .4rem;
+  color: #0096ff;
+  margin-bottom: .125rem;
+}
+
+.xiangyingLevel .level h3{
+  width: 1.875rem;
+  height: .8125rem;
+  line-height: .8125rem;
+  background-color: #ffb400;
+  font-size: .625rem;
+  border-radius: 13px;
+}
+
+.related{
+  width: 8.875rem;
+}
+
+.related .top{
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.related .top h4{
+  font-size: .2rem;
+}
+
+.related .top a{
+  display: inline-block;
+  width: 1rem;
+  height: .375rem;
+  line-height: .375rem;
+  font-size: .2rem;
+  text-align: center;
+  background-image: url(../images/xiangqing.png);
+  background-size: cover;
+}
+
+.yingjiMsg .msgBox .related .danwei{
+  display: flex;
+  border: 1px solid #0096ff;
+  border-radius: 8px 8px 0 0;
+}
+
+.yingjiMsg .msgBox .related .danwei .lv{
+  width: 2.2125rem;
+  height: 1.8125rem;
+}
+
+.yingjiMsg .msgBox .related .danwei .lv h4{     
+  text-align: center;
+  font-size: .175rem;
+}
+
+.yingjiMsg .msgBox .related .danwei .danweiDetail{
+  width: 2.2125rem;
+  height: 1.5rem;
+  line-height: .3rem;
+  text-align: center;
+  background-image: url(../images/table.png);
+  background-size: cover;
+  border-bottom: 1px solid #009cff;
+}
+  /* 中心盒子结束 */

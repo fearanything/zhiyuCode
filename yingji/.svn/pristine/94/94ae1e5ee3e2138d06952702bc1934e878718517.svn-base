@@ -1,0 +1,261 @@
+package com.fh.entity.backend;
+
+import java.util.List;
+
+/** 
+ * 说明：整改信息 实体类
+ * 创建人：FH Q313596790
+ * 创建时间：2023-06-21
+ */
+public class RectifyInfo{ 
+	private String RECTIFY_ID;			//整改信息id
+	private String ORG_ID;			//组织结构
+	private int SORT;				//顺序
+	private int ISDEL;				//删除
+	private String CREATER;			//创建人
+	private String CREATE_DATE;			//创建时间
+	private String MODIFYER;			//修改人
+	private String MODIFY_DATE;			//修改时间
+	private String FILE_CODE;			//文件编号
+	private String PROJECT_NAME;			//项目名称
+	private String IMG_URL;			//图片
+	private String HIDDEN_DANGER_INFO;			//隐患情况
+	private String RECTIFY_MEASURES;			//整改措施
+	private String HIDDEN_DANGER_CLASSIFY;			//隐患类别
+	private String HIDDEN_DANGER_LEVEL;			//隐患级别
+	private String HIDDEN_DANGER_FACTOR;			//隐患因素
+	private String IS_SUBMITE;			//是否提交
+	private String IS_COMPLETE;			//是否完成
+	private String COMPLETE_TIME;			//完成时间
+	private String PERSON_RESPONSIBLE;			//责任人
+	private String RECTIFY_INVESTMENT;			//整改投入（元）
+	private String PLAN_COMPLETE_TIME;			//计划完成时间
+	private String COMMIT_TIME;			//发现时间
+	private String YEAR;			//年
+	private String MONTH;			//月
+	private String DAY;			//日
+	private String QUARTER;			//季度
+	private String REMARK;			//备注
+
+	private String RECTIFY_STAGE;	//备注
+	private String REPORTING_UNIT;	//填报单位
+	private String REPORTING_PERSON;	//填报人
+	private String REPORTING_FILE;	//文件
+	private String RECTIFYINFO_TIME;//整改期限
+	private String RECTIFYINFO_AREA;//区域
+	private String RECTIFYINFO_NUMBER;//流水号
+
+	public String getRECTIFY_ID() {
+		return RECTIFY_ID;
+	}
+	public void setRECTIFY_ID(String RECTIFY_ID) {
+		this.RECTIFY_ID = RECTIFY_ID;
+	}
+	public String getORG_ID() {
+		return ORG_ID;
+	}
+	public void setORG_ID(String ORG_ID) {
+		this.ORG_ID = ORG_ID;
+	}
+	public int getSORT() {
+		return SORT;
+	}
+	public void setSORT(int SORT) {
+		this.SORT = SORT;
+	}
+	public int getISDEL() {
+		return ISDEL;
+	}
+	public void setISDEL(int ISDEL) {
+		this.ISDEL = ISDEL;
+	}
+	public String getCREATER() {
+		return CREATER;
+	}
+	public void setCREATER(String CREATER) {
+		this.CREATER = CREATER;
+	}
+	public String getCREATE_DATE() {
+		return CREATE_DATE;
+	}
+	public void setCREATE_DATE(String CREATE_DATE) {
+		this.CREATE_DATE = CREATE_DATE;
+	}
+	public String getMODIFYER() {
+		return MODIFYER;
+	}
+	public void setMODIFYER(String MODIFYER) {
+		this.MODIFYER = MODIFYER;
+	}
+	public String getMODIFY_DATE() {
+		return MODIFY_DATE;
+	}
+	public void setMODIFY_DATE(String MODIFY_DATE) {
+		this.MODIFY_DATE = MODIFY_DATE;
+	}
+	public String getFILE_CODE() {
+		return FILE_CODE;
+	}
+	public void setFILE_CODE(String FILE_CODE) {
+		this.FILE_CODE = FILE_CODE;
+	}
+	public String getIMG_URL() {
+		return IMG_URL;
+	}
+	public void setIMG_URL(String iMG_URL) {
+		IMG_URL = iMG_URL;
+	}
+	public String getHIDDEN_DANGER_INFO() {
+		return HIDDEN_DANGER_INFO;
+	}
+	public void setHIDDEN_DANGER_INFO(String HIDDEN_DANGER_INFO) {
+		this.HIDDEN_DANGER_INFO = HIDDEN_DANGER_INFO;
+	}
+	public String getRECTIFY_MEASURES() {
+		return RECTIFY_MEASURES;
+	}
+	public void setRECTIFY_MEASURES(String RECTIFY_MEASURES) {
+		this.RECTIFY_MEASURES = RECTIFY_MEASURES;
+	}
+	public String getHIDDEN_DANGER_CLASSIFY() {
+		return HIDDEN_DANGER_CLASSIFY;
+	}
+	public void setHIDDEN_DANGER_CLASSIFY(String HIDDEN_DANGER_CLASSIFY) {
+		this.HIDDEN_DANGER_CLASSIFY = HIDDEN_DANGER_CLASSIFY;
+	}
+	public String getHIDDEN_DANGER_LEVEL() {
+		return HIDDEN_DANGER_LEVEL;
+	}
+	public void setHIDDEN_DANGER_LEVEL(String HIDDEN_DANGER_LEVEL) {
+		this.HIDDEN_DANGER_LEVEL = HIDDEN_DANGER_LEVEL;
+	}
+	public String getHIDDEN_DANGER_FACTOR() {
+		return HIDDEN_DANGER_FACTOR;
+	}
+	public void setHIDDEN_DANGER_FACTOR(String HIDDEN_DANGER_FACTOR) {
+		this.HIDDEN_DANGER_FACTOR = HIDDEN_DANGER_FACTOR;
+	}
+	public String getIS_COMPLETE() {
+		return IS_COMPLETE;
+	}
+	public void setIS_COMPLETE(String IS_COMPLETE) {
+		this.IS_COMPLETE = IS_COMPLETE;
+	}
+	public String getCOMPLETE_TIME() {
+		return COMPLETE_TIME;
+	}
+	public void setCOMPLETE_TIME(String COMPLETE_TIME) {
+		this.COMPLETE_TIME = COMPLETE_TIME;
+	}
+	public String getPERSON_RESPONSIBLE() {
+		return PERSON_RESPONSIBLE;
+	}
+	public void setPERSON_RESPONSIBLE(String PERSON_RESPONSIBLE) {
+		this.PERSON_RESPONSIBLE = PERSON_RESPONSIBLE;
+	}
+	public String getRECTIFY_INVESTMENT() {
+		return RECTIFY_INVESTMENT;
+	}
+	public void setRECTIFY_INVESTMENT(String RECTIFY_INVESTMENT) {
+		this.RECTIFY_INVESTMENT = RECTIFY_INVESTMENT;
+	}
+	public String getPLAN_COMPLETE_TIME() {
+		return PLAN_COMPLETE_TIME;
+	}
+	public void setPLAN_COMPLETE_TIME(String pLAN_COMPLETE_TIME) {
+		PLAN_COMPLETE_TIME = pLAN_COMPLETE_TIME;
+	}
+	public String getCOMMIT_TIME() {
+		return COMMIT_TIME;
+	}
+	public void setCOMMIT_TIME(String COMMIT_TIME) {
+		this.COMMIT_TIME = COMMIT_TIME;
+	}
+	public String getYEAR() {
+		return YEAR;
+	}
+	public void setYEAR(String YEAR) {
+		this.YEAR = YEAR;
+	}
+	public String getMONTH() {
+		return MONTH;
+	}
+	public void setMONTH(String MONTH) {
+		this.MONTH = MONTH;
+	}
+	public String getDAY() {
+		return DAY;
+	}
+	public void setDAY(String DAY) {
+		this.DAY = DAY;
+	}
+	public String getQUARTER() {
+		return QUARTER;
+	}
+	public void setQUARTER(String QUARTER) {
+		this.QUARTER = QUARTER;
+	}
+	public String getREMARK() {
+		return REMARK;
+	}
+	public void setREMARK(String rEMARK) {
+		REMARK = rEMARK;
+	}
+	public String getPROJECT_NAME() {
+		return PROJECT_NAME;
+	}
+	public void setPROJECT_NAME(String pROJECT_NAME) {
+		PROJECT_NAME = pROJECT_NAME;
+	}
+	public String getRECTIFY_STAGE() {
+		return RECTIFY_STAGE;
+	}
+	public void setRECTIFY_STAGE(String RECTIFY_STAGE) {
+		RECTIFY_STAGE = RECTIFY_STAGE;
+	}
+	public String getREPORTING_UNIT() {
+		return REPORTING_UNIT;
+	}
+	public void setREPORTING_UNIT(String REPORTING_UNIT) {
+		REPORTING_UNIT = REPORTING_UNIT;
+	}
+	public String getREPORTING_PERSON() {
+		return REPORTING_PERSON;
+	}
+	public void setREPORTING_PERSON(String REPORTING_PERSON) {
+		REPORTING_PERSON = REPORTING_PERSON;
+	}
+	public String getREPORTING_FILE() {
+		return REPORTING_FILE;
+	}
+	public void setREPORTING_FILE(String REPORTING_FILE) {
+		REPORTING_FILE = REPORTING_FILE;
+	}
+	public String getRECTIFYINFO_TIME() {
+		return RECTIFYINFO_TIME;
+	}
+	public void setRECTIFYINFO_TIME(String RECTIFYINFO_TIME) {
+		RECTIFYINFO_TIME = RECTIFYINFO_TIME;
+	}
+
+	public String getIS_SUBMITE() {
+		return IS_SUBMITE;
+	}
+	public void setIS_SUBMITE(String iS_SUBMITE) {
+		IS_SUBMITE = iS_SUBMITE;
+	}
+
+	public String getRECTIFYINFO_AREA() {
+		return RECTIFYINFO_AREA;
+	}
+	public void setRECTIFYINFO_AREA(String RECTIFYINFO_AREA) {
+		RECTIFYINFO_AREA = RECTIFYINFO_AREA;
+	}
+	public String getRECTIFYINFO_NUMBER() {
+		return RECTIFYINFO_NUMBER;
+	}
+	public void setRECTIFYINFO_NUMBER(String RECTIFYINFO_NUMBER) {
+		RECTIFYINFO_NUMBER = RECTIFYINFO_NUMBER;
+	}
+
+}

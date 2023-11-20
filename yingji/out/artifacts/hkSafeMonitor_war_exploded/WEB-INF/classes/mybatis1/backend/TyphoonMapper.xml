@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TyphoonMapper">
+
+	<resultMap type="Typhoon" id="typhoonResultMap">
+		<result column="TYPHOON_ID" property="TYPHOON_ID"/>
+		<result column="TYPHOON_YEAR" property="TYPHOON_YEAR"/>
+		<result column="TYPHOON_NO" property="TYPHOON_NO"/>
+		<result column="TYPHOON_NAME" property="TYPHOON_NAME"/>
+		<result column="TYPHOON_REMARK" property="TYPHOON_REMARK"/>
+		<result column="IS_NOW" property="IS_NOW"/>
+		<result column="TYPHOON_DUTY" property="TYPHOON_DUTY"/>
+		<result column="TYPHOON_TEL" property="TYPHOON_TEL"/>
+		<result column="SORT" property="SORT"/>
+		<result column="ISDEL" property="ISDEL"/>
+		<result column="CREATER" property="CREATER"/>
+		<result column="CREATE_DATE" property="CREATE_DATE"/>
+		<result column="MODIFYER" property="MODIFYER"/>
+		<result column="MODIFY_DATE" property="MODIFY_DATE"/>
+	</resultMap>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		M_TYPHOON
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+         TYPHOON_ID,
+         TYPHOON_YEAR,
+         TYPHOON_NO,
+         TYPHOON_NAME,
+         TYPHOON_REMARK,
+         IS_NOW,
+         TYPHOON_DUTY,
+         TYPHOON_TEL,
+         SORT,
+         ISDEL,
+         CREATER,
+         CREATE_DATE,
+         MODIFYER,
+         MODIFY_DATE
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+         #{TYPHOON_ID},
+         #{TYPHOON_YEAR},
+         #{TYPHOON_NO},
+         #{TYPHOON_NAME},
+         #{TYPHOON_REMARK},
+         #{IS_NOW},
+         #{TYPHOON_DUTY},
+         #{TYPHOON_TEL},
+         #{SORT},
+         #{ISDEL},
+         #{CREATER},
+         #{CREATE_DATE},
+         #{MODIFYER},
+         #{MODIFY_DATE}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 更新台风状态为不是当前-->
+	<delete id="updatestatic" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+		 IS_NOW = '0',
+		 MODIFYER = #{MODIFYER},
+		 MODIFY_DATE = #{MODIFY_DATE}
+	</delete>
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+		 ISDEL = 1,
+		 MODIFYER = #{MODIFYER},
+		 MODIFY_DATE = #{MODIFY_DATE}
+		where 
+			TYPHOON_ID = #{TYPHOON_ID}
+	</delete>
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+         TYPHOON_YEAR = #{TYPHOON_YEAR},
+         TYPHOON_NO = #{TYPHOON_NO},
+         TYPHOON_NAME = #{TYPHOON_NAME},
+         TYPHOON_REMARK = #{TYPHOON_REMARK},
+         IS_NOW=#{IS_NOW},
+         TYPHOON_DUTY=#{TYPHOON_DUTY},
+         TYPHOON_TEL=#{TYPHOON_TEL},
+	     MODIFYER = #{MODIFYER},
+		 MODIFY_DATE = #{MODIFY_DATE}
+	        where 
+				TYPHOON_ID = #{TYPHOON_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where ISDEL =0 and
+			TYPHOON_ID = #{TYPHOON_ID}
+	</select>
+	<!-- 通过ID获取数据 -->
+	<select id="findByName" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where ISDEL =0 and
+			TYPHOON_NAME = #{TYPHOON_NAME}
+	</select>
+	<!-- 获取当前台风 -->
+	<select id="findByNow" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where ISDEL =0 and IS_NOW='1'
+	</select>
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where ISDEL =0 
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+				<!--	根据需求自己加检索条件-->
+					TYPHOON_YEAR LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					TYPHOON_NO CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+					or 
+					TYPHOON_NAME CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				
+				)
+		</if>
+		<if test="pd.lastStart != null and pd.lastStart != ''">
+			and CREATE_DATE &gt;= #{pd.lastStart}
+		</if>
+		<if test="pd.lastEnd != null and pd.lastEnd != ''">
+			and CREATE_DATE &lt;= #{pd.lastEnd}
+		</if>
+		order by CREATE_DATE DESC
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where ISDEL =0 
+		order by CREATE_DATE DESC
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		update
+		<include refid="tableName"></include>
+		set 
+		 ISDEL = 1
+		where 
+			TYPHOON_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- 查询明细总数 -->
+	<select id="findCount" parameterType="pd" resultType="pd">
+		select
+			count(*) zs
+		from 
+			<include refid="tableName"></include>
+		where ISDEL =0 
+	</select>
+
+</mapper>

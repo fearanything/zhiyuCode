@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="M_fengxianMapper">
+
+	<resultMap type="M_fengxian" id="m_fengxianResultMap">
+		<result column="FENGXIAN_ID" property="FENGXIAN_ID"/>
+		<result column="ISDEL" property="ISDEL"/>
+		<result column="SORT" property="SORT"/>
+		<result column="CREATER" property="CREATER"/>
+		<result column="CREATE_DATE" property="CREATE_DATE"/>
+		<result column="MODIFYER" property="MODIFYER"/>
+		<result column="MODIFY_DATE" property="MODIFY_DATE"/>
+		<result column="SECOND_UNIT" property="SECOND_UNIT"/>
+		<result column="THIRD_UNIT" property="THIRD_UNIT"/>
+		<result column="FENGXIAN_ADDRESS" property="FENGXIAN_ADDRESS"/>
+		<result column="FENGXIAN_AREA" property="FENGXIAN_AREA"/>
+		<result column="FENGXIAN_HAZARD" property="FENGXIAN_HAZARD"/>
+		<result column="FENGXIAN_ACCIDENT_TYPE" property="FENGXIAN_ACCIDENT_TYPE"/>
+		<result column="FENGXIAN_LEVEL" property="FENGXIAN_LEVEL"/>
+		<result column="CONTROL_MEASURE" property="CONTROL_MEASURE"/>
+		<result column="EMERGENCY_MEASURE" property="EMERGENCY_MEASURE"/>
+		<result column="HAZARD_DURATION" property="HAZARD_DURATION"/>
+		<result column="MANAGEMENT_LEVEL" property="MANAGEMENT_LEVEL"/>
+		<result column="RESPONSIBILITY_UNIT" property="RESPONSIBILITY_UNIT"/>
+		<result column="RESPONSIBILITY_PEOPLE" property="RESPONSIBILITY_PEOPLE"/>
+		<result column="RESPONSIBILITY_PHONE" property="RESPONSIBILITY_PHONE"/>
+		<result column="RECOGNITION_TIME" property="RECOGNITION_TIME"/>
+		<result column="START_TIME" property="START_TIME"/>
+		<result column="END_TIME" property="END_TIME"/>
+	</resultMap>
+
+	<!--表名 -->
+	<sql id="tableName">
+		M_FENGXIAN
+	</sql>
+
+	<!-- 字段 -->
+	<sql id="Field">
+		FENGXIAN_ID,
+         ISDEL,
+         SORT,
+         CREATER,
+         CREATE_DATE,
+         MODIFYER,
+         MODIFY_DATE,
+         SECOND_UNIT,
+         THIRD_UNIT,
+         FENGXIAN_ADDRESS,
+         FENGXIAN_AREA,
+         FENGXIAN_HAZARD,
+         FENGXIAN_ACCIDENT_TYPE,
+         FENGXIAN_LEVEL,
+         CONTROL_MEASURE,
+         EMERGENCY_MEASURE,
+         HAZARD_DURATION,
+         MANAGEMENT_LEVEL,
+         RESPONSIBILITY_UNIT,
+         RESPONSIBILITY_PEOPLE,
+         RESPONSIBILITY_PHONE,
+         RECOGNITION_TIME,
+         START_TIME,
+		 END_TIME
+	</sql>
+
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{FENGXIAN_ID},
+		#{ISDEL},
+		#{SORT},
+		#{CREATER},
+		#{CREATE_DATE},
+		#{MODIFYER},
+		#{MODIFY_DATE},
+		#{SECOND_UNIT},
+		#{THIRD_UNIT},
+		#{FENGXIAN_ADDRESS},
+		#{FENGXIAN_AREA},
+		#{FENGXIAN_HAZARD},
+		#{FENGXIAN_ACCIDENT_TYPE},
+		#{FENGXIAN_LEVEL},
+		#{CONTROL_MEASURE},
+		#{EMERGENCY_MEASURE},
+		#{HAZARD_DURATION},
+		#{MANAGEMENT_LEVEL},
+		#{RESPONSIBILITY_UNIT},
+		#{RESPONSIBILITY_PEOPLE},
+		#{RESPONSIBILITY_PHONE},
+		#{RECOGNITION_TIME},
+		#{START_TIME},
+		#{END_TIME}
+	</sql>
+
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into
+		<include refid="tableName"></include>
+		(
+		<include refid="Field"></include>
+		) values (
+		<include refid="FieldValue"></include>
+		)
+	</insert>
+
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		ISDEL = 1,
+		MODIFYER = #{MODIFYER},
+		MODIFY_DATE = #{MODIFY_DATE}
+		where
+		FENGXIAN_ID = #{FENGXIAN_ID}
+	</delete>
+
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		MODIFYER = #{MODIFYER},
+		MODIFY_DATE = #{MODIFY_DATE},
+		SECOND_UNIT = #{SECOND_UNIT},
+		THIRD_UNIT = #{THIRD_UNIT},
+		FENGXIAN_ADDRESS = #{FENGXIAN_ADDRESS},
+		FENGXIAN_AREA = #{FENGXIAN_AREA},
+		FENGXIAN_HAZARD = #{FENGXIAN_HAZARD},
+		FENGXIAN_ACCIDENT_TYPE = #{FENGXIAN_ACCIDENT_TYPE},
+		FENGXIAN_LEVEL = #{FENGXIAN_LEVEL},
+		CONTROL_MEASURE = #{CONTROL_MEASURE},
+		EMERGENCY_MEASURE = #{EMERGENCY_MEASURE},
+		HAZARD_DURATION = #{HAZARD_DURATION},
+		MANAGEMENT_LEVEL = #{MANAGEMENT_LEVEL},
+		RESPONSIBILITY_UNIT = #{RESPONSIBILITY_UNIT},
+		RESPONSIBILITY_PEOPLE = #{RESPONSIBILITY_PEOPLE},
+		RESPONSIBILITY_PHONE = #{RESPONSIBILITY_PHONE},
+		RECOGNITION_TIME = #{RECOGNITION_TIME},
+		START_TIME = #{START_TIME},
+		END_TIME = #{END_TIME}
+		where
+		FENGXIAN_ID = #{FENGXIAN_ID}
+	</update>
+
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where ISDEL =0 and
+		FENGXIAN_ID = #{FENGXIAN_ID}
+<!--		<if test="parentId!= null and parentId != ''">-->
+<!--			and-->
+<!--			fengxian_accident_type in (SELECT bianma from sys_dictionaries where PARENT_ID = #{parentId} )-->
+<!--		</if>-->
+	</select>
+
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where ISDEL =0
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			(
+			<!--	根据需求自己加检索条件-->
+			FENGXIAN_ADDRESS LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+			or
+			FENGXIAN_AREA LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+
+			)
+		</if>
+		<if test="pd.SECOND_UNIT!= null and pd.SECOND_UNIT != ''">
+			and
+				SECOND_UNIT = #{pd.SECOND_UNIT}
+		</if>
+		<if test="pd.THIRD_UNIT!= null and pd.THIRD_UNIT != ''">
+			and
+			THIRD_UNIT = #{pd.THIRD_UNIT}
+		</if>
+		<if test="pd.FENGXIAN_AREA!= null and pd.FENGXIAN_AREA != ''">
+			and
+			FENGXIAN_AREA = #{pd.FENGXIAN_AREA}
+		</if>
+		<if test="pd.FENGXIAN_LEVEL!= null and pd.FENGXIAN_LEVEL != ''">
+			and
+			FENGXIAN_LEVEL = #{pd.FENGXIAN_LEVEL}
+		</if>
+		<if test="pd.FENGXIAN_ACCIDENT_TYPE!= null and pd.FENGXIAN_ACCIDENT_TYPE != ''">
+			and
+			FENGXIAN_ACCIDENT_TYPE = #{pd.FENGXIAN_ACCIDENT_TYPE}
+		</if>
+		/*防止读取到重复的数据*/
+		<if test="pd.FENGXIAN_HAZARD_GROUP != null and pd.FENGXIAN_HAZARD_GROUP != ''">
+			GROUP BY FENGXIAN_ADDRESS
+		</if>
+		/*防止读取到重复的数据*/
+		<if test="pd.HAZARD_DURATION_GROUP != null and pd.HAZARD_DURATION_GROUP != ''">
+			GROUP BY HAZARD_DURATION
+		</if>
+		order by IFNULL(MODIFY_DATE,CREATE_DATE) desc
+	</select>
+
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		a.FENGXIAN_ID,
+		a.ISDEL,
+		a.SORT,
+		a.CREATER,
+		a.CREATE_DATE,
+		a.MODIFYER,
+		a.MODIFY_DATE,
+		a.SECOND_UNIT,
+		a.THIRD_UNIT,
+		a.FENGXIAN_ADDRESS,
+		a.FENGXIAN_AREA,
+		a.FENGXIAN_HAZARD,
+		a.FENGXIAN_ACCIDENT_TYPE,
+		a.FENGXIAN_LEVEL,
+		a.CONTROL_MEASURE,
+		a.EMERGENCY_MEASURE,
+		a.HAZARD_DURATION,
+		a.MANAGEMENT_LEVEL,
+		a.RESPONSIBILITY_UNIT,
+		a.RESPONSIBILITY_PEOPLE,
+		a.RESPONSIBILITY_PHONE,
+		a.RECOGNITION_TIME,
+		a.START_TIME,
+		a.END_TIME
+		from
+		<include refid="tableName"></include> a
+		left join m_org b on a.second_unit = b.org_id
+		where a.ISDEL =0
+		<if test="ORG_ID!= null and ORG_ID != ''">
+		and
+			a.second_unit = #{ORG_ID}
+		</if>
+		<if test="THIRD_UNIT!= null and THIRD_UNIT != ''">
+			and
+			a.THIRD_UNIT = #{THIRD_UNIT}
+		</if>
+		order by IFNULL(a.MODIFY_DATE,a.CREATE_DATE) desc
+
+	</select>
+
+	<!-- 风险管理点击后的表单 -->
+	<select id="listByAreaAndLevel" parameterType="pd" resultType="pd">
+		select
+		a.*
+		from
+		<include refid="tableName"></include> a
+		LEFT JOIN m_org c on c.org_id = a.second_unit
+		LEFT JOIN sys_dictionaries b on a.fengxian_area = b.dictionaries_id
+		where a.isdel = 0
+		<if test="NAME != NULL and NAME != ''">
+			and
+			b.name = #{NAME}
+		</if>
+		<if test="fengxian_level != NULL and fengxian_level != ''">
+			and
+			b.fengxian_level = #{FENGXIAN_LEVEL}
+		</if>
+		<if test="ORG_ID != NULL and ORG_ID != ''">
+			and
+			c.ORG_ID = #{ORG_ID}
+		</if>
+		order by IFNULL(CREATE_DATE,MODIFY_DATE)
+	</select>
+
+	<!--按地区划分统计风险点-->
+	<select id="listFengXianByArea" parameterType="pd" resultType="pd">
+		select
+		b.name,
+		COUNT(*) as '全部风险点',
+		IFNULL(sum(case when fengxian_level = '007001' then 1 else 0 end),0) as '重大风险',
+		IFNULL(sum(case when fengxian_level = '007002' then 1 else 0 end),0) as '较大风险',
+		IFNULL(sum(case when fengxian_level = '007003' then 1 else 0 end),0) as '一般风险',
+		IFNULL(sum(case when fengxian_level = '007004' then 1 else 0 end),0) as '低风险',
+		b.`DICTIONARIES_ID`
+		from
+		<include refid="tableName"></include> a
+		LEFT JOIN sys_dictionaries b on a.fengxian_area = b.`DICTIONARIES_ID`
+		WHERE a.isdel=0
+		<if test="DICTIONARIES_ID!= null and DICTIONARIES_ID != ''">
+			and b.DICTIONARIES_ID = #{DICTIONARIES_ID}
+		</if>
+		GROUP BY b.`NAME`
+	</select>
+
+	<!--驾驶舱顶部统计所有风险点-->
+	<select id="tongJiFengXian" parameterType="pd" resultType="pd">
+		select
+		COUNT(*) as 'all',
+		IFNULL(sum(case when fengxian_level = '007001' then 1 else 0 end),0) as 'zd',
+		IFNULL(sum(case when fengxian_level = '007002' then 1 else 0 end),0) as 'jd',
+		IFNULL(sum(case when fengxian_level = '007003' then 1 else 0 end),0) as 'yb',
+		IFNULL(sum(case when fengxian_level = '007004' then 1 else 0 end),0) as 'dfx'
+		from
+		<include refid="tableName"></include> a
+		LEFT JOIN m_org c on c.ORG_ID = a.SECOND_UNIT
+		where a.ISDEL = 0
+		<if test="ORG_NAME!= null and ORG_NAME != ''">
+			and c.ORG_NAME = #{ORG_NAME}
+		</if>
+		<if test="ORG_ID!= null and ORG_ID != ''">
+			and a.third_unit = #{ORG_ID}
+		</if>
+		<if test="NOW!= null and NOW != ''">
+			and a.CREATE_DATE = #{NOW}
+		</if>
+	</select>
+
+	<!--驾驶舱右上角统计可能导致的事故类型-->
+	<select id="tongJiAccident" parameterType="pd" resultType="pd">
+		select
+		count(*)as total,b.`NAME`
+		from
+		<include refid="tableName"></include> a
+		LEFT JOIN sys_dictionaries b on a.fengxian_accident_type = b.BIANMA
+		LEFT JOIN m_org c on c.ORG_ID = a.SECOND_UNIT
+		where a.ISDEL = 0
+		<if test="ORG_NAME!= null and ORG_NAME != ''">
+			and c.ORG_NAME = #{ORG_NAME}
+		</if>
+		GROUP BY a.fengxian_accident_type
+	</select>
+
+	<!--驾驶舱右边统计风险等级-->
+	<select id="tongJiFengXianLevel" parameterType="pd" resultType="pd">
+		select
+		count(*)as total,b.`NAME`
+		from
+		<include refid="tableName"></include> a
+		LEFT JOIN sys_dictionaries b on a.fengxian_level = b.BIANMA
+		LEFT JOIN m_org c on c.ORG_ID = a.SECOND_UNIT
+		where a.ISDEL = 0
+		<if test="ORG_NAME!= null and ORG_NAME != ''">
+			and c.ORG_NAME = #{ORG_NAME}
+		</if>
+		GROUP BY a.fengxian_level
+	</select>
+
+	<!--驾驶舱右下角趋势图-->
+	<select id="tongJiFengXianByDate" parameterType="pd" resultType="pd">
+		select
+		count(*)as total
+		from
+		<include refid="tableName"></include> a
+		LEFT JOIN m_org c on c.ORG_ID = a.SECOND_UNIT
+		where a.ISDEL = 0
+		and a.recognition_time &gt; #{before}
+		and a.recognition_time &lt; #{after}
+		<if test="ORG_NAME!= null and ORG_NAME != ''">
+			and c.ORG_NAME = #{ORG_NAME}
+		</if>
+	</select>
+
+	<!--风险二级页面-->
+	<select id="fengXianErJi" parameterType="pd" resultType="pd">
+		select
+		a.*
+		from
+		m_fengxian a
+		left join
+		sys_dictionaries b on a.fengxian_area = b.DICTIONARIES_ID
+		left join
+		m_org c on a.third_unit = b.org_id
+		where
+		a.isdel = 0
+		<if test="THIRD_UNIT!= null and THIRD_UNIT != ''">
+			and a.THIRD_UNIT = #{THIRD_UNIT}
+		</if>
+		<if test="AREA!= null and AREA != ''">
+			and b.`NAME`= #{AREA}
+		</if>
+		<if test="FENGXIAN_ACCIDENT_TYPE!= null and FENGXIAN_ACCIDENT_TYPE != ''">
+			and b.FENGXIAN_ACCIDENT_TYPE = #{FENGXIAN_ACCIDENT_TYPE}
+		</if>
+		<if test="FENGXIAN_LEVEL!= null and FENGXIAN_LEVEL != ''">
+			and b.FENGXIAN_LEVEL = #{FENGXIAN_LEVEL}
+		</if>
+
+	</select>
+
+
+
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		update
+		<include refid="tableName"></include>
+		set
+		ISDEL = 1
+		where
+		FENGXIAN_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询明细总数 -->
+	<select id="findCount" parameterType="pd" resultType="pd">
+		select
+		count(*) zs
+		from
+		<include refid="tableName"></include>
+		where ISDEL =0
+	</select>
+
+</mapper>

@@ -1,0 +1,170 @@
+body {
+  padding-bottom: 10vw;
+  background-color: #f0f0f0;
+}
+header .container {
+  position: relative;
+}
+header .container a {
+  position: absolute;
+  left: -2.6667vw;
+  display: block;
+  width: 2.6667vw;
+  height: 5.3333vw;
+}
+header .container a img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.preview {
+  padding-top: 4.2667vw;
+  position: relative;
+  width: 100%;
+}
+.preview .banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 28.8vw;
+  background-image: url(../img/detail-banner.png);
+  background-size: 100% 100%;
+  z-index: -1;
+}
+.preview .company {
+  margin-left: 9.3333vw;
+  display: flex;
+  align-items: center;
+}
+.preview .company .logo {
+  margin-right: 4.8vw;
+  overflow: hidden;
+  width: 16vw;
+  height: 16vw;
+  border-radius: 50%;
+}
+.preview .company .logo img {
+  width: 100%;
+  height: 100%;
+}
+.preview .company span {
+  font-size: 5.3333vw;
+  color: #fff;
+}
+.preview .detail {
+  padding: 6.6667vw 2.6667vw;
+  margin: 0 auto;
+  margin-top: 2.6667vw;
+  width: 95.2vw;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+.preview .detail .title {
+  display: flex;
+  align-items: center;
+}
+.preview .detail .title img {
+  margin-right: 2.6667vw;
+  width: 4vw;
+}
+.preview .detail .title span {
+  font-size: 4.2667vw;
+}
+.preview .detail .danger-text {
+  width: 100%;
+}
+.preview .detail .danger-text .text {
+  margin-top: 2.6667vw;
+  padding: 5.3333vw 6.6667vw 4.8vw 4vw;
+  box-sizing: border-box;
+  background-color: #fff0f0;
+  border-radius: 6px;
+}
+.preview .detail .danger-text .text p {
+  line-height: 5.3333vw;
+  color: #494949;
+  font-size: 3.7333vw;
+  letter-spacing: 1px;
+  text-indent: 2em;
+}
+.preview .detail .danger-photo {
+  margin-top: 5.3333vw;
+}
+.preview .detail .danger-photo .img {
+  padding: 2.6667vw 4vw;
+  margin-top: 6.6667vw;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+.preview .detail .danger-photo .img img {
+  margin: 0 4vw 4vw 0;
+  width: 21.3333vw;
+}
+.preview .detail .measure .text {
+  margin-top: 2.6667vw;
+  padding: 5.3333vw 6.6667vw 4.8vw 4vw;
+  box-sizing: border-box;
+  background-color: #e9f2ff;
+  border-radius: 6px;
+}
+.preview .detail .measure .text p {
+  line-height: 5.3333vw;
+  color: #494949;
+  font-size: 3.7333vw;
+  letter-spacing: 1px;
+  text-indent: 2em;
+}
+.preview .detail .category,
+.preview .detail .level,
+.preview .detail .factor,
+.preview .detail .isFinish,
+.preview .detail .finish-time {
+  padding: 0 4vw;
+  margin-top: 6.6667vw;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+.preview .detail .category span,
+.preview .detail .level span,
+.preview .detail .factor span,
+.preview .detail .isFinish span,
+.preview .detail .finish-time span {
+  margin-right: 5.3333vw;
+  font-size: 4.2667vw;
+}
+.preview .detail .category i,
+.preview .detail .level i,
+.preview .detail .factor i,
+.preview .detail .isFinish i,
+.preview .detail .finish-time i {
+  font-size: 4.2667vw;
+  color: #494949;
+}
+.preview .detail .btn {
+  margin-top: 13.3333vw;
+  display: flex;
+  justify-content: center;
+}
+.preview .detail .btn .submit-btn {
+  width: 61.3333vw;
+  height: 12.2667vw;
+  border: none;
+  border-radius: 6px;
+  background-color: #0256c8;
+  color: #fff;
+  font-size: 4.8vw;
+}
+.preview .detail .btn .change-btn {
+  margin-left: 4vw;
+  width: 24vw;
+  height: 12.2667vw;
+  border: none;
+  border-radius: 6px;
+  background-color: #cee2ff;
+  color: #494949;
+  font-size: 4.8vw;
+}

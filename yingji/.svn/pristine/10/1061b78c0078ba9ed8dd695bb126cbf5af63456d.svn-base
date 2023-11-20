@@ -1,0 +1,536 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%
+  String path = request.getContextPath();
+  String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="<%=basePath%>">
+
+  <script type="text/javascript" src="static/js/jquery-1.7.2.js"></script>
+  <!-- 树形下拉框start -->
+  <script type="text/javascript" src="plugins/selectZtree/selectTree.js"></script>
+  <script type="text/javascript" src="plugins/selectZtree/framework.js"></script>
+  <link rel="stylesheet" type="text/css" href="plugins/selectZtree/import_fh.css"/>
+  <script type="text/javascript" src="plugins/selectZtree/ztree/ztree.js"></script>
+  <link type="text/css" rel="stylesheet" href="plugins/selectZtree/ztree/ztree.css"></link>
+  <!-- 树形下拉框end -->
+
+  <!-- 下拉框 -->
+  <link rel="stylesheet" href="static/ace/css/chosen.css" />
+  <!-- jsp文件头和头部 -->
+  <%@ include file="../../system/index/top.jsp"%>
+  <!-- 日期框 -->
+  <link rel="stylesheet" href="static/ace/css/datepicker.css" />
+  <!-- 图片展示效果 -->
+  <link rel="stylesheet" href="static/ace/css/colorbox.css" />
+</head>
+<body class="no-skin">
+<!-- /section:basics/navbar.layout -->
+<div class="main-container" id="main-container">
+  <!-- /section:basics/sidebar -->
+  <div class="main-content">
+    <div class="main-content-inner">
+      <div class="page-content">
+        <div class="row">
+          <div class="col-xs-12">
+            <form action="rectifyinfo/${msg}.do" name="Form" id="Form" method="post">
+              <input type="hidden" name="RECTIFY_ID" id="RECTIFY_ID" value="${pd.RECTIFY_ID}"/>
+              <input type="hidden" name="IS_COMPLETE_OLD" id="IS_COMPLETE_OLD" value="${pd.IS_COMPLETE}"/>
+              <input type="hidden" name="REPORTING_FILE" id="REPORTING_FILE" value="${pd.REPORTING_FILE}"/>
+              <input type="hidden" name="IMG_URL" id="IMG_URL" value="${pd.IMG_URL}"/>
+              <input type="hidden" name="HIDDEN_DANGER_CLASSIFY" id="HIDDEN_DANGER_CLASSIFY" value="${pd.HIDDEN_DANGER_CLASSIFY}"/>
+              <input type="hidden" name="HIDDEN_DANGER_LEVEL" id="HIDDEN_DANGER_LEVEL" value="${pd.HIDDEN_DANGER_LEVEL}"/>
+              <input type="hidden" name="HIDDEN_DANGER_FACTOR" id="HIDDEN_DANGER_FACTOR" value="${pd.HIDDEN_DANGER_FACTOR}"/>
+              <input type="hidden" name="ORG_ID" id="ORG_ID" value="${pd.ORG_ID}"/>
+              <input type="hidden" name="IS_SUBMITE" id="IS_SUBMITE" value="${pd.IS_SUBMITE}"/>
+              <input type="hidden" name="PROJECT_NAME" id="PROJECT_NAME" value="${pd.PROJECT_NAME}"/>
+              <input type="hidden" name="RECTIFY_STAGE" id="RECTIFY_STAGE" value="4"/>
+              <input type="hidden" name="RECTIFYINFO_NUMBER" id="RECTIFYINFO_NUMBER" value="${pd.RECTIFYINFO_NUMBER}"/>
+              <div id="zhongxin" style="padding-top: 13px;">
+                <table id="table_report" class="table table-striped table-bordered table-hover">
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">项目名称:</td>
+                    <td>
+                      <c:forEach items="${projectList}" var="map" varStatus="vs">
+                        <c:if test="${map.ORG_ID == pd.PROJECT_NAME}">
+                          ${map.ORG_NAME}
+                        </c:if>
+                      </c:forEach>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width:110px;text-align: right;padding-top: 13px;">组织机构:</td>
+                    <td>
+                      <c:forEach items="${orgList}" var="map" varStatus="vs">
+                        <c:if test="${map.ORG_ID == pd.ORG_ID}">${map.ORG_NAME}</c:if>
+                      </c:forEach>
+                    </td>
+                    <td>
+                      <div class="selectTree" id="selectTree"></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">隐患情况:</td>
+                    <td>
+                      <textarea name="HIDDEN_DANGER_INFO" readonly id="HIDDEN_DANGER_INFO" style="width:98%;" rows="6">${pd.HIDDEN_DANGER_INFO}</textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">文件编号:</td>
+                    <td><input type="text" name="FILE_CODE" readonly id="FILE_CODE" value="${pd.FILE_CODE}" maxlength="100" placeholder="这里输入文件编号" title="文件编号" style="width:98%;"/></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">隐患图片:</td>
+                    <td>
+                      <%-- <textarea name="HIDDEN_DANGER_INFO" id="HIDDEN_DANGER_INFO" style="width:98%;" rows="6">${pd.HIDDEN_DANGER_INFO}</textarea> --%>
+                      <%--                      <input multiple="" class="fileInput" type="file" id="file" name="file" accept="image/png, image/jpeg, image/jpg, image/gif"/>--%>
+                      <c:if test="${not empty pd.IMG_ARR}">
+                        <c:forEach items="${pd.IMG_ARR}" var="img" varStatus="vs">
+                          <img alt="" src="${img}" style="width: 100px;vertical-align: top;">
+                        </c:forEach>
+                      </c:if>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">隐患类别:</td>
+                    <td>
+                      <c:forEach items="${classifyMap}" var="map" varStatus="vs">
+                        <c:if test="${map.key == pd.HIDDEN_DANGER_CLASSIFY}">${map.value}</c:if>
+                      </c:forEach>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">隐患级别:</td>
+                    <td>
+                      <c:forEach items="${levelMap}" var="map" varStatus="vs">
+                        <c:if test="${map.key == pd.HIDDEN_DANGER_LEVEL}">${map.value}</c:if>
+                      </c:forEach>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">隐患因素:</td>
+                    <td>
+                      <c:forEach items="${factorMap}" var="map" varStatus="vs">
+                        <c:if test="${map.key == pd.HIDDEN_DANGER_FACTOR}">${map.value}</c:if>
+                      </c:forEach>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">整改期限:</td>
+                    <td>
+                      <input name="PLAN_COMPLETE_TIME" readonly id="PLAN_COMPLETE_TIME" value="${pd.PLAN_COMPLETE_TIME}" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:98%;" placeholder="计划完成时间" title="计划完成时间"/>
+                    </td>
+                  </tr>
+<%--                  <tr>--%>
+<%--                    <td style="text-align: right;padding-top: 13px;">是否完成:</td>--%>
+<%--                    <td>--%>
+<%--                      <c:if test="${map.key == pd.IS_COMPLETE}">${map.value}</c:if>--%>
+<%--                    </td>--%>
+<%--                  </tr>--%>
+                  <%--二级单位需要填写的第二部分                    --%>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">整改措施:</td>
+                    <td>
+                      <textarea readonly name="RECTIFY_MEASURES" id="RECTIFY_MEASURES" style="width:98%;" rows="6">${pd.RECTIFY_MEASURES}</textarea>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;"><span style="color: red;">*</span>责任单位:</td>
+                    <td>
+                      <c:forEach items="${orgList}" var="map" varStatus="vs">
+                        <c:if test="${map.ORG_ID == pd.RESPONSIBLE_UNIT}">${map.ORG_NAME}</c:if>
+                      </c:forEach>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;"><span style="color: red;">*</span>责任人:</td>
+                    <td><input type="text" readonly name="PERSON_RESPONSIBLE" id="PERSON_RESPONSIBLE" value="${pd.PERSON_RESPONSIBLE}" maxlength="100" placeholder="这里输入责任人" title="责任人" style="width:98%;"/></td>
+                  </tr>
+                  <%--二级单位填写的第三部分                  --%>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;"><span style="color: red;">*</span>完成时间:</td>
+                    <td>
+                      <input class="span10 date-picker" name="COMPLETE_TIME" id="COMPLETE_TIME" value="${pd.COMPLETE_TIME}" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" style="width:98%;" placeholder="完成时间" title="完成时间"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">整改投入(元):</td>
+                    <td><input type="text" name="RECTIFY_INVESTMENT" id="RECTIFY_INVESTMENT" value="${pd.RECTIFY_INVESTMENT}" maxlength="100" placeholder="这里输入整改投入（元）" title="整改投入（元）" style="width:98%;"/></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;"><span style="color: red;">*</span>填报单位:</td>
+                    <td>
+                      <select class="chosen-select form-control" name="REPORTING_UNIT" id="REPORTING_UNIT" data-placeholder="填报单位" style="vertical-align:top;width: 98%;">
+                        <c:forEach items="${orgList}" var="map" varStatus="vs">
+                          <option value="${map.ORG_ID}" <c:if test="${map.ORG_ID == pd.REPORTING_UNIT}">selected</c:if> >${map.ORG_NAME}</option>
+                        </c:forEach>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;"><span style="color: red;">*</span>填报人:</td>
+                    <td><input type="text" name="REPORTING_PERSON" id="REPORTING_PERSON" value="${pd.REPORTING_PERSON}" maxlength="100" placeholder="这里输入填报人" title="责任人" style="width:98%;"/></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: right;padding-top: 13px;">整改文件:</td>
+                    <td>
+                      <%-- <textarea name="HIDDEN_DANGER_INFO" id="HIDDEN_DANGER_INFO" style="width:98%;" rows="6">${pd.HIDDEN_DANGER_INFO}</textarea> --%>
+                      <input multiple="" class="fileInput" type="file" id="id-input-file-3" name="id-input-file-3" accept="image/png, image/jpeg, image/jpg, image/gif"/>
+                        <c:if test="${not empty pd.REPORTING_FILE_ARR}">
+                          <c:forEach items="${pd.REPORTING_FILE_ARR}" var="img" varStatus="vs">
+                            <img alt="" src="${img}" style="width: 100px;vertical-align: top;">
+                          </c:forEach>
+                        </c:if>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;" colspan="10">
+                      <a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+                      <a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div id="zhongxin2" class="center" style="display:none"><br/><br/><br/><br/><br/><img src="static/images/jiazai.gif" /><br/><h4 class="lighter block green">提交中...</h4></div>
+            </form>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.page-content -->
+    </div>
+  </div>
+  <!-- /.main-content -->
+</div>
+<!-- /.main-container -->
+
+
+<!-- 页面底部js¨ -->
+<%@ include file="../../system/index/foot.jsp"%>
+<!-- 下拉框 -->
+<script src="static/ace/js/chosen.jquery.js"></script>
+<!-- 日期框 -->
+<script src="static/ace/js/date-time/bootstrap-datepicker.js"></script>
+<!--提示框-->
+<script type="text/javascript" src="static/js/jquery.tips.js"></script>
+<!-- ace scripts -->
+<script src="static/ace/js/ace/ace.js"></script>
+<!-- 上传控件 -->
+<script src="static/ace/js/ace/elements.fileinput.js"></script>
+<!-- 删除时确认窗口 -->
+<script src="static/ace/js/bootbox.js"></script>
+<!-- 图片展示效果 -->
+<script src="static/ace/js/jquery.colorbox.js"></script>
+<script type="text/javascript">
+  $(top.hangge());
+
+  //图片效果
+  jQuery(function($) {
+    var $overflow = '';
+    var colorbox_params = {
+      rel: 'colorbox',
+      reposition:true,
+      scalePhotos:true,
+      scrolling:false,
+      previous:'<i class="ace-icon fa fa-arrow-left"></i>',
+      next:'<i class="ace-icon fa fa-arrow-right"></i>',
+      close:'&times;',
+      current:'{current} of {total}',
+      maxWidth:'100%',
+      maxHeight:'100%',
+      onOpen:function(){
+        $overflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+      },
+      onClosed:function(){
+        document.body.style.overflow = $overflow;
+      },
+      onComplete:function(){
+        $.colorbox.resize();
+      }
+    };
+
+    $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+    $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
+
+  });
+
+  // 删除图片
+  function delImg(img, thisObj) {
+    var allImg = $("#REPORTING_FILE").val();
+    var result = '';
+
+    // 截断需要删除的图片地址
+    var start = allImg.indexOf(img);
+    if (start == 0) {
+      result = allImg.substr(0,start) + allImg.substr(start + img.length + 1);
+    } else {
+      result = allImg.substr(0,start-1) + allImg.substr(start + img.length);
+    }
+    $("#REPORTING_FILE").val(result);
+
+    // 移除图片元素
+    $(thisObj).parent().parent().find("*").remove();
+  }
+
+  //保存
+  function save(){
+    if($("#COMPLETE_TIME").val()==""){
+      $("#COMPLETE_TIME").tips({
+        side:3,
+        msg:'请输入完成时间',
+        bg:'#AE81FF',
+        time:2
+      });
+      $("#COMPLETE_TIME").focus();
+      return false;
+    }
+    // if($("#RECTIFY_INVESTMENT").val()==""){
+    //   $("#RECTIFY_INVESTMENT").tips({
+    //     side:3,
+    //     msg:'请输入整改投入',
+    //     bg:'#AE81FF',
+    //     time:2
+    //   });
+    //   $("#RECTIFY_INVESTMENT").focus();
+    //   return false;
+    // }
+    if($("#REPORTING_UNIT").val()==""){
+      $("#REPORTING_UNIT").tips({
+        side:3,
+        msg:'请输入填报单位',
+        bg:'#AE81FF',
+        time:2
+      });
+      $("#REPORTING_UNIT").focus();
+      return false;
+    }
+    if($("#REPORTING_PERSON").val()==""){
+      $("#REPORTING_PERSON").tips({
+        side:3,
+        msg:'请输入填报人',
+        bg:'#AE81FF',
+        time:2
+      });
+      $("#REPORTING_PERSON").focus();
+      return false;
+    }
+    uploadFile();
+  }
+
+  function submit() {
+    $("#Form").submit();
+    $("#zhongxin").hide();
+    $("#zhongxin2").show();
+  }
+
+  // 上传文件
+  function uploadFile() {
+    // 先移除可能出现的进度条元素
+    $(".progress-bar").remove();
+
+    // 获取需要上传的文件数量
+    var needUpload = 0;
+    $('.fileInput').each(function(){
+      if ($(this).val() != "") {
+        needUpload ++;
+      }
+    });
+    if (0 == needUpload) {
+      // 没有需要上传的文件，直接提交表单
+      submit();
+      return;
+    }
+    // 已经上传的文件数量
+    var isUpload = 0;
+
+    var xhrOnProgress = function (fun) {
+      xhrOnProgress.onprogress = fun; //绑定监听
+      //使用闭包实现监听绑
+      return function () {
+        //通过$.ajaxSettings.xhr();获得XMLHttpRequest对象
+        var xhr = $.ajaxSettings.xhr();
+        //判断监听函数是否为函数
+        if (typeof xhrOnProgress.onprogress !== 'function')
+          return xhr;
+        //如果有监听函数并且xhr对象支持绑定时就把监听函数绑定上去
+        if (xhrOnProgress.onprogress && xhr.upload) {
+          xhr.upload.onprogress = xhrOnProgress.onprogress;
+        }
+        return xhr;
+      }
+    }
+
+    var form = document.querySelector("#Form");
+    var formDate = new FormData(form);
+    $('.fileInput').each(function(){
+      if ($(this).val() == "") {
+        return;
+      }
+      var COLUMN_CODE = $(this).attr("id");
+      var thisOb = $(this);
+      // html添加进度条组件
+      var barHtml = '<div class="progress" style="width: 250px;position: relative;">' +
+              '<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"' +
+              'aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">' +
+              '</div>' +
+              '<div class="uploadInfo" style="position: absolute;right: 0;"></div>' +
+              '</div>';
+      thisOb.parent().parent().append(barHtml);
+      if ($(this).next().val() == "") {
+        formDate.set("file_file",formDate.get(COLUMN_CODE));
+        var ot = new Date().getTime(); //设置上传开始时间
+        var oloaded = 0; //设置上传开始时，以上传的文件大小为0
+        $.ajax({
+          url: "<%=basePath%>rectifyinfo/uploadFileRreporting.do",
+          type: "POST",
+          data: formDate,
+          processData: false,
+          contentType: false,
+          cache: false,
+          //async : false,
+          xhr: xhrOnProgress(function (e) {
+            var percent = e.loaded / e.total;
+            thisOb.parent().siblings(".progress").children(".progress-bar").css("width", (percent * 400));
+            var time = document.getElementById("time");
+            //上传速度计算
+            var nt = new Date().getTime();//获取当前时间
+            var pertime = (nt-ot)/1000; //计算出上次调用该方法时到现在的时间差，单位为s
+            ot = new Date().getTime(); //重新赋值时间，用于下次计算
+
+            var perload = e.loaded - oloaded; //计算该分段上传的文件大小，单位b
+            oloaded = e.loaded;//重新赋值已上传文件大小，用以下次计算
+
+            var speed = perload/pertime;//单位b/s
+            var bspeed = speed;
+            var units = 'b/s';//单位名称
+            if(speed/1024>1){
+              speed = speed/1024;
+              units = 'k/s';
+            }
+            if(speed/1024>1){
+              speed = speed/1024;
+              units = 'M/s';
+            }
+            speed = speed.toFixed(1);
+            //剩余时间
+            var resttime = ((e.total-e.loaded)/bspeed).toFixed(1);
+            thisOb.siblings(".progress").children(".uploadInfo").text('速度：'+speed+units+'， 剩余时间：'+resttime+'s');
+            //time.innerHTML = '，速度：'+speed+units+'，剩余时间：'+resttime+'s';
+          }),
+          success: function (req) {
+            debugger;
+            var sign = req.sign;
+            if (sign == "yes") {
+              // thisOb.next().val(req.FILE_PATH);
+              $("#REPORTING_FILE").val(req.FILE_PATH);
+              console.log("上传结果" + req.FILE_PATH);
+              console.log("上传结果元素" + thisOb.next());
+            }
+            // 上传的文件数量和需要上传的文件数量相等时提交表单
+            isUpload ++;
+            if (isUpload == needUpload) {
+              submit();
+            }
+          },
+          erro: function () {
+            showMsg("上传文件失败");
+            return false;
+          }
+        });
+      }
+    });
+
+  }
+
+  function showMsg(msg) {
+    bootbox.dialog({
+      message: "<span class='bigger-110'>"+ msg + "</span>",
+      buttons:
+              { "button":{ "label":"确定", "className":"btn-sm btn-success"}}
+    });
+  }
+
+  //下拉树
+  /*var defaultNodes = {"treeNodes":${zTreeNodes}};
+		function initComplete(){
+			//绑定change事件
+			$("#selectTree").bind("change",function(){
+				if(!$(this).attr("relValue")){
+			      //  top.Dialog.alert("没有选择节点");
+			    }else{
+					//alert("选中节点文本："+$(this).attr("relText")+"<br/>选中节点值："+$(this).attr("relValue"));
+					//加入org判断
+					$("#ORG_ID").val($(this).attr("relValue"));
+			    }
+			});
+			//赋给data属性
+			$("#selectTree").data("data",defaultNodes);
+			$("#selectTree").render();
+			$("#selectTree2_input").val("${null==pd.ORG_NAME?'组织结构':pd.ORG_NAME}");
+		}*/
+
+  $(function() {
+    //日期框
+    $('.date-picker').datepicker({autoclose: true,todayHighlight: true});
+
+    //下拉框
+    if(!ace.vars['touch']) {
+      $('.chosen-select').chosen({allow_single_deselect:true});
+      $(window)
+              .off('resize.chosen')
+              .on('resize.chosen', function() {
+                $('.chosen-select').each(function() {
+                  var $this = $(this);
+                  $this.next().css({'width': $this.parent().width()});
+                });
+              }).trigger('resize.chosen');
+      $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+        if(event_name != 'sidebar_collapsed') return;
+        $('.chosen-select').each(function() {
+          var $this = $(this);
+          $this.next().css({'width': $this.parent().width()});
+        });
+      });
+      $('#chosen-multiple-style .btn').on('click', function(e){
+        var target = $(this).find('input[type=radio]');
+        var which = parseInt(target.val());
+        if(which == 2) $('#form-field-select-4').addClass('tag-input-style');
+        else $('#form-field-select-4').removeClass('tag-input-style');
+      });
+
+
+      $('#id-input-file-3').ace_file_input({
+        style:'well',
+        btn_choose:'拖拽图片到这里上传',
+        btn_change:null,
+        no_icon:'ace-icon fa fa-cloud-upload',
+        droppable:true,
+        thumbnail:'small'//large | fit
+
+        ,
+        preview_error : function(filename, error_code) {
+          //name of the file that failed
+          //error_code values
+          //1 = 'FILE_LOAD_FAILED',
+          //2 = 'IMAGE_LOAD_FAILED',
+          //3 = 'THUMBNAIL_FAILED'
+          //alert(error_code);
+        }
+
+      }).on('change', function(){
+        //console.log($(this).data('ace_input_files'));
+        //console.log($(this).data('ace_input_method'));
+      });
+
+    }
+  });
+</script>
+</body>
+</html>

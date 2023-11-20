@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海南控股安全隐患管理信息化平台系统</title>
+    <link rel="stylesheet" href="frontend/HK-safe/css/index.css">
+</head>
+<body>
+    
+    <!-- 1. 头部 -->
+    <header>
+        <h1>12345</h1>
+        <div class="showTime"></div>
+    </header>
+
+    <!-- 2. 主体 -->
+    <div class="main-box">
+        <div class="column-l">
+            <!-- 隐患总数 -->
+            <div class="panel-t">
+                <div class="danger-all">
+                    <img src="frontend/HK-safe/images/danger1.png" alt="">
+                    <p id="dangerNum">0</p>
+                    <div class="title">隐患总数</div>
+                </div>
+                <div class="detail">
+                    <div class="finish">
+                        <img src="frontend/HK-safe/images/danger2.png" alt="">
+                        <p id="finishNum">0</p>
+                        <div class="text">
+                            <span id="green"></span>
+                            <div class="title">已完成总数</div>
+                        </div>
+                    </div>
+                    <div class="untreated">
+                        <img src="frontend/HK-safe/images/danger3.png" alt="">
+                        <p id="untreatedNum">0</p>
+                        <div class="text">
+                            <span id="yellow"></span>
+                            <div class="title">未处理总数</div>
+                        </div>
+                    </div>
+                    <div class="overdue">
+                        <img src="frontend/HK-safe/images/danger4.png" alt="">
+                        <p id="overdueNum">0</p>
+                        <div class="text">
+                            <span id="red"></span>
+                            <div class="title">逾期总数</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 隐患整改 -->
+            <div class="panel-c rectify">
+                <h2>隐患整改统计</h2>
+                <div class="rectify-chart"></div>
+                <div class="panel-footer"></div>
+            </div>
+            <!-- 隐患类别排名 -->
+            <div class="panel-b category">
+                <h2>各隐患类别排名</h2>
+                <div class="category-chart"></div>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="column-c">
+            <div class="panel-t">
+                <div class="year">
+                    <p id="danger-Y">0</p>
+                    <h3>年度隐患</h3>
+                </div>
+                <div class="quarter">
+                    <p id="danger-Q">0</p>
+                    <h3>季度隐患</h3>
+                </div>
+                <div class="month">
+                    <p id="danger-M">0</p>
+                    <h3>月度隐患</h3>
+                </div>
+            </div>
+            <div class="panel-c">
+                <div class="danger">
+                    <div class="great">
+                        <h2>重大隐患</h2>
+                        <p id="danger-great">0</p>
+                    </div>
+                    <img src="frontend/HK-safe/images/danger-ball.jpg" alt="">
+                    <div class="common">
+                        <h2>一般隐患</h2>
+                        <p id="danger-common">0</p>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud1"></div>
+                        <div class="text">海南机场</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud2"></div>
+                        <div class="text">海控能建</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud3"></div>
+                        <div class="text">海控能源</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud4"></div>
+                        <div class="text">海南发展</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud5"></div>
+                        <div class="text">海南建设</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud6"></div>
+                        <div class="text">水电集团</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud7"></div>
+                        <div class="text">海控贸易</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud8"></div>
+                        <div class="text">莺歌海盐场</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud9"></div>
+                        <div class="text">美丽乡村</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud10"></div>
+                        <div class="text">全球精品</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud11"></div>
+                        <div class="text">海口空港</div>
+                    </div>
+                    <div class="liqiud-box">
+                        <div class="liqiud" id="liqiud12"></div>
+                        <div class="text">地产集团</div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="panel-b trend">
+                <h2>隐患数量趋势</h2>
+                <div class="trend-chart"></div>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="column-r">
+            <div class="panel-t rectifyAll">
+                <h2>二级公司隐患总数</h2>
+                <div class="rectifyAll-chart"></div>
+                <div class="panel-footer"></div>
+            </div>
+            <div class="panel-c rectification">
+                <h2>二级公司整改率</h2>
+                <div class="rectification-chart"></div>
+                <div class="panel-footer"></div>
+            </div>
+            <div class="panel-b factor">
+                <h2>各隐患因素统计</h2>
+                <div class="factor-chart"></div>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="frontend/HK-safe/js/jquery-3.1.1.min.js"></script>
+    <script src="frontend/HK-safe/js/flexible.js"></script>
+    <script src="frontend/HK-safe/js/echarts.min.js"></script>
+    <script src="frontend/HK-safe/js/echarts-liquidfill.js"></script>
+    <script src="frontend/HK-safe/js/chart.js"></script>
+    <script src="frontend/HK-safe/js/liquid.js"></script>
+    <script src="frontend/HK-safe/js/getTime.js"></script>
+    
+    <script>
+
+    </script>
+    <script>
+        $('.column-l p, .column-c p').each(function () {
+            $(this).prop('Counter',0).animate({
+            Counter: $(this).text()
+        }, {
+            duration: 1000,
+            easing: 'swing',
+            step: function (now) {
+                $(this).text(Math.ceil(now));
+            }
+        });
+    });
+
+    
+    </script>
+</body>
+</html>

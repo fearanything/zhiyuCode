@@ -1,0 +1,311 @@
+body{
+    width: 100%;
+    background-image: url(../images/bgc2.png);
+    background-size:contain;
+}
+/* 1.头部header开始 */
+.header{
+    margin: 0 auto;
+    padding-top: 24px;
+    width: 3840px;
+    height: 220px;
+    min-width: 1920px;
+    background-image: url(../images/bighead.png);
+    background-size: cover;
+}
+
+.header .wrapper{
+    margin: 0 auto;
+    /* width: 80%; */
+}
+
+.header .head{
+    width: 100%;
+}
+
+.header .wrapper .headTab{
+    padding-top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.header .wrapper .headTab a{
+    display: block;
+    width: 265px;
+    padding: 7px;
+    font-size: 28px;
+    color: #fff;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+}
+
+.header .wrapper .headTab a:hover{
+    border-radius: 12px;
+    border: 1px solid #20bcfc;
+    background-color: #002386;
+}
+
+
+.active{
+    width: 265px;
+    background-image: url(../images/yingjiHeadTab.png);
+    background-size: cover;
+}
+
+#zhuye{
+    background-color: unset;
+    border: none;
+}
+
+.header .head h2{
+    font-size: 60px;
+    text-align: center;
+    color: #fff;
+    margin-left: 20px;
+}
+/* 1.头部header结束 */
+
+/* 2.中部信息盒子开始 */
+.yingjiMsg{
+    margin: 0 auto;
+    width: 3300px;
+    height: 1600px;
+    border: 1px solid #20bcfc;
+    overflow-y: auto;
+}
+
+.yingjiMsg::-webkit-scrollbar{
+    -webkit-appearance: none;
+}
+
+.yingjiMsg::-webkit-scrollbar-thumb{
+    background-color: #006cff;
+}
+
+.yingjiMsg::-webkit-scrollbar-track{
+    border: 1px solid #006cff;
+    background-color: #062d82;
+}
+
+.yingjiMsgTitle{
+    display: flex;
+    margin: 0 auto;
+    margin-top: 70px;
+    width: 3300px;
+    background-image: url(../images/yingjiBgc.png);
+    background-size: cover;
+}
+
+.yingjiMsgTitle h3{
+    width: 260px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 30px;
+    color: #fff;
+    background-image: url(../images/Tabbox2.png);
+    background-size: cover;
+}
+
+.yingjiMsgTitle h4{
+    margin-left: 60px;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+.yingjiMsgTitle h4 a{
+    display: inline-block;
+    width: 260px;
+    font-size: 28px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+}
+
+.yingjiMsgTitle h4 a:hover{
+    width: 260px;
+    background-image: url(../images/yingjiTabBox.png);
+    background-size: cover;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.tabActive{
+    width: 250px;
+    background-image: url(../images/yingjiTabBox.png);
+    background-size: cover;
+    border-radius: 5px;
+}
+
+.yingjiMsgTitle h4 a{
+    color: #fff;
+}
+
+.yingjiMsg .msgBox{
+    display: flex;
+    padding: 30px 35px;
+    width: 3200px;
+    height: 408px;
+    background-image: url(../images/msgBox.png);
+    background-size: cover;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.yingjiMsg .msgBox .msgName{
+    margin-right: 100px;
+}
+
+.yingjiMsg .msgBox .msgName h4{
+    color: #fff;
+    font-size: 30px;
+}
+
+.yingjiMsg .msgBox .msgName h4 img{
+    margin-bottom: 5px;
+    margin-right: 10px;
+    width: 24px;
+    height: 18px;
+}
+
+.yingjiMsg .msgBox .msgName ul{
+    margin-top: 60px;
+}
+
+.yingjiMsg .msgBox .msgName ul li{
+    margin-top: 20px;
+}
+
+.yingjiMsg .msgBox .msgName ul li img{
+    margin-right: 6px;
+}
+
+.yingjiMsg .msgBox .msgName ul li i{
+    color: #fff;
+    font-size: 28px;
+}
+
+.yingjiMsg .msgBox .waterLevel{
+    margin-left: 20px;
+}
+
+.yingjiMsg .msgBox .detail{
+    width: 400px;
+    height: 300px;
+    color: #fff;
+}
+
+.yingjiMsg .msgBox .detail h4{
+    margin-bottom: 10px;
+    font-size: 30px;
+}
+
+.yingjiMsg .msgBox .detail p{
+    font-size: 28px;
+}
+
+.yingjiMsg .msgBox .xiangyingLevel{
+    display: flex;
+    margin-left: 80px;
+    margin-top: 30px;
+}
+
+.yingjiMsg .msgBox .xiangyingLevel .company{
+    margin-right: 30px;
+}
+
+.yingjiMsg .msgBox .xiangyingLevel .company img{
+    width: 249px;
+    height: 60px;
+}
+
+.yingjiMsg .msgBox .xiangyingLevel .company h3{
+    width: 249px;
+    color: #fff;
+    font-size: 104px;
+    line-height: 104px;
+    letter-spacing: 20px;
+}
+
+.yingjiMsg .msgBox .xiangyingLevel .level p{
+    font-size: 90px;
+    color: #0096ff;
+}
+
+.yingjiMsg .msgBox .xiangyingLevel .level h3{
+    width: 360px;
+    height: 130px;
+    text-align: center;
+    line-height: 130px;
+    color: #fff;
+    background-color: #ffb400;
+    border: 2px solid #dc8c01;
+    border-radius: 13px;
+    font-size: 110px;
+    font-family: STSongti-SC-Black;
+    letter-spacing: 3px;
+}
+
+.yingjiMsg .msgBox .related{
+    margin-left: 50px;
+    width: 1100px;
+}
+
+.yingjiMsg .msgBox .related .top{
+    display: flex;
+    justify-content: space-between;
+}
+
+.yingjiMsg .msgBox .related h4{
+    font-size: 30px;
+    color: #fff;
+}
+
+.yingjiMsg .msgBox .related .top a{
+    display: inline-block;
+    width: 160px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 30px;
+    text-align: center;
+    color: #fff;
+    background-image: url(../images/xiangqing.png);
+    background-size: cover;
+}
+
+.yingjiMsg .msgBox .related .danwei{
+    display: flex;
+    width: 1100px;
+    height: 295px;
+    border: 1px solid #0096ff;
+    border-radius: 8px;
+}
+
+.yingjiMsg .msgBox .related .danwei .lv{
+    width: 274.5px;
+    height: 145px;
+}
+
+.yingjiMsg .msgBox .related .danwei .lv h4{
+    height: 50px;
+    text-align: center;
+}
+
+.yingjiMsg .msgBox .related .danwei .danweiDetail{
+    width: 275px;
+    height: 245px;
+    line-height: 50px;
+    color: #fff;
+    text-align: center;
+    background-image: url(../images/table.png);
+    background-size: cover;
+    border-bottom: 1px solid #009cff;
+}
+
+.yingjiMsg .msgBox .related .danwei .danweiDetail p{
+    font-size: 28px;
+}
+
+/* 2.中部信息盒子结束 */

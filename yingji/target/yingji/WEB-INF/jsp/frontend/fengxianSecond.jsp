@@ -1,0 +1,531 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<%
+  String path = request.getContextPath();
+  String basePath = request.getScheme() + "://"
+          + request.getServerName() + ":" + request.getServerPort()
+          + path + "/";
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>应急信息</title>
+  <link rel="stylesheet" href="<%=basePath%>frontend/css/reset.css">
+  <link rel="stylesheet" href="<%=basePath%>frontend/css/index.css">
+</head>
+<body>
+<!-- 1. 顶部 -->
+<header>
+  <div class="header-title">安全风险管理模块</div>
+</header>
+<!-- 2. 二级公司内容 -->
+<div class="second-container">
+  <div class="secondTitle">
+    <img src="<%=basePath%>frontend/images/company-logo.png" alt="">
+    <span id="org_name">海南机场集团有限公司</span>
+  </div>
+  <div class="level-list">
+    <div class="item" id="second-zd">
+      <img src="<%=basePath%>frontend/images/great-icon.png" alt="">
+      <div class="detail">
+        <div class="name">重大风险</div>
+        <div class="total">222</div>
+        <div class="compare">昨日<span>111</span></div>
+      </div>
+    </div>
+    <div class="item" id="second-jd">
+      <img src="<%=basePath%>frontend/images/larger-icon.png" alt="">
+      <div class="detail">
+        <div class="name">较大风险</div>
+        <div class="total">222</div>
+        <div class="compare">昨日<span>111</span></div>
+      </div>
+    </div>
+    <div class="item" id="second-yb">
+      <img src="<%=basePath%>frontend/images/common-icon.png" alt="">
+      <div class="detail">
+        <div class="name">一般风险</div>
+        <div class="total">222</div>
+        <div class="compare">昨日<span>111</span></div>
+      </div>
+    </div>
+    <div class="item" id="second-dd">
+      <img src="<%=basePath%>frontend/images/low-icon.png" alt="">
+      <div class="detail">
+        <div class="name">低风险</div>
+        <div class="total">222</div>
+        <div class="compare">昨日<span>111</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="chart-list">
+    <!-- 饼状图 -->
+    <div class="pie-chart">
+      <div class="title">风险等级</div>
+      <div id="pieChart"></div>
+    </div>
+    <!-- 线状图 -->
+    <div class="line-chart">
+      <div class="title">风险总数趋势</div>
+      <div id="lineChart"></div>
+    </div>
+    <!-- 柱状图 -->
+    <div class="bar-chart">
+      <div class="title">可能导致的事故类型</div>
+      <div id="barChart"></div>
+    </div>
+  </div>
+</div>
+<script src="<%=basePath%>frontend/js/jquery-3.1.1.min.js"></script>
+<script src="<%=basePath%>frontend/js/flexible.js"></script>
+<script src="<%=basePath%>frontend/js/echarts.min.js"></script>
+<%--<script src="<%=basePath%>frontend/js/charts.js"></script>--%>
+<script>
+  $(document).ready(function () {
+    topData();
+    prevData();
+    peiChart();
+    barCharts();
+    lineChart();
+    function topData(){
+      $.ajax({
+        url: "<%=basePath%>/fengXianFrontend/getTongJiFengXian",
+        data: {ORG_NAME:'${pd.ORG_NAME}'},
+        type: "GET",
+        text: "json",
+        async: false,
+        success: function(res){
+          $("#second-zd .total").text(res.zd);
+          $("#second-jd .total").text(res.jd);
+          $("#second-yb .total").text(res.yb);
+          $("#second-dd .total").text(res.dfx);
+        }
+
+      })
+      $("#org_name").text('${pd.ORG_NAME}');
+    }
+    function prevData(){
+      $.ajax({
+        url: "<%=basePath%>/fengXianFrontend/getTongJiFengXianPrev",
+        data: {ORG_NAME:'${pd.ORG_NAME}'},
+        type: "GET",
+        text: "json",
+        async: false,
+        success: function(res){
+          console.log("yest:",res);
+          $("#second-zd .compare span").text(res.zd);
+          $("#second-jd .compare span").text(res.jd);
+          $("#second-yb .compare span").text(res.yb);
+          $("#second-dd .compare span").text(res.dfx);
+        }
+
+      })
+      $("#org_name").text('${pd.ORG_NAME}');
+    }
+    function peiChart(){
+      //先请求数据
+      var peiData;
+      $.ajax({
+        url: "<%=basePath%>/fengXianFrontend/getTongJiFengXianLevel",
+        data: {ORG_NAME:'${pd.ORG_NAME}'},
+        type: "GET",
+        text: "json",
+        async: false,
+        success: function(res){
+
+          peiData = res;
+          console.log("peiData",peiData);
+        },
+      })
+
+      // 1. 实例化对象
+      var myChart = echarts.init(document.querySelector('#pieChart'))
+      // 2. 指定配置项和数据
+      const colorList1 = [ 'rgb(255,0,0,1.000)','', 'rgb(255,192,0,1.000)','', 'rgb(255,255,0,1.000)','', 'rgb(0,176,240,1.000)',]
+      const colorList2 =  [ 'rgb(255,0,0, .5)','', 'rgb(255,192,0, .5)','', 'rgb(255,255,0, .5)', '','rgb(0,176,240,.5)',]
+      let total = 0
+      let dataList = []
+      const moduleContent = {
+        '重大风险': peiData.zd, '较大风险': peiData.jd, '一般风险': peiData.yb ,'低风险': peiData.dfx
+      }
+      let sum = 0
+      const chartdata = []
+      for (const i in moduleContent) {
+        chartdata.push({
+          name: i,
+          value: moduleContent[i] || 1
+        })
+        sum += Number(moduleContent[i] || 0)
+      }
+      total = sum
+      dataList = chartdata
+      const data1 = []
+      chartdata.forEach((item) => {
+        const _item = { ...item }
+        if (!_item.value) {
+          _item.value = sum / 100
+        }
+        data1.push(_item, {
+          name: '',
+          value: sum / 100,
+          label: { show: false },
+          itemStyle: {
+            color: 'transparent'
+          }
+        })
+      })
+
+      let option = {
+        legend: {
+          left: 'left',
+          top: 'center',
+          width: '5%',
+          textStyle:{
+            color: '#fff'
+          }
+        },
+        backgroundColor: '#061d6e84',
+        title: {
+          text: total,
+          left: 'center',
+          top: '35%',
+          itemGap: 10,
+          textStyle: {
+            color: '#fff',
+            fontSize: '35',
+            fontWeight: 500
+          },
+          subtext: '共计',
+          subtextStyle: {
+            color: 'rgba(255,255,255,0.5)',
+            fontSize: '20',
+            fontWeight: 600
+          }
+        },
+        tooltip: {
+          trigger: 'item',
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          },
+          formatter(params) {
+            if(params.data.name){
+              return params.name + ':' + params.data.value
+            }
+          },
+          // formatter: "{b}: {c} "+" | "+"{d}%",
+          textStyle: {
+            fontSize: 18,
+            color: 'rgba(255,255,255,0.8)'
+          },
+          borderColor: 'rgba(255,255,255,0.9)',
+          backgroundColor: 'rgba(255,255,255,0.5)',
+          extraCssText: 'box-shadow: 2px 2px 4px 0px rgba(255,255,255,0.5);'
+        },
+        series: [
+          {
+            type: 'pie',
+            radius: ['50%', '72%'],
+            center: ['50%', '50%'],
+            minAngle: 1,
+            labelLine: {
+              show: false
+            },
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  return colorList1[params.dataIndex]
+                }
+              }
+            },
+            data: data1,
+            z: 666
+          },
+          {
+            type: 'pie',
+            radius: ['80%', '85%'],
+            center: ['50%', '50%'],
+            hoverAnimation: false,
+            minAngle: 1,
+            emphasis: { scale: false },
+            label: {
+              show: false
+            },
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  return colorList2[params.dataIndex]
+                }
+              }
+            },
+            data: data1,
+            z: 1
+          },
+        ]
+      }
+
+      // 3. 把配置项给实例对象
+      myChart.setOption(option);
+      // 4.跟随屏幕自适应
+      window.addEventListener("resize", function() {
+        myChart.resize({animation: {duration:1000}});
+      });
+
+    }
+    // 柱状图
+    function barCharts(){
+      var allData;
+
+      $.ajax({
+        url: "<%=basePath%>/fengXianFrontend/getTongJiAccident",
+        data: {ORG_NAME:'${pd.ORG_NAME}'},
+        type: "GET",
+        text: "json",
+        async: false,
+        success: function(res){
+          allData = res;
+        },
+      })
+      // 1. 实例化对象
+      var myChart = echarts.init(document.querySelector('#barChart'))
+      // 2. 指定配置项和数据
+
+      let dataAxis = [];
+
+      let data = [];
+
+      $.each(allData, function (index, item) {
+        console.log(index,item)
+        dataAxis.push(index);
+        data.push(item);
+      });
+      // for(var i = 0;i<allData.length;i++){
+      //   dataAxis.push(allData[i].NAME);
+      //   data.push(allData[i].total);
+      // }
+
+      option = {
+        xAxis: {
+          data: dataAxis, // x轴数据
+          axisLabel: {
+            interval: 0, // x轴标签显示间隔
+            inside: false, // x轴标签是否朝内显示
+            color: '#fff', // x轴标签颜色
+            rotate: 0 // x轴标签旋转角度
+          },
+          axisTick: {
+            show: false // x轴刻度线是否显示
+          },
+          axisLine: {
+            show: false // x轴轴线是否显示
+          },
+          splitLine: {
+            show: false, // x轴分割线是否显示
+            lineStyle: {
+              color: "red" // x轴分割线颜色
+            }
+          },
+          z: 10
+        },
+        yAxis: {
+          axisLine: {
+            show: false // y轴轴线是否显示
+          },
+          axisTick: {
+            show: false // y轴刻度线是否显示
+          },
+          axisLabel: {
+            color: '#fff' // y轴标签颜色
+          },
+          splitLine: {
+            show: false, // y轴分割线是否显示
+            lineStyle: {
+              color: "red" // y轴分割线颜色
+            }
+          }
+        },
+        dataZoom: [{
+          type: 'slider', // 设置滚动条类型为slider
+          orient: 'horizontal', // 设置滚动条方向为横向
+          start: 0, // 设置默认开始位置
+          end: 30 // 设置默认结束位置
+        }],
+        series: [
+          {
+            type: 'bar',
+            showBackground: true,
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: '#83bff6' }, // 渐变色起始颜色
+                { offset: 0.5, color: '#188df0' }, // 渐变色中间颜色
+                { offset: 1, color: '#188df0' } // 渐变色结束颜色
+              ])
+            },
+            emphasis: {
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#2378f7' }, // 高亮渐变色起始颜色
+                  { offset: 0.7, color: '#2378f7' }, // 高亮渐变色中间颜色
+                  { offset: 1, color: '#83bff6' } // 高亮渐变色结束颜色
+                ])
+              }
+            },
+            data: data // 数据
+          }
+        ]
+      };
+
+
+
+      // 3. 把配置项给实例对象
+      myChart.setOption(option);
+      // 4.跟随屏幕自适应
+      window.addEventListener("resize", function() {
+        myChart.resize({animation: {duration:1000}});
+      });
+    }
+    function lineChart(){
+      var lineData;
+      $.ajax({
+        url: "<%=basePath%>/fengXianFrontend/getFengXianByDate",
+        data: {ORG_NAME:'${pd.ORG_NAME}'},
+        type: "GET",
+        text: "json",
+        async: false,
+        success: function(res){
+          lineData = res;
+        },
+      })
+
+      // 1. 实例化对象
+      var myChart = echarts.init(document.querySelector('#lineChart'))
+      var dateList = [];
+      var data = [];
+      for (var i = lineData.length-1; i >= 0; i--) {
+        var item = lineData[i].date;
+        dateList.push(item);
+        data.push(lineData[i].total);
+      }
+      // 2. 指定配置项和数据
+      // const data = new Array(12).fill(null).map(item => {
+      //   return {
+      //     value: Math.ceil(Math.random() * 600) + 100
+      //   }
+      // })
+      option = {
+        backgroundColor:'#061d6e84',
+        color: ['rgba(250, 109, 62, 1)'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        grid: {
+          top: '12%',
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: dateList,
+            boundaryGap: false,
+            axisTick:{
+              show:false // 不显示坐标轴刻度线
+            },
+            splitLine: {
+              show: false,
+            },
+            axisLine:{
+              show: false,
+            },
+            axisLabel: {
+              color: "rgba(230, 247, 255, 0.50)",
+              fontSize:14
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            //y右侧文字
+            axisLabel: {
+              color: 'rgba(230, 247, 255, 0.50)',
+              fontSize:16
+            },
+            // y轴的分割线
+            splitLine: {
+              show: true,
+              lineStyle: {
+                type:'dashed',
+                color:'rgba(230, 247, 255, 0.20)',
+
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: '风险总数',
+            type: 'line',
+            smooth: true,
+            symbol: 'none', // 不显示连接点
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                // 坐标轴指示器，坐标轴触发有效
+                type: 'line' // 默认为直线，可选为：'line' | 'shadow'
+              }
+            },
+            lineStyle: {
+              width: 3,
+              shadowColor: "rgba(250, 109, 62, 1)",
+              shadowBlur: 20
+            },
+            areaStyle: {
+              opacity: 1,
+              //右下左上
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'rgba(250, 109, 62, 1)'
+                },
+                {
+                  offset: 0.3,
+                  color: 'rgba(250, 109, 62, 0.5)'
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(250, 109, 62, 0.35)'
+                }
+              ])
+            },
+            data: data
+          }
+        ]
+      }
+      // 3. 把配置项给实例对象
+      myChart.setOption(option);
+      // 4.跟随屏幕自适应
+      window.addEventListener("resize", function() {
+        myChart.resize({animation: {duration:1000}});
+      });
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+body {
+  padding-bottom: 10vw;
+  background-color: #f0f0f0;
+}
+header .container {
+  position: relative;
+}
+header .container a {
+  position: absolute;
+  left: -2.6667vw;
+  display: block;
+  width: 2.6667vw;
+  height: 5.3333vw;
+}
+header .container a img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.form {
+  padding-bottom: 5.3333vw;
+  margin: 0 auto;
+  width: 95.2vw;
+}
+.form .banner {
+  margin-top: 4vw;
+  width: 100%;
+  height: 37.3333vw;
+  background-color: #fff;
+  border-radius: 22px 22px 0 0;
+}
+.form .banner .bn-img {
+  margin: 0 auto;
+  display: block;
+  width: 90.6667vw;
+  height: 20.8vw;
+}
+.form .banner .company-name {
+  position: relative;
+  padding: 2.4vw 2.6667vw;
+  margin: 0 auto;
+  width: 90.6667vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0725a7;
+  box-sizing: border-box;
+  border-radius: 0 0 5px 5px;
+}
+.form .banner .company-name .name {
+  display: flex;
+  align-items: center;
+}
+.form .banner .company-name .name img {
+  margin-right: 2.6667vw;
+  width: 5.3333vw;
+}
+.form .banner .company-name .name span {
+  color: #fff;
+  font-size: 3.7333vw;
+}
+.form .banner .company-name .arrow {
+  width: 1.8667vw;
+  height: 3.4667vw;
+}
+.form .detail {
+  padding: 3.2vw 0 0.8vw 0;
+  margin-top: 2.1333vw;
+  width: 100%;
+  background-color: #fff;
+}
+.form .detail .danger-text {
+  margin: 0 auto;
+  width: 90.6667vw;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+}
+.form .detail .danger-text .title {
+  padding: 2.6667vw;
+  display: flex;
+  align-items: center;
+  background-color: #f1c5c5;
+  border-radius: 10px 10px 0 0;
+  box-sizing: border-box;
+}
+.form .detail .danger-text .title img {
+  margin-right: 2.6667vw;
+  width: 5.3333vw;
+}
+.form .detail .danger-text #textarea1 {
+  padding: 4vw 2.6667vw;
+  margin: 0 auto;
+  width: 99%;
+  border: none;
+  outline: none;
+  font-size: 4.2667vw;
+  box-sizing: border-box;
+}
+.form .detail .danger-photo {
+  margin: 0 auto;
+  margin-top: 2.6667vw;
+  width: 90.6667vw;
+}
+.form .detail .danger-photo .photo-icon {
+  margin-right: 2.6667vw;
+  width: 5.3333vw;
+}
+.form .detail .measure {
+  margin: 0 auto;
+  margin-top: 2.6667vw;
+  width: 90.6667vw;
+}
+.form .detail .measure .title {
+  padding: 2.6667vw;
+  display: flex;
+  align-items: center;
+  background-color: #b6d2ff;
+  border-radius: 10px 10px 0 0;
+  box-sizing: border-box;
+}
+.form .detail .measure .title img {
+  margin-right: 2.6667vw;
+  width: 5.3333vw;
+}
+.form .detail .measure #textarea2 {
+  padding: 4vw 2.6667vw;
+  margin: 0 auto;
+  width: 99%;
+  border: none;
+  outline: none;
+  font-size: 4.2667vw;
+  box-sizing: border-box;
+}
+.form .detail .measure #REMARK {
+  padding: 4vw 2.6667vw;
+  margin: 0 auto;
+  width: 99%;
+  border: none;
+  outline: none;
+  font-size: 4.2667vw;
+  box-sizing: border-box;
+}
+.form .detail .category-box,
+.form .detail .level-box,
+.form .detail .factor-box,
+.form .detail .finish-time {
+  padding: 2.1333vw;
+  margin: 0 auto;
+  margin-bottom: 2.6667vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90.6667vw;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  box-sizing: border-box;
+}
+.form .detail .finish-box {
+  margin: 0 auto;
+  margin-top: 4vw;
+  margin-bottom: 2.6667vw;
+  width: 90.6667vw;
+  border: 1px solid #f7f7f7;
+}
+.form .detail .finish-box p {
+  padding: 2.6667vw;
+  border-radius: 5px 5px 0 0;
+  box-sizing: border-box;
+  background-color: #b6d2ff;
+}
+.weui-uploader__file-content .weui-icon-warn {
+  opacity: 0;
+}
+.form .detail .finish-box .weui-cells {
+  margin-top: 0;
+}
+.form .btn {
+  margin-top: 4vw;
+  display: flex;
+  justify-content: space-between;
+}
+.form .btn .save-btn {
+  width: 45vw;
+  height: 15.7333vw;
+  background-color: #9b9b9b;
+  color: #fff;
+  border: none;
+  font-size: 4.8vw;
+}
+.form .btn .next-btn {
+  width: 45vw;
+  height: 15.7333vw;
+  background-image: linear-gradient(90deg, #0d4bbf 23%, #074ddf 62%, #004eff 100%), linear-gradient(#003d92, #003d92);
+  color: #fff;
+  border: none;
+  font-size: 4.8vw;
+}
+.select2-container--default .select2-selection--single {
+  background-color: #0725a7;
+  border: none;
+}
+.select2-container--default .select2-selection--single .select2-selection__clear{
+  float: none;
+  position: absolute;
+  top: -0.5333vw;
+  right: 2.6667vw;
+  width: 20px;
+}
+.weui-uploader__file_status:before{
+  content: none !important;
+}
+.xing{
+  display: flex !important;
+  align-items: center;
+
+}
+.xing span:first-child{
+  color: #f62e20;
+}
+
+.focus{
+  color: #f62e20;
+}

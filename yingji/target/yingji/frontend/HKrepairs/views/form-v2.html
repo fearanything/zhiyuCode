@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang=zh_CN>
+<head>
+    <meta charset=UTF-8>
+    <meta name=viewport content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <title>隐患整改表</title>
+    <link rel="stylesheet" href="../css/select2.min.css">
+    <link rel=stylesheet href=https://res.wx.qq.com/t/wx_fed/weui-source/res/2.5.0/weui.min.css>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/form-v2.css">
+    <style>
+        body, html {
+            height: 100%;
+            /* background-color: var(--weui-BG); */
+            color:var(--weui-FG)
+        }
+
+        body {
+            font-family:-apple-system-font, Helvetica Neue, Helvetica, sans-serif
+        }
+
+        .item {
+            padding:10px 0
+        }
+
+        .item__title {
+            margin-bottom: 5px;
+            padding-left: 15px;
+            padding-right: 15px;
+            color: #999;
+            font-weight: 400;
+            font-size:14px
+        }
+
+        .item__ctn {
+            padding:0 15px
+        }
+
+        .page_feedback {
+            padding: 15px;
+            overflow: auto;
+            background-color:var(--weui-BG)
+        }
+
+        label > * {
+            pointer-events: none
+        }
+    </style>
+</head>
+<body ontouchstart data-weui-theme="light">
+<!-- 1. 头部 -->
+<header>
+    <div class="container">
+        <a href="backlog.html">
+            <img src="../img/back-icon.png" alt="">
+        </a>
+        <span>隐患整改表</span>
+    </div>
+</header>
+
+<!-- 2. 表单 -->
+<div class="form">
+    <!-- 公司名称 -->
+    <div class="banner">
+        <img class="bn-img" src="frontend/HKrepairs/img/form-banner.png" alt="">
+        <div class="company-name">
+            <div class="name">
+                <img src="frontend/HKrepairs/img/icon1.png" alt="">
+                <select id="sel_menu" style="width: 80vw;" >
+                    <option value=""></option>
+                </select>
+            </div>
+            <ul id="company-name">
+            </ul>
+        </div>
+    </div>
+
+    <div class="detail">
+        <!-- 隐患情况 -->
+        <div class="danger-text">
+            <div class="title">
+                <img src="../img/icon2.png" alt="">
+                <span>隐患情况</span>
+            </div>
+            <textarea name="textarea1" id="textarea1" cols="30" rows="10" placeholder="请描述具体隐患问题..." type="text" value=""></textarea>
+        </div>
+
+        <!-- 故障图片 -->
+        <div class="danger-photo">
+            <div class="weui-cells weui-cells_form" id="uploader">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <div class="weui-uploader">
+                            <div class="weui-uploader__hd">
+                                <img class="photo-icon" src="../img/icon4.png" alt="">
+                                <p class="weui-uploader__title">故障图片</p>
+                                <div class="weui-uploader__info">
+                                    <span id="uploadCount">0</span>/5
+                                </div>
+                            </div>
+                            <div class="weui-uploader__bd">
+                                <ul class="weui-uploader__files" id="uploaderFiles">
+
+                                </ul>
+                                <div class="weui-uploader__input-box">
+                                    <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 整改措施 -->
+        <div class="measure">
+            <div class="title">
+                <img src="../img/icon3.png" alt="">
+                <span>整改措施</span>
+            </div>
+            <textarea id="textarea2" name="" id="" cols="30" rows="10" placeholder="请描述具体隐患问题..."></textarea>
+        </div>
+
+        <!-- 隐患类别 -->
+        <div class="category-box">
+            <p>隐患类别</p>
+            <a href="javascript:;" id="category-picker" class="weui-btn weui-btn_default">点击选择类别...</a>
+        </div>
+
+        <!-- 隐患级别 -->
+        <div class="level-box">
+            <p>隐患级别</p>
+            <a href="javascript:;" id="level-picker" class="weui-btn weui-btn_default">点击选择级别...</a>
+        </div>
+
+        <!-- 隐患因素 -->
+        <div class="factor-box">
+            <p>隐患因素</p>
+            <a href="javascript:;" id="factor-picker" class="weui-btn weui-btn_default">点击选择因素...</a>
+        </div>
+
+        <!-- 是否完成 -->
+        <div class="finish-box">
+            <p>是否完成</p>
+            <div class="weui-cells weui-cells_radio">
+                <label class="weui-cell weui-check__label" for="r1">
+                    <div class="weui-cell__bd">是</div>
+                    <div class="weui-cell__ft">
+                        <input required="" type="radio" class="weui-check" name="finish" value="是" id="r1" tips="请选择是否完成">
+                        <span class="weui-icon-checked"></span>
+                    </div>
+                </label>
+                <label class="weui-cell weui-check__label" for="r2">
+                    <div class="weui-cell__bd">否</div>
+                    <div class="weui-cell__ft">
+                        <input type="radio" name="finish" class="weui-check" value="否" id="r2">
+                        <span class="weui-icon-checked"></span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- 完成时间 -->
+        <div class="finish-time">
+            <p>完成时间</p>
+            <a href=javascript:; id=datePickerBtn class="weui-btn weui-btn_default">点击选择完成时间</a>
+        </div>
+    </div>
+
+    <!-- 保存、下一步 -->
+    <div class="btn">
+        <input id="saveForm" class="save-btn" type="button" value="保存">
+        <input id="uploadForm" class="next-btn" type="submit" value="立即提交">
+    </div>
+</div>
+
+<script src="../js/jquery-3.1.1.min.js"></script>
+<script src="../js/select2.min.js"></script>
+<script src="../js/companySelect.js"></script>
+<script src="https://res.wx.qq.com/t/wx_fed/cdn_libs/res/weui/1.2.8/weui.min.js"></script>
+<script src="../js/getPickerData.js"></script>
+<script src="../js/select.js"></script>
+</body>
+</html>

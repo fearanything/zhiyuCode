@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IllegalTypeMapper">
+	<resultMap type="IllegalType" id="illegalTypeData">
+		<id column="ID" property="ID" />
+		<result column="ILLEGALTYPENO" property="ILLEGALTYPENO" />
+		<result column="ILLEGALTYPENAME" property="ILLEGALTYPENAME" />
+		<result column="CJFS" property="CJFS" />
+	</resultMap>
+	<!--表名 -->
+	<sql id="tableName">
+		hx_illegaltype
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		 ID,
+		 ILLEGALTYPENO,
+		 ILLEGALTYPENAME,
+		 CJFS
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		 #{ID},
+		 #{ILLEGALTYPENO},
+		 #{ILLEGALTYPENAME},
+		 #{CJFS}
+	</sql>
+	
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findByIllegaltypeno" resultMap="illegalTypeData">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			DELETED=0 and ILLEGALTYPENO = #{ILLEGALTYPENO}
+	</select>
+	
+	
+
+</mapper>

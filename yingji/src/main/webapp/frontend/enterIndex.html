@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>应急信息</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/enterIndex.css">
+</head>
+<body>
+    <!-- 1.顶部标题 -->
+    <header>
+        <div class="container">
+            <div class="title">应急指挥综合数据可视平台</div>
+        </div>
+    </header>
+    <!-- 2. 内容区域 -->
+    <div class="main-container">
+        <div class="left-container">
+            <div class="top-box">
+                <div class="hkLogo">
+                    <img src="./images/hk-logo.png" alt="">
+                </div>
+                <div class="systemSelect">
+                    <a href="#">应急响应管理模块</a>
+                    <a href="#">安全隐患管理模块</a>
+                    <a href="#">安全风险管理模块</a>
+                </div>
+                <div class="panel-footer"></div>
+            </div>
+            <div class="center-box">
+                <div class="title">各隐患因素统计</div>
+                <div id="yinhuanType"></div>
+                <div class="title">二级公司隐患总数</div>
+                <div id="yinhuanTotal"></div>
+                <div class="panel-footer"></div>
+            </div>
+            <div class="bottom-box">
+                <div class="title">隐患数量趋势</div>
+                <div id="yinhuanTrend"></div>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="map-container">
+            <div class="top-box">
+                <div class="title">
+                    <img src="./images/tongji-icon.png" alt="">
+                </div>
+                <div class="sum-list">
+                    <div class="total" id="projectNum">
+                        <p>项目总数</p>
+                        <div class="num"><span></span>个</div>
+                        <div class="compare">
+                            <span class="text">同比</span>
+                            <div>
+                                <span class="comparison-text"></span>
+                                <span class="percentage"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="total" id="yinhuanNum">
+                        <p>安全隐患</p>
+                        <div class="num"><span>376</span>个</div>
+                        <div class="compare">
+                            <span class="text">同比</span>
+                            <div>
+                                <span class="comparison-text"></span>
+                                <span class="percentage"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="total" id="fengxianNum">
+                        <p>风险总数</p>
+                        <div class="num"><span>376</span>个</div>
+                        <div class="compare">
+                            <span class="text">同比</span>
+                            <div>
+                                <span class="comparison-text"></span>
+                                <span class="percentage"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" id="mapContent">
+                <div class="content img-text active" id="map1">
+                    <div class="total">
+                        <div class="text">项目总数</div>
+                        <div class="num">1299</div>
+                        个
+                    </div>
+                    <!-- <div class="tooltip">
+                        <div class="left">
+                            <div class="area">海口</div>
+                            <div class="num"><span>688</span>个</div>
+                            <div class="text">项目总数</div>
+                        </div>
+                        <div class="right">
+                            <input type="text" class="search-input" placeholder="请输入搜索关键字">
+                            <div class="list">
+                                <div class="item">测试1</div>
+                                <div class="item">测试2</div>
+                                <div class="item">测试3</div>
+                                <div class="item">测试4</div>
+                                <div class="item">测试4</div>
+                                <div class="item">测试4</div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div id="mapChart1"></div>
+                </div>
+                <div class="content img-text" id="map2">
+                    <div class="total">
+                        <div class="text">安全隐患</div>
+                        <div class="num">1299</div>
+                        个
+                    </div>
+                    <div id="mapChart2"></div>
+                </div>
+                <div class="content img-text" id="map3">
+                    <div class="total">
+                        <div class="text">重点风险</div>
+                        <div class="num">1299</div>
+                        个
+                    </div>
+                    <div id="mapChart3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="right-container">
+            <div class="top-box">
+                <!-- 隐患类型分析pie -->
+                <div class="title">风险等级</div>
+                <div id="fengxianLevel"></div>
+                <div class="panel-footer"></div>
+                <!-- 隐患总数排名line -->
+                <div class="title">可能导致的事故类型</div>
+                <div id="fengxianType"></div>
+            </div>
+            <div class="bottom-box">
+                <div class="title">风险总数趋势</div>
+                <div id="fengxianTrend"></div>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 3. 底部切换地图栏 -->
+    <div class="map-select">
+        <div class="tab-container" id="mapContainer">
+            <div class="tab map1 tabActive" data-tab="map1">
+                <span>项目总数</span>
+            </div>
+            <div class="tab map2" data-tab="map2">
+                <span>安全隐患</span>
+            </div>
+            <div class="tab map3" data-tab="map3">
+                <span>重点风险</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/jquery-3.1.1.min.js"></script>
+    <script src="./js/flexible.js"></script>
+    <script src="./js/echarts.min.js"></script>
+    <script src="./js/enterChart.js"></script>
+    <script>
+        tabClick("#mapContainer", "#mapContent")
+        function tabClick(tabContainer, tabContent) {
+            // 鼠标点击切换选项卡
+            $(tabContainer + ' .tab').click(function() {
+                // 定义一个对象来存储已获取过的数据
+                var dataCache = {};
+                var tabId = $(this).data('tab');
+                // 移除所有选项卡的active类
+                $(tabContainer + ' .tab').removeClass('tabActive');
+
+                // 给当前选项卡添加active类
+                $(this).addClass('tabActive');
+
+                // 隐藏所有选项卡内容
+                $(tabContent + ' .content').removeClass('active').hide();
+
+                // 显示对应选项卡的内容
+                $(tabContent + ' #' + tabId).addClass('active').show();
+            });
+        }
+        
+        $('.search-input').on('input', function() {
+            var keyword = $(this).val().trim();
+            search(keyword);
+            console.log('111');
+        });
+
+        function search(keyword) {
+            var items = $('.tooltip .list .item');
+            items.removeClass('hidden');
+
+            if (keyword !== '') {
+            items.each(function() {
+                var itemText = $(this).text();
+                if (!itemText.includes(keyword)) {
+                $(this).addClass('hidden');
+                }
+            });
+            }
+        }
+    </script>
+</body>
+</html>

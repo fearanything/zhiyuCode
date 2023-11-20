@@ -1,0 +1,60 @@
+.head,.head img{
+	width: 100%;
+}
+.msg_form{
+	width: 100%;
+	margin: 20px 0;
+}
+.form-square{
+	margin: 8px;
+	font-size: 0;
+}
+.label-left,.label-right{
+	margin: 4px 0;
+	display: inline-block;
+	vertical-align: middle;
+    height: 40px;
+    line-height: 40px;
+    border:1px solid #ddd;
+	font-size: 14px;
+	font-weight: normal;
+}
+.label-left{
+	width: 30%;
+	color: #454545;
+    border-radius: 4px 0 0 4px;
+    text-indent: 12px;
+}
+.label-right{
+	width: 70%;
+	border-left: 0;
+	padding-left: 8px;
+	position: relative;
+}
+.label-right select,.label-right input{
+	border: 0;
+}
+.select{
+	position: absolute;
+	right: 20px;
+	top: 12px;
+}
+.weui-select{
+    height: 40px;
+    line-height: 40px;
+    padding-left: 0;
+}
+.btn-block{
+	width: 94%;
+	background: #f4984e;
+	border: 0;
+	display: block;
+	margin: 10px auto 0;
+	color: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    outline: none;
+}

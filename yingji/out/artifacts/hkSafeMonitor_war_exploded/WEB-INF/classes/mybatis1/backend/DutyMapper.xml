@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DutyMapper">
+
+	<resultMap type="Duty" id="dutyResultMap">
+		<result column="DUTY_ID" property="DUTY_ID"/>
+		<result column="TYPHOON_ID" property="TYPHOON_ID"/>
+		<result column="DUTY_NAME" property="DUTY_NAME"/>
+		<result column="DUTY_TEL" property="DUTY_TEL"/>
+		<result column="START_DATE" property="START_DATE"/>
+		<result column="END_DATE" property="END_DATE"/>
+		<result column="DUTY_JOB" property="DUTY_JOB"/>
+		<result column="DUTY_REMARK" property="DUTY_REMARK"/>
+		<result column="DUTY_CORP" property="DUTY_CORP"/>
+		<result column="SORT" property="SORT"/>
+		<result column="ISDEL" property="ISDEL"/>
+		<result column="CREATER" property="CREATER"/>
+		<result column="CREATE_DATE" property="CREATE_DATE"/>
+		<result column="MODIFYER" property="MODIFYER"/>
+		<result column="MODIFY_DATE" property="MODIFY_DATE"/>
+	</resultMap>
+	
+	<!--表名 -->
+	<sql id="tableName">
+		M_DUTY
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+         DUTY_ID,
+         TYPHOON_ID,
+         DUTY_NAME,
+         DUTY_TEL,
+         START_DATE,
+         END_DATE,
+         DUTY_JOB,
+         DUTY_REMARK,
+         DUTY_CORP,
+         SORT,
+         ISDEL,
+         CREATER,
+         CREATE_DATE,
+         MODIFYER,
+         MODIFY_DATE
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+         #{DUTY_ID},
+         #{TYPHOON_ID},
+         #{DUTY_NAME},
+         #{DUTY_TEL},
+         #{START_DATE},
+         #{END_DATE},
+         #{DUTY_JOB},
+         #{DUTY_REMARK},
+         #{DUTY_CORP},
+         #{SORT},
+         #{ISDEL},
+         #{CREATER},
+         #{CREATE_DATE},
+         #{MODIFYER},
+         #{MODIFY_DATE}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+		 ISDEL = 1,
+		 MODIFYER = #{MODIFYER},
+		 MODIFY_DATE = #{MODIFY_DATE}
+		where 
+			DUTY_ID = #{DUTY_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set 
+         
+         TYPHOON_ID = #{TYPHOON_ID},
+         DUTY_NAME = #{DUTY_NAME},
+         DUTY_TEL = #{DUTY_TEL},
+         START_DATE=#{START_DATE},
+         END_DATE=#{END_DATE},
+         DUTY_JOB = #{DUTY_JOB},
+         DUTY_REMARK = #{DUTY_REMARK},
+         DUTY_CORP=#{DUTY_CORP},
+         SORT = #{SORT},
+	     MODIFYER = #{MODIFYER},
+		 MODIFY_DATE = #{MODIFY_DATE}
+	        where 
+				DUTY_ID = #{DUTY_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where ISDEL =0 and
+			DUTY_ID = #{DUTY_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		 a.DUTY_ID,
+         a.TYPHOON_ID,
+         a.DUTY_NAME,
+         a.DUTY_TEL,
+         a.START_DATE,
+         a.END_DATE,
+         a.DUTY_JOB,
+         a.DUTY_REMARK,
+         a.DUTY_CORP,
+         a.SORT,
+         a.ISDEL,
+         a.CREATER,
+         a.CREATE_DATE,
+         a.MODIFYER,
+         a.MODIFY_DATE,
+         b.TYPHOON_NAME
+		from 
+		<include refid="tableName"></include> a
+		left join M_TYPHOON b on b.TYPHOON_ID=a.TYPHOON_ID
+		where a.ISDEL =0 
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+				<!--	根据需求自己加检索条件-->
+					a.DUTY_NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					a.DUTY_TEL LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				
+				)
+		</if>
+		<if test="pd.TYPHOON_ID != null and pd.TYPHOON_ID != ''">
+			and a.TYPHOON_ID = #{pd.TYPHOON_ID}
+		</if>
+		<if test="pd.lastStart != null and pd.lastStart != ''">
+			and a.START_DATE &gt;= #{pd.lastStart}
+		</if>
+		<if test="pd.lastEnd != null and pd.lastEnd != ''">
+			and a.END_DATE &lt;= #{pd.lastEnd}
+		</if>
+		order by a.SORT ASC
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		 a.DUTY_ID,
+         a.TYPHOON_ID,
+         a.DUTY_NAME,
+         a.DUTY_TEL,
+         a.START_DATE,
+         a.END_DATE,
+         a.DUTY_JOB,
+         a.DUTY_REMARK,
+         a.DUTY_CORP,
+         a.SORT,
+         a.ISDEL,
+         a.CREATER,
+         a.CREATE_DATE,
+         a.MODIFYER,
+         a.MODIFY_DATE,
+         b.TYPHOON_NAME
+		from 
+		<include refid="tableName"></include> a
+		left join M_TYPHOON b on b.TYPHOON_ID=a.TYPHOON_ID
+		where a.ISDEL =0 
+		<if test="keywords!= null and keywords != ''"><!-- 关键词检索 -->
+			and
+				(
+				<!--	根据需求自己加检索条件-->
+					a.DUTY_NAME LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+					 or 
+					a.DUTY_TEL LIKE CONCAT(CONCAT('%', #{keywords}),'%') 
+				
+				)
+		</if>
+		<if test="TYPHOON_ID != null and TYPHOON_ID != ''">
+			and a.TYPHOON_ID = #{TYPHOON_ID}
+		</if>
+		<if test="lastStart != null and lastStart != ''">
+			and a.END_DATE &gt;= #{lastStart}
+		</if>
+		
+		order by a.SORT ASC
+		<!-- limit m,n 第m条开始，取n条数据  m从0开始 -->
+		<if test="limitStar != null and limitEnd != null">
+			limit #{limitStar}, #{limitEnd}
+		</if>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		update
+		<include refid="tableName"></include>
+		set 
+		 ISDEL = 1
+		where 
+			DUTY_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- 查询明细总数 -->
+	<select id="findCount" parameterType="pd" resultType="pd">
+		select
+			count(*) zs
+		from 
+			<include refid="tableName"></include>
+		where ISDEL =0 
+	</select>
+
+</mapper>

@@ -1,0 +1,52 @@
+#mysql数据源 1
+url:jdbc:mysql://192.168.1.115:3306/yingjicombine?serverTimezone=GMT&useSSL=false&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8 
+#url:jdbc:mysql://127.0.0.1:3306/hktest?serverTimezone=GMT&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8 
+driverClassName:com.mysql.cj.jdbc.Driver
+username:root
+password:Zy197511
+#password:123456
+
+#oracle数据源 2
+#url:jdbc:oracle:thin:@192.168.100.59:1521:hnjk
+#driverClassName:oracle.jdbc.driver.OracleDriver
+#username:c##nhuser
+#password:197511
+
+filters:stat
+maxActive:20
+initialSize:1
+maxWait:60000
+minIdle:10
+maxIdle:15
+timeBetweenEvictionRunsMillis:60000
+minEvictableIdleTimeMillis:300000
+validationQuery:SELECT 'x'
+testWhileIdle:true
+testOnBorrow:false
+testOnReturn:false
+maxOpenPreparedStatements:20
+removeAbandoned:true
+removeAbandonedTimeout:1800
+logAbandoned:true
+
+#数据源 2
+url2:jdbc:oracle:thin:@192.168.100.59:1521:hnjk
+driverClassName2:oracle.jdbc.driver.OracleDriver
+username2:c##nhuser
+password2:197511
+filters2:stat
+maxActive2:20
+initialSize2:1
+maxWait2:60000
+minIdle2:10
+maxIdle2:15
+timeBetweenEvictionRunsMillis2:60000
+minEvictableIdleTimeMillis2:300000
+validationQuery2:SELECT 'x'
+testWhileIdle2:true
+testOnBorrow2:false
+testOnReturn2:false
+maxOpenPreparedStatements2:20
+removeAbandoned2:true
+removeAbandonedTimeout2:1800
+logAbandoned2:true

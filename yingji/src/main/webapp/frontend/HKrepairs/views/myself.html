@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的</title>
+    <link rel=stylesheet href=https://res.wx.qq.com/t/wx_fed/weui-source/res/2.5.0/weui.min.css>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/myself.css">
+</head>
+<body data-weui-theme="light">
+    <!-- 1. 头部 -->
+    <header>
+        <div class="container">
+            <span>我的</span>
+        </div>
+    </header>
+
+    <div class="finish">
+        <div class="banner">
+            <img src="../img/form-banner.png" alt="">
+        </div>
+
+        <div class="finish-list">
+            <a href="itemList.html" class="list-item">
+                <img src="../img/quanlingyuguimo.png" alt="">
+                <span>所有隐患</span>
+            </a>
+            <a href="finishList.html" class="list-item">
+                <img src="../img/wendang.png" alt="">
+                <span>已完成</span>
+            </a>
+        </div>
+
+        <div class="log-out">
+            <a href="javascript:;" id="confirmBtn" class="weui-btn weui-btn_default">退出登录</a>
+        </div>
+    </div>
+
+    <!-- 3. 底部 -->
+    <footer>
+        <div class="container">
+            <a href="backlog.html" id="icon1">
+                <img src="../img/backlog-icon.png" alt="">
+                <span>待办</span>
+            </a>
+            <a href="form.html" id="icon2">
+                <img src="../img/new-icon.png" alt="">
+                <span>新建</span>
+            </a>
+            <a href="#" id="icon3">
+                <img src="../img/myself-icon.png" alt="">
+                <span>我的</span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="https://res.wx.qq.com/t/wx_fed/cdn_libs/res/weui/1.2.8/weui.min.js"></script>
+    <script>
+        document.querySelector('#confirmBtn').addEventListener('click', function () {
+            weui.confirm('是否退出登录', function () {
+                console.log('yes')
+                window.location.href = "./login.html"
+            }, function () {
+                console.log('no')
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+package com.fh.util;
+
+public class fengXianJudge {
+    public static String judgeTitle(String titleCn){
+        String titleEn = null;
+
+        switch (titleCn){
+            case "二级公司":
+                titleEn = "SECOND_UNIT";
+                break;
+            case "三级机构(项目)":
+                titleEn = "THIRD_UNIT";
+                break;
+            case "地址":
+                titleEn = "FENGXIAN_ADDRESS";
+                break;
+            case "区域":
+                titleEn = "FENGXIAN_AREA";
+                break;
+            case "危险源":
+                titleEn = "FENGXIAN_HAZARD";
+                break;
+            case "可能导致的事故类型":
+                titleEn = "FENGXIAN_ACCIDENT_TYPE";
+                break;
+            case "风险等级":
+                titleEn = "FENGXIAN_LEVEL";
+                break;
+            case "控制措施":
+                titleEn = "CONTROL_MEASURE";
+                break;
+            case "应急措施":
+                titleEn = "EMERGENCY_MEASURE";
+                break;
+            case "危险源持续时间":
+                titleEn = "HAZARD_DURATION";
+                break;
+            case "管理层级":
+                titleEn = "MANAGEMENT_LEVEL";
+                break;
+            case "责任单位":
+                titleEn = "RESPONSIBILITY_UNIT";
+                break;
+            case "责任人":
+                titleEn = "RESPONSIBILITY_PEOPLE";
+                break;
+            case "责任人联系方式":
+                titleEn = "RESPONSIBILITY_PHONE";
+                break;
+            case "识别时间":
+                titleEn = "RECOGNITION_TIME";
+                break;
+            case "开始时间":
+                titleEn = "START_TIME";
+                break;
+            case "结束时间":
+                titleEn = "END_TIME";
+                break;
+            case "图片":
+                titleEn = "IMG_URL";
+                break;
+
+        }
+
+        return titleEn;
+    }
+}

@@ -1,0 +1,232 @@
+/*清除元素默认的内外边距  */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  /*让所有斜体 不倾斜*/
+  em,
+  i {
+    font-style: normal;
+  }
+  /*去掉列表前面的小点*/
+  li {
+    list-style: none;
+  }
+  /*图片没有边框   去掉图片底侧的空白缝隙*/
+  img {
+    border: 0; /*ie6*/
+    vertical-align: middle;
+  }
+  /*让button 按钮 变成小手*/
+  button {
+    cursor: pointer;
+  }
+  /*取消链接的下划线*/
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: #e33333;
+  }
+
+  p{
+    font-size: .15rem;
+  }
+
+  h1,h2,h3,h4,p{
+    color: #fff;
+  }
+  h3{
+    font-size: .2rem;
+  }
+  h4 {
+    font-size: .175rem;
+    font-weight: 400;
+  }
+  body {
+    background: url(../images/background.png) no-repeat;
+    background-size: 100% 100%;
+  }
+  /* // 实现rem适配 */
+  @media screen and (max-width: 3100px) {
+    html {
+      font-size: 65px !important;
+    }
+  }
+  @media screen and (max-width: 2580px) {
+    html {
+      font-size: 80px !important;
+    }
+  }
+
+  @media screen and (max-width: 1920px) {
+    html {
+      font-size: 70px !important;
+    }
+  }
+
+  @media screen and (max-width: 1560px) {
+    html {
+      font-size: 50px !important;
+    }
+  }
+
+  @media screen and (max-width: 1440px) {
+    html {
+      font-size: 56px !important;
+    }
+  }
+
+  @media screen and (max-width: 1360px) {
+    html {
+      font-size: 50px !important;
+    }
+  }
+  @media screen and (max-width: 1280px) {
+    html {
+      font-size: 48px !important;
+    }
+  }
+
+  html{
+    overflow-y: hidden;
+    width: 100%;
+    height: 100%;
+    padding-bottom: .125rem;
+  }
+video{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    object-fit: cover;
+}
+
+.viewpoint{
+    position: relative;
+}
+
+.loginBox{
+    position: absolute;
+    left: 50%;
+    margin-top: 2.875rem;
+    width: 7.8125rem;
+    height: 8.1375rem;
+    background-image: url(../images/loginBox.png);
+    background-size: cover;
+}
+
+.top{
+    padding: .5rem .75rem 0 .75rem;
+}
+
+.top img{
+    width: 1.825rem;
+    height: 1.2375rem;
+    margin-left: 2.25rem;
+    margin-bottom: .5rem;
+    text-align: center;
+}
+
+.top h2{
+    font-size: .6rem;
+    font-family: YouSheBiaoTiHei;
+    text-align: center;
+}
+
+.login{
+    display: flex;
+    flex-direction: column;
+    padding: .75rem .4375rem 0 .625rem;
+    margin: 0 auto;
+    margin-top: .375rem;
+    width: 6.2875rem;
+    height: 4.2625rem;
+    background-image: url(../images/loginZhanghao.png);
+    background-size: cover;
+}
+
+.zhanghao{
+    position: relative;
+}
+
+.zhanghao img{
+    position: absolute;
+    top: .15rem;
+    left: 0;
+}
+
+#zh{
+    padding-left: .4375rem;
+    padding-bottom: .125rem;
+    margin: 0 auto;
+    margin-bottom: .625rem;
+    width: 5.325rem;
+    height: .75rem;
+    line-height: .625rem;
+    border: none;
+    border-bottom: 1px solid #0229a5;
+    font-size: .3rem;
+    background-color: rgba(255, 255, 255, 0);
+    outline: none;
+}
+
+.password{
+    position: relative;
+}
+
+.password #eye{
+    position: absolute;
+    top: .25rem;
+    right: 0;
+    width: .5rem;
+    height: .25rem;
+    cursor: pointer;
+}
+
+#mm{
+    padding-left: .4375rem;
+    padding-bottom: .125rem;
+    margin: 0 auto;
+    width: 5.325rem;
+    height: .75rem;
+    line-height: .625rem;
+    border: none;
+    border-bottom: 1px solid #0229a5;
+    font-size: .3rem;
+    background-color: rgba(255, 255, 255, 0);
+    outline: none;
+}
+
+input{
+    font-size: .275rem;
+    color: #fff;
+    line-height: .625rem;
+}
+
+#loginbtn{
+    margin-top: .375rem;
+    width: 5.425rem;
+    height: .6rem;
+    background-image: url(../images/loginBtn.png);
+    background-size: cover;
+    border: none;
+    font-size: .3rem;
+    background-color: rgba(255, 255, 255, 0);
+    color: #fff;
+}
+
+.bottom{
+    position: fixed;
+    bottom: 2%;
+    left: 40%;
+    background-image: url(../images/loginBottom.png);
+    background-size: cover;
+    width: 14.1375rem;
+    height: .25rem;
+}

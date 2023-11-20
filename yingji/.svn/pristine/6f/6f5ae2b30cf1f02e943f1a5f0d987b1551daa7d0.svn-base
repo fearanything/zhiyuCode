@@ -1,0 +1,50 @@
+package com.fh.util;
+
+public class judgeOrgName {
+    public static String OrgNameShort(String orgName){
+        String orgCode = null;
+
+        if (null != orgName) {
+            switch (orgName) { 					//根据简称返回对应编码
+                case "海南控股":
+                    orgCode = "HK";
+                    break;
+                case "海南机场":
+                    orgCode = "JC";
+                    break;
+                case "海南发展":
+                    orgCode = "FZ";
+                    break;
+                case "水电集团":
+                    orgCode = "SD";
+                    break;
+                case "海控能源":
+                    orgCode = "NY";
+                    break;
+                case "海控置业":
+                    orgCode = "ZY";
+                    break;
+                case "海控能建":
+                    orgCode = "NJ";
+                    break;
+                case "海控建设":
+                    orgCode = "JS";
+                    break;
+                case "海控贸易":
+                    orgCode = "MY";
+                    break;
+                case "海控资产":
+                    orgCode = "ZC";
+                    break;
+                case "全球精品":
+                    orgCode = "JP";
+                    break;
+            }
+        } else {
+            orgCode = "";
+        }
+
+        return orgCode;
+    }
+
+}

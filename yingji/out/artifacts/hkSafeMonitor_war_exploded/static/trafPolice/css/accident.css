@@ -1,0 +1,70 @@
+.weui_upload{
+	width: 60px;
+	height: 60px;
+	border: 1px solid #ccc;
+	position: relative;
+	display: inline-block;
+	margin: 0 9px 0 0;
+}
+.weui_upload:active{
+	border-color: #999999;
+}
+.weui_upload:before,.weui_upload:after{
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #b2b2b2;
+}
+.weui_upload:before{
+	width: 2px;
+    height: 26px;
+}
+.weui_upload:after{
+	width: 26px;
+    height: 2px;
+}
+.weui_upload img{
+	width: 60px;
+	height: 60px;
+}
+.head{
+	width: 100%;
+	background: #39AEEA;
+	color: #fff;
+	text-align: center;
+	line-height: 45px;
+	font-size: 16px;
+}
+.inquiry{
+	width: 100%;
+	padding: 0 5%;
+}
+.inquiry_box{
+	margin: 15px 0;
+}
+.label-left{
+	color: #0081FF;
+    font-size: 16px;
+}
+.label-right{
+	margin-top: 5px;
+}
+.label-right input{
+	width: 100%;
+	border: 1px solid #ddd;
+	height: 30px;
+	border-radius: 6px;
+	padding-left: 5px;
+}
+.inquiry_box button{
+	width: 100%;
+	background: #39AEEA;
+	border: 0;
+	height: 40px;
+	font-size: 16px;
+	margin-top: 10px;
+	color: #fff;
+	border-radius: 6px;
+}

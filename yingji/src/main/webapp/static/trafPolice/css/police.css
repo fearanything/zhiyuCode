@@ -1,0 +1,45 @@
+header{
+	width: 100%;
+}
+header img{
+	width: 100%;
+}
+.plate{
+	width: 100%;
+}
+.plate_info a{
+	display: inline-block;
+	width: 32%;
+	text-align: center;
+	margin-top: 8%;
+}
+.plate_info a p{
+	font-family: "微软雅黑";
+	font-size: 16px;
+	color: #232323;
+	margin-top: 30px;
+}
+.plate_info a div{
+	width: 100%;
+	height: 58px;
+	position: relative;
+}
+.plate_info a div img{
+	width: 40%;
+	position: absolute;
+	bottom:	0;
+	left: 30%;
+}
+.plate_msg{
+	width: 100%;
+	text-align: center;
+	font-family: "微软雅黑";
+	font-size: 14px;
+	color: #C4C4C4;
+	position: absolute;
+	bottom: 30px;
+	line-height: 2;
+}
+.plate_msg img{
+	width: 6%;
+}

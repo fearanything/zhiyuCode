@@ -1,0 +1,610 @@
+body{
+    width: 100%;
+    background-image: url(../images/bigbgc.png);
+    background-size:cover;
+    background-repeat: no-repeat;
+}
+/* 1.头部header开始 */
+.header{
+    margin: 0 auto;
+    padding-top: 30px;
+    width: 3840px;
+    height: 103px;
+    min-width: 1920px;
+    background-image: url(../images/bighead.png);
+    background-size: cover;
+}
+
+.header .wrapper{
+    margin: 0 auto;
+    /* width: 80%; */
+}
+
+.header .head{
+    width: 100%;
+}
+
+.header .wrapper .headTab{
+    padding-top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.header .wrapper .headTab a{
+    padding: 7px;
+    margin-left: 35px;
+    color: #fff;
+}
+
+.header .wrapper .headTab a:hover{
+    border-radius: 5px;
+    border: 1px solid #20bcfc;
+    background-color: #002386;
+}
+
+.header .head h2{
+    font-size: 32px;
+    text-align: center;
+    color: #fff;
+    margin-left: 20px;
+}
+/* 1.头部header结束 */
+
+/* Bi内容开始 */
+.bi{
+    display: flex;
+    justify-content: center;
+}
+/* 2.左边气象开始 */
+.weather{
+    margin-top: 48px;
+    margin-right: 100px;
+    width: 500px;
+    height: 582px;
+    /* background-image: url(../images/box1.png);
+    background-size: cover; */
+    border: 1px solid #23dbfc;
+}
+
+.weather .title{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    background-image: url(../images/qixiangBgc.png);
+}
+
+.weather .title h3{
+    padding-left: 13px;
+    width: 118px;
+    height: 23px;
+    font-size: 14px;
+    line-height: 23px;
+    color: #fff;
+    background-image: url(../images/TabBox.png);
+    background-size: cover;
+}
+
+.weather .title .times{
+    padding-top: 3px;
+    padding-right: 13px;
+    font-size: 14px;
+    color: #23cefd;
+}
+
+.weather .weatherMsg{
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.weather .weatherMsg .leftBox{
+    position: relative;
+    display: flex;
+    margin-top: 15px;
+    padding-left: 6px;
+    width: 162px;
+    height: 53px;
+    background-image: url(../images/weather.png);
+    background-size: cover;
+}
+
+.weather .weatherMsg .leftBox #weatherToday{
+    margin-top: 20px;
+    white-space: nowrap;
+    font-size: 12px;
+    color: #fff;
+    
+}
+
+.weather .weatherMsg .leftBox b{
+    margin-left: 22px;
+    font-size: 22px;
+    color: #fff;
+}
+
+.weather .weatherMsg .leftBox i img{
+    margin-left: 23px;
+    margin-top: 7px;
+    width: 21px;
+    height: 23px;
+}
+
+.weather .weatherMsg .leftBox #weatherMsg{
+    flex: none;
+    position: absolute;
+    top: 30px;
+    left: 38px;
+    font-size: 8px;
+    color: #fff;
+}
+
+.weather .weatherMsg .rightBox{
+    position: relative;
+    margin-top: 16px;
+    margin-left: 12px;
+}
+
+.weather .weatherMsg .rightBox img{
+    position: absolute;
+    top: 4px;
+    left: -10px;
+    width: 7px;
+}
+
+.weather .weatherMsg .rightBox p{
+    width: 185px;
+    font-size: 8px;
+    color: #fff;
+}
+
+.weather .taifeng{
+    margin-top: 10px;
+    padding-left: 15px;
+}
+
+.weather .taifeng h3{
+    margin-bottom: 10px;
+    font-size:14px ;
+    color: #fff;
+}
+
+
+.weather .taifeng .video{
+    margin: 0 auto;
+    width: 372px;
+    height: 223px;
+    border: 2px solid #012991;
+}
+
+.weather .level{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 12px 20px;
+    width: 375px;
+    height: 163px;
+    background-image: url(../images/levelBox.png);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    transition-duration: 0.3s;
+    transition-property: box-shadow, transform;
+}
+
+.weather .level:hover{
+    box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
+#levelDetail{
+    padding-top: 2px;
+    padding-left: 6px;
+    margin: 15px 0px 4px 420px;
+    display: block;
+    width: 60px;
+    height: 22px;
+    font-size: 8px;
+    color: #fff;
+    background-image: url(../images/xiangqing.png);
+}
+
+.weather .level .levelName img{
+    width: 98px;
+    height: 23px;
+}
+
+.weather .level .levelName h2{
+    margin-top: 8px;
+    margin-left: 5px;
+    width: 99px;
+    line-height: 54px;
+    font-size: 48px;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+
+.weather .level .levelPoint h2{
+    font-size: 40px;
+    color: #0096ff;
+    letter-spacing: 7px;
+}
+
+.weather .level .levelPoint p{
+    margin-right: 10px;
+    width: 180px;
+    height: 80px;
+    font-size: 70px;
+    line-height: 80px;
+    text-align: center;
+    background-color: #ffb400;
+    border: 2px solid #dc8c01;
+    border-radius: 14px;
+}
+
+.weather .level .levelPoint i{
+    font-family: STSongti-SC-Black;
+}
+/* 2.左边气象结束 */
+
+/* 3.tab栏开始 */
+.bi .tab{
+    position: relative;
+    padding: 0 99px;
+    margin-top: 50px;
+    width: 982px;
+    height: 41px;
+}
+
+.bi .tab ul{
+    display: flex;
+    padding-top: 1px;
+}
+
+
+.bi .tab .left{
+    padding-left: 28px;
+    margin-left: -22px;
+    width: 118px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    background-image: url(../images/TabLiBox2.png);
+    background-size: cover;
+}
+
+.bi .tab .left:hover{
+    background-image: url(../images/TabLiBox.png);
+    background-size: cover;
+}
+.bi .tab .right:hover{
+    background-image: url(../images/TabLiBox4.png);
+    background-size: cover;
+}
+.bi .tab .left a,.right a{
+    color: #fff;
+}
+.bi .tab ul :nth-child(4){
+    margin-right: 1px;
+}
+
+
+.bi .tab .right{
+    padding-left: 28px;
+    margin-right: -22px;
+    width: 118px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    color: #fff;
+    background-image: url(../images/TabLiBox3.png);
+    background-size: cover;
+}
+
+.bi .tab ul .active{
+    background-image: url(../images/TabLiBox.png);
+}
+
+.bi .tab .centerVideo{
+    padding-left: 10px;
+    position: absolute;
+    top:60px ;
+    left: 0;
+    width: 989px;
+    height: 420px;
+    background-image: url(../images/videoBG.png);
+    background-size: cover;
+}
+
+.bi .tab .centerVideo ul{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.bi .tab .centerVideo img{
+    margin-top: 6px;
+    margin-left: 0px;
+    width: 290px;
+    height: 196px;
+}
+
+.bi .tab .centerVideo .menulist{
+    position: absolute;
+    top: 1px;
+    right: 6px;
+    width: 96px;
+    height: 417px;
+    background-image: url(../images/videoList.png);
+    background-size: contain;
+}
+
+.bi .tab .centerVideo .menulist .menu_list{
+    display: flex;
+    flex-direction: column;
+}
+
+.bi .tab .centerVideo .menulist .menu_head{
+    padding-left: 4px;
+    width: 96px;
+    background-image: url(../images/videoListLi.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+
+}
+
+.bi .tab .centerVideo .menulist .menu_body{
+    width: 96px;
+    font-size: 12px;
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+}
+
+.bi .tab .centerVideo .menulist .menu_body a{
+    line-height: 38px;
+    padding-left: 10px;
+    display: block;
+    overflow: hidden;
+    height: 0;
+    color: #fff;
+    transition: all .3s;
+}
+
+.bi .tab .centerVideo .menulist .menu_body a:hover{
+    color: #0096ff;
+}
+
+
+.bi .tab .centerVideo .menulist #videoMenu dl{
+    width: 104px;
+    display: none;
+}
+
+
+#zhengChang{
+    color: #0aba1f;
+}
+
+#noInternet{
+    color: #ffa800;
+}
+
+#zhiLiu{
+    color: #d41515;
+}
+
+.gongGaoMsg{
+    position: absolute;
+    bottom: -540px;
+    left: 1px;
+    padding: 10px;
+    width: 982px;
+    height: 95px;
+    background-image: url(../images/videoUnderBox.png);
+    background-size: contain;
+}
+
+.gongGaoMsg h3{
+    font-size: 12px;
+    color: #fff;
+}
+
+.gongGaoMsg h3 img{
+    width: 12px;
+    height: 11px;
+}
+
+.gongGaoMsg p{
+    display: flex;
+    justify-content: space-between;
+}
+
+.gongGaoMsg a{
+    margin-left: 30px;
+    color: #fff;
+    font-size: 12px;
+}
+
+.gongGaoMsg a:hover{
+    color: #0096ff;
+}
+/* 3.tab栏结束 */
+
+
+/* 4.值班信息开始 */
+.bi .zhiban{
+    padding-bottom: 10px;
+    margin-top: 48px;
+    margin-left: 100px;
+    width: 500px;
+    height: 582px;
+    /* background-image: url(../images/box1.png);
+    background-size: cover; */
+    border: 1px solid #23dbfc;
+}
+
+.bi .zhiban .title h3{
+    padding-left: 13px;
+    margin-bottom: 10px;
+    width: 118px;
+    height: 23px;
+    line-height: 23px;
+    background-image: url(../images/Tabbox2.png);
+    background-size: cover;
+    font-size: 14px;
+    color: #fff;
+}
+
+.bi .zhiban .zhibanMsg{
+    display: flex;
+    justify-content: space-between;
+}
+
+.bi .zhiban .zhibanMsg .zhibanLeft{
+    padding: 7px 8px;
+    margin-left: 5px;
+    width: 103px;
+    height: 93px;
+    background-image: url(../images/zhibanBox.png);
+}
+
+.bi .zhiban .zhibanMsg .zhibanLeft p{
+    font-size: 12px;
+    color: #fff;
+}
+
+#zhibanName{
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.bi .zhiban .zhibanMsg .zhibanRight{
+    flex: 2;
+    padding: 4px;
+    width: 267px;
+    height: 90px;
+    background-image: url(../images/zhibanBgc.png);
+    background-size: cover;
+}
+
+.bi .zhiban .zhibanMsg .zhibanRight ul{
+    display: flex;
+    
+}
+
+.bi .zhiban .zhibanMsg .zhibanRight ul li{
+    width: 100px;
+    margin-left: 10px;
+}
+
+.bi .zhiban .zhibanMsg .zhibanRight ul p{
+    font-size: 12px;
+    color: #fff;
+}
+
+.bi .zhiban .dataTitle{
+    margin: 0 auto;
+    margin-top: 10px;
+    padding: 0 10px;
+    padding-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    width: 496px;
+    height: 30px;
+    background-image: url(../images/data.png);
+}
+
+.bi .zhiban .dataTitle h3{
+    font-size: 14px;
+    color: #fff;
+}
+
+.bi .zhiban .dataTitle a{
+    padding-top: 2px;
+    padding-left: 4px;
+    display: block;
+    width: 60px;
+    height: 22px;
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+    background-image: url(../images/xiangqing.png);
+    background-size: cover;
+
+}
+
+.bi .zhiban .lineChart img{
+    margin-left: 50px;
+}
+
+.bi .zhiban .xiangmuList{
+    margin-top: 10px;
+}
+
+.bi .zhiban .xiangmuList .xiangmuTitle h3{
+    padding-left: 6px;
+    width: 92px;
+    height: 16px;
+    font-size: 14px;
+    color: #fff;
+    line-height: 16px;
+    background-image: url(../images/xiangmuTab.png);
+    background-size: cover;
+}
+
+.bi .zhiban .xiangmuList .pieMsg{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+    margin-left: 10px;
+    padding: 4px;
+    width: 480px;
+    background-image: url(../images/xiangmuList.png);
+    background-size: cover;
+}
+
+.bi .zhiban .xiangmuList .pieMsg .pieChart{
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 8px;
+    width: 169px;
+    height: 192px;
+    background-image: url(../images/pieBox.png);
+    background-size: cover;
+}
+
+.bi .zhiban .xiangmuList .pieMsg .pieChart h3{
+    font-size: 12px;
+    color: #fff;
+}
+
+.bi .zhiban .xiangmuList .pieMsg .listMsg{
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.bi .zhiban .xiangmuList .pieMsg .listMsg h4{
+    margin-bottom: 6px;
+    padding-left: 6px;
+    width: 96px;
+    height: 24px;
+    background-color: #5959e2;
+    border-radius: 8px;
+}
+
+.bi .zhiban .xiangmuList .pieMsg .listMsg ul{
+    display: flex;
+    flex-direction: column;
+}
+
+.bi .zhiban .xiangmuList .pieMsg .listMsg a{
+    font-size: 12px;
+    color: #fff;
+}
+
+/* 4.值班信息结束 */
+/* Bi内容结束 */

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预览</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/preview.css">
+</head>
+<body>
+    <!-- 1. 头部 -->
+    <header>
+        <div class="container">
+            <a href="backlog.html">
+                <img src="../img/back-icon.png" alt="">
+            </a>
+            <span>预览</span>
+        </div>
+    </header>
+
+    <!-- 2. 内容 -->
+    <div class="preview">
+        <div class="banner"></div>
+
+        <!-- 公司名 -->
+        <div class="company">
+            <div class="logo">
+                <img src="../img/img2.png" alt="">
+            </div>
+            <span>海南机场</span>
+        </div>
+
+        <!-- 具体信息 -->
+        <div class="detail">
+            <!-- 隐患情况 -->
+            <div class="danger-text">
+                <div class="title">
+                    <img src="../img/icon6.png" alt="">
+                    <span>隐患情况</span>
+                </div>
+                <div class="text">
+                    <p>处理问题要注重调查研究 据供应商反映扫描仪机内最大的电子系统屏蔽罩壳在生产过程中其压铸模出现裂纹，导致生产无法进行，该模是美国转移到中国生产的系列镁合金压铸模中。</p>
+                </div>
+            </div>
+
+            <!-- 隐患图片 -->
+            <div class="danger-photo">
+                <div class="title">
+                    <img src="../img/icon7.png" alt="">
+                    <span>隐患图片</span>
+                </div>
+                <div class="img">
+                    <img src="../img/img3.png" alt="">
+                    <img src="../img/img3.png" alt="">
+                    <img src="../img/img3.png" alt="">
+                    <img src="../img/img3.png" alt="">
+                </div>
+            </div>
+
+            <!-- 整改措施 -->
+            <div class="measure">
+                <div class="title">
+                    <img src="../img/icon8.png" alt="">
+                    <span>整改措施</span>
+                </div>
+                <div class="text">
+                    <p>处理问题要注重调查研究 据供应商反映扫描仪机内最大的电子系统屏蔽罩壳在生产过程中其压铸模出现裂纹，导致生产无法进行，该模是美国转移到中国生产的系列镁合金压铸模中。</p>
+                </div>
+            </div>
+
+            <!-- 隐患类别 -->
+            <div class="category">
+                <span>隐患类别</span>
+                <i>其他类</i>
+            </div>
+            <!-- 隐患级别 -->
+            <div class="level">
+                <span>隐患级别</span>
+                <i>一级</i>
+            </div>
+            <!-- 隐患因素 -->
+            <div class="factor">
+                <span>隐患因素</span>
+                <i>人的不安全行为</i>
+            </div>
+            <!-- 是否完成 -->
+            <div class="isFinish">
+                <span>是否完成</span>
+                <i>是</i>
+            </div>
+            <!-- 完成时间 -->
+            <div class="finish-time">
+                <span>完成时间</span>
+                <i>2023年3月25日 16:43:45</i>
+            </div>
+
+            <!-- 提交、修改按钮 -->
+            <div class="btn">
+                <input class="submit-btn" type="submit" value="立即提交">
+                <input class="change-btn" type="submit" value="修改">
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/jquery-3.1.1.min.js"></script>
+</body>
+</html>

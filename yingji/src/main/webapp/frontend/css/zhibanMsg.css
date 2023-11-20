@@ -1,0 +1,248 @@
+html {
+  width: 100%;
+  height: 100%;
+}
+body {
+  width: 1920px;
+  height: 1080px;
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  background-image: url(../images/bgc2.png);
+  background-size: 100% 100%;
+}
+/* 1.头部header开始 */
+.head {
+  height: 7rem;
+  background-image: url(images/topheadNew.png);
+  display: flex;
+  flex-direction: column;
+}
+.head h1 {
+  margin-top: 1.2rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  font-size: 2rem;
+}
+.head ul {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+.head ul a {
+  float: left;
+  width: 8rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #fff;
+}
+.head ul a:hover {
+  color: #20bcfc;
+}
+/* 1.头部header结束 */
+.content {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+.content .zhibanMsg {
+  width: 1290px;
+  height: 900px;
+  background-image: url(../images/zhibanMsg.png);
+}
+.content .zhibanMsg .top {
+  padding-left: 2px;
+}
+.content .zhibanMsg .top h3 {
+  padding-left: 20px;
+  width: 188px;
+  height: 37px;
+  line-height: 37px;
+  background-image: url(../images/Tabbox2.png);
+  background-size: cover;
+  font-size: 18px;
+  color: #fff;
+}
+.content .zhibanMsg .middle {
+  display: flex;
+}
+.content .zhibanMsg .middle .date {
+  padding: 20px 15px;
+  margin: 18px;
+  width: 96px;
+  height: 100px;
+  background-image: url(../images/zhibanDateBox.png);
+}
+.content .zhibanMsg .middle .date #month {
+  color: #fff;
+  font-size: 23px;
+}
+.content .zhibanMsg .middle .date #year {
+  text-align: center;
+  color: #fff;
+  font-size: 18px;
+}
+.content .zhibanMsg .middle .msg {
+  margin: 18px;
+  color: #fff;
+  font-size: 12px;
+}
+.content .zhibanMsg .middle .msg p {
+  margin-bottom: 4px;
+}
+.content .zhibanMsg .middle .msg #time {
+  font-size: 23px;
+}
+.content .zhibanMsg .lineChart {
+  margin: 40px;
+}
+.content .zhibanMsg .lineChart img {
+  margin-bottom: 20px;
+  width: 1130px;
+  height: 292px;
+}
+.content .zhibanMsg .bottom {
+  color: #fff;
+}
+.content .zhibanMsg .bottom h4 {
+  margin-left: 25px;
+}
+.content .zhibanMsg .bottom h4 img {
+  margin-bottom: 4px;
+  margin-right: 10px;
+}
+.content .zhibanMsg .bottom .zhibanBox {
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 1266px;
+  height: 275px;
+  background-image: url(../images/zhibanrenBox.png);
+  background-size: cover;
+}
+.content .zhibanMsg .bottom .zhibanBox .th {
+  width: 1257px;
+  display: flex;
+  background-image: url(../images/zhibanTab.png);
+}
+.content .zhibanMsg .bottom .zhibanBox .th p {
+  margin-top: 8px;
+  width: 180px;
+  text-align: center;
+}
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg {
+  margin-top: 6px;
+  display: flex;
+  height: 230px;
+  overflow-y: auto;
+}
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_name,
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_danwei,
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_zhiwei,
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_phone,
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_zhuangtai {
+  width: 180px;
+}
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_name p,
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_danwei p,
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_zhiwei p,
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_phone p,
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_zhuangtai p {
+  text-align: center;
+  margin-top: 10px;
+  border-right: 1px solid #256093;
+}
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg .td_daichuli {
+  padding: 10px;
+  width: 360px;
+  border-right: 1px solid #256093;
+}
+.content .zhibanMsg .bottom .zhibanBox .bottomMsg #chuli {
+  line-height: 240px;
+  color: #03c115;
+}
+.content .beforeMsg {
+  width: 466px;
+  height: 900px;
+  background-image: url(../images/beforeBox.png);
+  background-size: cover;
+}
+.content .beforeMsg .top {
+  display: flex;
+}
+.content .beforeMsg .top h3 {
+  padding-left: 15px;
+  width: 156px;
+  height: 36px;
+  line-height: 36px;
+  color: #fff;
+  font-size: 18px;
+  background-image: url(../images/beforeTab.png);
+  background-size: cover;
+}
+.content .beforeMsg .top .selectDate {
+  margin-top: 6px;
+}
+.content .beforeMsg .middle {
+  padding-top: 6px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
+  margin-left: 15px;
+  width: 430px;
+  height: 817px;
+  background-image: url(../images/beforeContent.png);
+  background-size: cover;
+}
+.content .beforeMsg .middle #Date {
+  color: #fff;
+  font-size: 16px;
+}
+.content .beforeMsg .middle .zhibanPeople {
+  margin-top: 16px;
+  color: #fff;
+}
+.content .beforeMsg .middle .zhibanPeople p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.content .beforeMsg .middle .zhibanPeople i {
+  margin-right: 6px;
+}
+.content .beforeMsg .middle .zhibanPeople #yuangong {
+  padding-bottom: 6px;
+  border-bottom: 1px solid #00a2ff;
+}
+.content .beforeMsg .middle .waterData {
+  padding-bottom: 6px;
+  color: #fff;
+  border-bottom: 1px solid #00a2ff;
+}
+.content .beforeMsg .middle .waterData p {
+  margin-top: 15px;
+}
+.content .beforeMsg .middle .waterData p img {
+  margin-bottom: 6px;
+  margin-right: 10px;
+}
+.content .beforeMsg .middle .finishMatter,
+.content .beforeMsg .middle .fankui {
+  margin-top: 15px;
+}
+.content .beforeMsg .middle .finishMatter h4,
+.content .beforeMsg .middle .fankui h4 {
+  width: 102px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  background-color: #039100;
+  border-radius: 14px;
+}
+.content .beforeMsg .middle .finishMatter p,
+.content .beforeMsg .middle .fankui p {
+  text-indent: 2em;
+  margin-top: 20px;
+  color: #fff;
+}

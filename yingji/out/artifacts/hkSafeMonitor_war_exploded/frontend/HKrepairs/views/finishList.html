@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/myself.css">
+</head>
+<body>
+    <!-- 1. 头部 -->
+    <header>
+        <div class="container">
+            <a href="myself.html">
+                <img src="../img/back-icon.png" alt="">
+            </a>
+            <span>已完成</span>
+        </div>
+    </header>
+
+    <!-- 2. 内容 -->
+    <div class="list-box">
+        
+    </div>
+
+    <!-- 3. 底部 -->
+    <footer>
+        <div class="container">
+            <a href="backlog.html" id="icon1">
+                <img src="../img/backlog-icon.png" alt="">
+                <span>待办</span>
+            </a>
+            <a href="form.html" id="icon2">
+                <img src="../img/new-icon.png" alt="">
+                <span>新建</span>
+            </a>
+            <a href="#" id="icon3">
+                <img src="../img/myself-icon.png" alt="">
+                <span>我的</span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script>
+        $(function(){
+            $.ajax({
+                type: "GET",
+                url: "../json/list.json",
+                dataType: "json",
+                async: false,
+                success: function (res) {
+                    var finish = res.finish
+                    $.each(finish, function (index, value) { 
+                        console.log(finish);
+                        $(".list-box").append(`
+                        <a href="preview.html" class="item">
+                            <div class="content">
+                                <img src="${finish[index].img}" alt="">
+                                <div class="text">
+                                    <p>${finish[index].text}</p>
+                                    <div class="time">
+                                        <img src="../img/time-icon.png" alt="">
+                                        <span>2023-06-23</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        `)
+                    });
+                }
+            });
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+.list{
+	width: 100%;
+	background: #fff;
+}
+.list a{
+	display: block;
+	width: 100%;
+	padding: 10px;
+	border-bottom: 1px solid #ebebeb;
+}
+.list_tu,.list_info,.glyphicon-menu-right{
+	display: inline-block;
+	vertical-align: middle;
+}
+.list_tu{
+	width: 16px;
+}
+.list_tu img{
+	width: 100%;
+	vertical-align: middle;
+}
+.list_info{
+	font-size: 16px;
+	margin-left: 3%;
+	width: 84%;
+	color: #000;
+}
+.glyphicon-menu-right{
+	font-size: 16px;
+	color: #ddd;
+}
+
+.head{
+	width: 100%;
+	background: #39AEEA;
+	color: #fff;
+	text-align: center;
+	line-height: 45px;
+	font-size: 16px;
+}
+.penalty{
+	width: 100%;
+	padding: 5%;
+}
+.penalty_top{
+	width: 100%;
+}
+.penalty_top label{
+	font-weight: normal;
+	font-size: 12px;
+}
+.penalty_top input{
+	border: 0;
+	height: 30px;
+	font-size: 12px;
+}
+.penalty_tu{
+	width: 100%;
+	text-align: center;
+	margin: 10px 0;
+}
+.penalty_tu img{
+	width: 100%;
+}
+.penalty_msg{
+	font-size: 14px;
+}
+.penalty_msg p:first-child{
+	font-weight: bold;
+	font-size: 16px;
+}
+.penalty_btn button,.inquiry_info_btn button{
+	width: 100%;
+	background: #39AEEA;
+	border: 0;
+	height: 40px;
+	font-size: 16px;
+	margin-top: 10px;
+	color: #fff;
+	border-radius: 6px;
+}
+
+.inquiry{
+	width: 100%;
+	background: #ebebeb;
+}
+.inquiry_box{
+	width: 100%;
+	font-size: 0;
+	margin-bottom: 3px;
+	background: #fff;
+}
+.label-left,.label-right,.label-mid,.label_rt{
+	display: inline-block;
+	vertical-align: top;
+    height: 45px;
+    margin-bottom: 0;
+    line-height: 45px;
+	font-size: 14px;
+	font-weight: normal;
+}
+.label-left{
+	width: 30%;
+	color: #454545;
+    text-align: right;
+}
+.label-right{
+	width: 70%;
+	border-left: 0;
+	padding-left: 8px;
+	position: relative;
+}
+.label-right .plate,.label-mid .plate{
+	border: 0;
+	width: 90%;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+}
+.select{
+	position: absolute;
+	right: 20px;
+	top: 15px;
+}
+.label-mid{
+	padding-left: 8px;
+	width: 45%;
+}
+.inquiry_info{
+	width: 100%;
+	padding: 0 5%;
+	background: #fff;
+}
+.inquiry_info_content p{
+	margin-left: 5%;
+	font-size: 14px;
+}
+.inquiry_info_content p:first-child{
+	margin-left: 0;
+	margin-bottom: 10px;
+	padding-top: 10px;
+}

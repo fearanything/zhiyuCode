@@ -1,0 +1,147 @@
+.header{
+	width: 100%;
+    background: #39AEEA;
+    color: #fff;
+    text-align: center;
+    line-height: 45px;
+    font-size: 16px;
+    position: relative;
+}
+.learn{
+	width: 95%;
+	margin: 0 auto;
+	padding: 5% 0;
+	border-bottom: 2px solid #28A5E5;
+}
+.learn a{
+	display: inline-block;
+	vertical-align: top;
+	width: 20%;
+	margin: 0 5%;
+	text-align: center;
+}
+.learn a img{
+	width: 100%;
+}
+.learn_content{
+	font-size: 14px;
+	margin-top: 5px;
+}
+.learn_msg{
+	padding: 3%;
+}
+.block{
+	display: inline-block;
+    vertical-align: middle;
+    width: 4px;
+    height: 12px;
+    background: #0F5885;
+}
+.msg{
+	display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: bold;
+    color: #0F5885;
+}
+.msg_content{
+	font-size: 14px;
+	text-indent: 20px;
+}
+.header .glyphicon-menu-left{
+	position: absolute;
+	left: 10px;
+	top: 17px;
+	color: #fff;
+}
+
+.topic{
+	width: 95%;
+	margin: 0 auto;
+	color: #000;
+}
+.topic_title{
+	width: 100%;
+	font-size: 16px;
+	padding: 10px;
+	background: #EEEEEE;
+}
+.topic_content{
+	width: 100%;
+	border-top: 2px solid #E1E7C9;
+	border-bottom: 2px solid #E1E7C9;
+}
+.topic_content div{
+	border-bottom: 1px dashed #E1E7C9;
+	padding: 5px 10px;
+	font-size: 16px;
+}
+.topic_content div input{
+	width: 5%;
+	margin-top: 8px;
+}
+.topic_content div label{
+	width: 90%;
+}
+.topic_content div:last-child{
+	border-bottom: 0;
+}
+.topic_content div input,.topic_content div label{
+	display: inline-block;
+	vertical-align: top;
+	border-bottom: 0;
+	font-weight: normal;
+}
+.fixed{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	font-size: 0;
+	padding: 10px 0;
+	border-top: 1px solid #ccc;
+	background:white;
+}
+.fixed .fixed_box{
+	display: inline-block;
+	vertical-align: middle;
+	width: 50%;
+	font-size: 14px;
+}
+.fixed .fixed_box span,.fixed .fixed_topic span{
+	vertical-align: middle;
+}
+.fixed  .fixed_topic{
+	display: inline-block;
+	vertical-align: middle;
+	width: 30%;
+	font-size: 14px;
+}
+
+#yourAnswer{
+	color:red;
+}
+#trueAnswer{
+	color:green;
+}
+
+.imgUrl{
+	width:100%;
+}
+.vedioUrl{
+	width:100%;
+}
+
+.checkbox_confirm input{
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 10px;
+	cursor: pointer;
+	height: 30px;
+	width: 80%;
+	border-radius: 5px;
+}

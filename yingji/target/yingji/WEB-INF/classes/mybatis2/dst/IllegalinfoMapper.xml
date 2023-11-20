@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IllegalinfoMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		hx_illegalinfo
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		ID,
+		HPHM, 
+		SJLY, 
+		MONITORYPOINT_ID,
+		ILLEGALTYPE_ID,
+		WFSJ,
+		DIRECTION_ID,
+		LANE,
+        CS, 
+        UPDATE_TIME, 
+        CREATETIME, 
+        CREATEUSERNAME,
+        CARTYPE_ID,
+        STATUS,
+        DELETED,
+        BZZ,
+        CJFS,
+        DATATYPE,
+        WFDZZ,
+        JDSJ,
+        JDR
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{ID},
+		#{HPHM}, 
+		#{SJLY}, 
+		#{MONITORYPOINT_ID},
+		#{ILLEGALTYPE_ID},
+		#{WFSJ},
+		#{DIRECTION_ID},
+		#{LANE},
+        #{CS}, 
+        #{UPDATE_TIME}, 
+        #{CREATETIME}, 
+        #{CREATEUSERNAME},
+        #{CARTYPE_ID},
+        #{STATUS},
+        #{DELETED},
+        #{BZZ},
+        #{CJFS},
+        #{DATATYPE},
+        #{WFDZZ},
+        #{JDSJ},
+        #{JDR}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="Illegalinfo">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+</mapper>

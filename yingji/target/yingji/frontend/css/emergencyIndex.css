@@ -1,0 +1,274 @@
+/*清除元素默认的内外边距  */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  /*让所有斜体 不倾斜*/
+  em,
+  i {
+    font-style: normal;
+  }
+  /*去掉列表前面的小点*/
+  li {
+    list-style: none;
+  }
+  /*图片没有边框   去掉图片底侧的空白缝隙*/
+  img {
+    border: 0; /*ie6*/
+    vertical-align: middle;
+  }
+  /*让button 按钮 变成小手*/
+  button {
+    cursor: pointer;
+  }
+  /*取消链接的下划线*/
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: #e33333;
+  }
+
+  p{
+    font-size: .15rem;
+  }
+
+  h1,h2,h3,h4,p{
+    color: #fff;
+  }
+  h3{
+    font-size: .2rem;
+  }
+  h4 {
+    font-size: .175rem;
+    font-weight: 400;
+  }
+  body {
+    background: url(../images/background.png) no-repeat;
+    background-size: 100% 100%;
+  }
+  /* // 实现rem适配 */
+  @media screen and (max-width: 3100px) {
+    html {
+      font-size: 65px !important;
+    }
+  }
+  @media screen and (max-width: 2580px) {
+    html {
+      font-size: 80px !important;
+    }
+  }
+
+  @media screen and (max-width: 1920px) {
+    html {
+      font-size: 70px !important;
+    }
+  }
+
+  @media screen and (max-width: 1560px) {
+    html {
+      font-size: 56px !important;
+    }
+  }
+
+  @media screen and (max-width: 1440px) {
+    html {
+      font-size: 56px !important;
+    }
+  }
+
+  @media screen and (max-width: 1360px) {
+    html {
+      font-size: 50px !important;
+    }
+  }
+  @media screen and (max-width: 1280px) {
+    html {
+      font-size: 48px !important;
+    }
+  }
+
+  html{
+    width: 100%;
+    height: 100%;
+    padding-bottom: .125rem;
+  }
+
+  /* 1.父容器大盒子 */
+  .viewpoint{
+    min-width: 1024px;
+    max-width: 3066px;
+    margin: 0 auto;
+    padding-bottom: .125rem;
+    background-size: cover;
+    /* padding: 3.125rem .5rem 0 .5rem;
+    background: url(../images/topheadNew.png) no-repeat;
+    background-size: contain; */
+    /* min-height: 780px; */
+  }
+
+  /* 顶部Tab开始 */
+  .head{
+    height: 1.12rem;
+    margin-bottom: .375rem;
+    background-image: url(../images/topheadNew.png);
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    }
+
+    .head h1{
+        margin-top: .15rem;
+        margin-bottom: .075rem;
+        display: flex;
+        justify-content: center;
+        color: #fff;
+        font-size: .375rem;
+    }
+
+    .head ul{
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        
+    }
+
+    .head ul a{
+        float: left;
+        width: 1.625rem;
+        text-align: center;
+        font-size: .2rem;
+        color: #fff;
+    }
+
+    .head ul a:hover{
+        color: #20bcfc;
+    }
+  /* 顶部Tab结束 */
+
+  /* 2.中心盒子 */
+  .column{
+    display: flex;
+    justify-content:center;
+    flex-direction: row;
+  }
+  .column1{
+    display: flex;
+    flex-direction: column;
+    padding: .125rem;
+    width: 5.5rem;
+    height: 7.875rem;
+    background-image: url(../images/box1.png);
+    background-size: cover;
+
+  }
+
+  #levelDetail{
+    display: block;
+    margin-bottom: .125rem;
+    width: .6875rem;
+    height: .225rem;
+    background-image: url(../images/xiangqing.png);
+    background-size: cover;
+    margin-left: 3.75rem;
+    font-size: .15rem;
+    text-align: center;
+  }
+
+  .column1 .level{
+    display: flex;
+    margin: 0 auto;
+    margin-bottom: .125rem;
+    padding: .125rem;
+    width: 4.5rem;
+    height: 1.875rem;
+    border-radius: .1375rem;
+    background-image: url(../images/levelBox.png);
+    background-size: cover;
+  }
+
+  .column1 .taifeng{
+    margin-bottom: .125rem;
+  }
+
+  .column1 .weatherMsg{
+    display: flex;
+
+  }
+
+  .levelName{
+    width: 2rem;
+  }
+  
+
+  .column2{
+    margin-left: .1875rem;
+    margin-right: .1rem;
+    background-image: url(../images/box1.png);
+    background-size: cover;
+  }
+
+  #video{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .column2 #video img{
+    margin-top: .125rem;
+    margin-left: .1rem;
+    width: 3.5rem;
+  }
+
+  .menu_body{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu_body a{
+    display: block;
+    overflow: hidden;
+    height: 0;
+    font-size: .175rem;
+    color: #fff;
+    transition: all .3s;
+} 
+
+  .menu_head{
+    width: 1.375rem;
+    height: .3rem;
+    background-image: url(../images/videoListLi.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-size: .2rem;
+    cursor: pointer;
+    color: #fff;
+
+}
+
+  .gongGaoMsg{
+    width: 12.375rem;
+    height: 1.1875rem;
+    background-image: url(../images/videoUnderBox.png);
+    background-size: cover;
+    color: #fff;
+}
+
+  .column3{
+    display: flex;
+    flex-direction: column;
+    width: 5.5rem;
+    height: 7.875rem;
+    background-image: url(../images/box1.png);
+    background-size: cover;
+  }
+
+  .zhibanRight li{
+    padding: .075rem;
+  }
+
+  .listMsg a{
+    font-size: .15rem;
+  }

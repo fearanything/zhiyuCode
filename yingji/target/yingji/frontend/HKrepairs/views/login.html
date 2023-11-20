@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+    <!-- 1. 头部 -->
+    <header>
+        <div class="container">
+            <span>海南控股</span>
+        </div>
+    </header>
+
+    <!-- 2. 登录 -->
+    <div class="login">
+        <div class="system-name">
+            <div class="container">
+                <img src="../img/hk-logo2.png" alt="">
+                <span>海南控股安全隐患管理信息化平台系统</span>
+            </div>
+        </div>
+        <form id="login-form">
+            <div class="account">
+                <img src="../img/user.png" alt="">
+                <input type="text" id="username" name="username" placeholder="请输入用户名">
+            </div>
+            <div class="password">
+                <img src="../img/shenfenshibierenzheng.png" alt="">
+                <div class="box">
+                    <input type="password" id="userpassword" name="userpassword" placeholder="请输入密码">
+                    <img id="eye" src="../img/browse.png" alt="">
+                </div>
+            </div>
+            <div class="submit">
+                <a href="">
+                    <button id="login-btn" type="submit" name="login-btn">登录</button>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- 3. 底部技术支持 -->
+    <footer>
+        <div class="container">
+            <img src="../img/HkZyLogo.png" alt="">
+            <span>智宇科技技术支持</span>
+        </div>
+    </footer>
+
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="../js/flexible.js"></script>
+    <script>
+        $(function(){
+            // 模拟用户密码
+            var name = "zykj"
+            var password = "123456"
+
+            // 切换密码眼睛图片
+            $("#eye").click(function(){
+                var pass_type = $("#userpassword").attr("type")
+                // console.log(pass_type);
+
+                //判断type值
+                if(pass_type === "password"){
+                    $("#userpassword").attr("type", "text")
+                    $("#eye").attr("src", "../img/eye-close-2.png")
+                }else{
+                    $("#userpassword").attr("type", "password")
+                    $("#eye").attr("src", "../img/browse.png")
+                }
+            })
+
+            // 登录跳转
+            $("#login-form").submit(function(res){
+                //阻止表单默认提交
+                event.preventDefault()
+
+                // 获取用户名和密码
+                var username = $("#username").val()
+                var userpassword = $("#userpassword").val()
+                
+                if(username === name || userpassword === password){
+                    window.location.href = "./backlog.html"
+                }else{
+                    alert("用户名或密码不正确！")
+                }
+                // 发起ajax请求
+                // $.ajax({
+                //     type: "POST",
+                //     url: "",
+                //     data: {
+                //         username: username,
+                //         userpassword: userpassword
+                //     },
+                //     success: (data) => {
+                //         // 成功跳转页面
+                //         window.location.href = ""
+                //     },
+                //     error: () => {
+                //         //登录失败
+                //         alert("用户名或密码不正确！")
+                //     }
+                // })
+            })
+        })
+    </script>
+</body>
+</html>

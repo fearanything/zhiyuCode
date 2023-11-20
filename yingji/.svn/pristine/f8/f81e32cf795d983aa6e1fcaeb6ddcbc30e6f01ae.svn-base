@@ -1,0 +1,210 @@
+/* 画面背景 */
+.Screen_BackGround {
+	background-color: #fbfbfb;
+}
+
+/* 东软 蓝 背景*/
+.Neu_Blue {
+	background-color: #005dcd;
+}
+
+/* 蓝 默认字体大小 */
+.Blue_DefaultSize {
+	color:#0099FF;
+}
+/* 黑色 默认字体大小 */
+.Black_DefaultSize {
+	color:#000000;
+}
+
+/* 红色 默认字体大小 */
+.Red_DefaultSize {
+	color: #FF0000;
+}
+
+/* 灰色 默认字体大小 */
+.Hui_DefaultSize {
+	color: #666666;
+}
+
+/* 白色 默认字体大小 */
+.White_DefaultSize {
+	color: #FFFFFF;
+}
+
+/* 雅黑 黑色 默认字体大小 */
+.YaHei_Black_DefaultSize {
+	font-family: "Microsoft YaHei UI";
+	color:#000000;
+}
+
+/* 雅黑 灰色 默认字体大小 */
+.YaHei_Hui_DefaultSize {
+	font-family: "Microsoft YaHei UI";
+	color: #666666;
+}
+
+/* 雅黑 东软蓝 默认字体大小 */
+.YaHei_NeuBlue_DefaultSize {
+	font-family: "Microsoft YaHei UI";
+	color: #0287c8;
+}
+
+/* 罗马 灰色 默认字体大小 */
+.Roman_Hui_DefaultSize {
+	font-family: Georgia, "Times New Roman", Times, serif; color: #666666; 
+}
+
+.Neu_UnDisplayStart{
+	display: none;
+}
+
+/* 垂直居中对齐 */
+.AlignMiddle_CMS *{
+vertical-align:middle;
+}
+
+.AlignBottom_CMS *{
+vertical-align:bottom;
+}
+
+.AlignTop_CMS *{
+vertical-align:top;
+}
+
+.weui_uploader_file_square_small {
+  float: left;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  width: 60px;
+  height: 90px;
+  background: no-repeat center center;
+  background-size: cover;
+}
+.weui_uploader_file_square_small_square {
+  float: left;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  width: 60px;
+  height: 60px;
+  background: no-repeat center center;
+  background-size: cover;
+}
+.weui_uploader_input_wrp_square_small {
+  float: left;
+  position: relative;
+  margin-right: 9px;
+  margin-bottom: 9px;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #b2b2b2;
+}
+.weui_uploader_input_wrp_square_small:before,
+.weui_uploader_input_wrp_square_small:after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background-color: #b2b2b2;
+}
+.weui_uploader_input_wrp_square_small:before {
+  width: 2px;
+  height: 26px;
+}
+.weui_uploader_input_wrp_square_small:after {
+  width: 26px;
+  height: 2px;
+}
+.weui_uploader_input_wrp_square_small:active {
+  border-color: #999999;
+}
+.weui_uploader_input_wrp_square_small:active:before,
+.weui_uploader_input_wrp_square_small:active:after {
+  background-color: #999999;
+}
+.weui_cell_none_border {
+  position: relative;
+}
+.weui_cell_none_border:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 1px;
+  border-top: 0px solid #D9D9D9;
+  color: #D9D9D9;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+          transform: scaleY(0.5);
+  left: 15px;
+}
+.weui_cell_none_border:first-child:before {
+  display: none;
+}
+.weui_cell_none_border {
+  padding: 1px 15px;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.weui_agree {
+  display: block;
+  padding: .5em 15px;
+  font-size: 13px;
+}
+.weui_agree a {
+  color: #586C94;
+}
+.weui_agree_text {
+  color: #999999;
+}
+.weui_agree_checkbox {
+  -webkit-appearance: none;
+          appearance: none;
+  outline: 0;
+  font-size: 0;
+  border: 1px solid #D1D1D1;
+  background-color: #FFFFFF;
+  border-radius: 3px;
+  width: 13px;
+  height: 13px;
+  position: relative;
+  vertical-align: 0;
+  top: 2px;
+}
+.weui_agree_checkbox:checked:before {
+  font-family: "weui";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-align: center;
+  speak: none;
+  display: inline-block;
+  vertical-align: middle;
+  text-decoration: inherit;
+  content: "\EA08";
+  color: #09BB07;
+  font-size: 13px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -48%) scale(0.73);
+          transform: translate(-50%, -48%) scale(0.73);
+}
+.weui_agree_checkbox:disabled {
+  background-color: #E1E1E1;
+}
+.weui_agree_checkbox:disabled:before {
+  color: #ADADAD;
+}
